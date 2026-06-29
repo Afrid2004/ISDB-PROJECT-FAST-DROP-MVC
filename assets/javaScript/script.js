@@ -96,9 +96,11 @@ faqElements.forEach((element) => {
 
 //video modal
 let videoModal = document.getElementById("video_modal"),
-  iframe = videoModal.querySelector("iframe");
+  iframe = videoModal.querySelector("iframe"),
+  modalCloseButton = document.getElementById("modalCloseButton"),
+  videoPlayButton = document.getElementById("videoPlayButton");
 
-const handleVideoModal = (src = "") => {
+function handleVideoModal(src = "") {
   if (videoModal.classList.contains("active-modal")) {
     videoModal.classList.remove("active-modal");
     iframe.src = "";
@@ -106,7 +108,15 @@ const handleVideoModal = (src = "") => {
   }
   videoModal.classList.add("active-modal");
   iframe.src = src;
-};
+}
+
+videoPlayButton.addEventListener("click", () => {
+  handleVideoModal(
+    "https://www.youtube.com/embed/FikkQTfbaOs?si=jmp2mfdXyQ0qoT62",
+  );
+});
+videoModal.addEventListener("click", () => handleVideoModal());
+modalCloseButton.addEventListener("click", () => handleVideoModal());
 
 // testomonial swipper
 const reviewSwiper = new Swiper(".reviewSwiper", {

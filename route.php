@@ -1,10 +1,5 @@
 <?php 
-
-
 include_once("header.php");
-
-
-
 
 if (isset($_GET["class"])) {
     $class = $_GET["class"] . "Controller";

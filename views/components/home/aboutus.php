@@ -9,7 +9,7 @@
             <div class="grid grid-cols-12 gap-2">
               <div class="col-span-7 bg-amber-500">
                 <div class="w-full h-40 md:h-60 overflow-hidden relative group">
-                  <img src="/assets/images/about-1.webp" alt="truck"
+                  <img src="<?php echo $base_url; ?>/assets/images/about-1.webp" alt="truck"
                     class="w-full h-full object-cover group-hover:scale-[1.2] duration-400" />
                   <div
                     class="absolute w-full opacity-0 group-hover:opacity-100 h-full bottom-0 left-0 bg-black/60 pointer-events-none duration-150 flex items-center justify-center p-4">
@@ -23,7 +23,7 @@
               </div>
               <div class="col-span-5 bg-amber-500">
                 <div class="w-full h-40 md:h-60 overflow-hidden relative group">
-                  <img src="/assets/images/about-2.webp" alt="truck"
+                  <img src="<?php echo $base_url; ?>/assets/images/about-2.webp" alt="truck"
                     class="w-full object-cover h-full group-hover:scale-[1.2] duration-400" />
                   <div
                     class="absolute w-full opacity-0 group-hover:opacity-100 h-full bottom-0 left-0 bg-black/60 pointer-events-none duration-150 flex items-center justify-center p-4">
@@ -37,7 +37,7 @@
               </div>
               <div class="col-span-5 bg-amber-500">
                 <div class="w-full h-40 md:h-60 overflow-hidden relative group">
-                  <img src="/assets/images/about-3.webp" alt="truck"
+                  <img src="<?php echo $base_url; ?>/assets/images/about-3.webp" alt="truck"
                     class="w-full h-full object-cover group-hover:scale-[1.2] duration-400" />
                   <div
                     class="absolute w-full opacity-0 group-hover:opacity-100 h-full bottom-0 left-0 bg-black/60 pointer-events-none duration-150 flex items-center justify-center p-4">
@@ -51,7 +51,7 @@
               </div>
               <div class="col-span-7 bg-amber-500">
                 <div class="w-full h-40 md:h-60 overflow-hidden relative group">
-                  <img src="/assets/images/about-4.webp" alt="truck"
+                  <img src="<?php echo $base_url; ?>/assets/images/about-4.webp" alt="truck"
                     class="w-full h-full object-cover group-hover:scale-[1.2] duration-400" />
                   <div
                     class="absolute w-full opacity-0 group-hover:opacity-100 h-full bottom-0 left-0 bg-black/60 pointer-events-none duration-150 flex items-center justify-center p-4">
