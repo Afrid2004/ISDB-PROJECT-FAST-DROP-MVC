@@ -1,46 +1,27 @@
-<?php 
-  session_start();
-  require_once("configs/config.php");
-  require_once("models/model.php");
-  require_once("controllers/controller.php");
-  // require_once("helpers/helper.php");
-  // require_once("libraries/library.php");
-
-  // if(!isset($_SESSION["uid"])) header("location:$base_url");
-  // $uid=$_SESSION["uid"];
-?>
-
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <!-- swipper js cdn -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
-    />
-    <!-- font awsome cdn -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <!-- tailwind css cdn -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/style.css" />
-    <title>Fast Drop | Logistic Website</title>
-    <style type="text/tailwindcss">
-      @theme {
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&display=swap"
+    rel="stylesheet" />
+  <!-- swipper js cdn -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+  <!-- font awsome cdn -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- tailwind css cdn -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/style.css" />
+  <title>Fast Drop | Logistic Website</title>
+  <style type="text/tailwindcss">
+    @theme {
         --color-primary: #00bba7;
         --color-prmlight: #00fae1;
         --color-hover: #009689;
@@ -85,7 +66,8 @@
         @apply translate-x-0 duration-300;
       }
     </style>
-  </head>
+</head>
+
 <body>
 
-<?php include_once('views/layout/navbar.php') ?>
+  <?php include_once('views/layout/navbar.php') ?>

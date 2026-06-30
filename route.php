@@ -1,5 +1,16 @@
 <?php 
-include_once("header.php");
+
+//hiding header layout for register and login page
+$hideLayout = false;
+$class = $_GET['class'] ?? "";
+$authPages = ['register', 'login'];
+if(in_array($class, $authPages)){
+//  if auth page class present then hide the layout
+ $hideLayout = true;
+}
+if(!$hideLayout){
+    include_once("header.php");
+}
 
 if (isset($_GET["class"])) {
     $class = $_GET["class"] . "Controller";
@@ -381,4 +392,6 @@ function redirect($method = "index", $message = "")
 }
 
 
-include("footer.php");
+if(!$hideLayout){
+    include("footer.php");
+}

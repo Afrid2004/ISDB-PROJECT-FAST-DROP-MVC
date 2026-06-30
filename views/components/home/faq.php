@@ -26,7 +26,7 @@
             <div>
               <div class="flex flex-col gap-3">
                 <div
-                  class="w-full border border-gray-100 [&.active]:border-primary duration-150 rounded-2xl shadow-sm overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
+                  class="w-full border border-gray-300/70 [&.active]:border-primary duration-150 rounded-2xl overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
                   <button type="button"
                     class="flex items-center justify-between gap-3 cursor-pointer p-5 hover:bg-primary hover:text-white [.active_&]:hover:bg-hover w-full [.active_&]:bg-primary [.active_&]:text-white duration-150">
                     <h2 class="text-xl font-medium text-left">
@@ -46,7 +46,7 @@
                   </div>
                 </div>
                 <div
-                  class="w-full border border-gray-100 [&.active]:border-primary duration-150 rounded-2xl shadow-sm overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
+                  class="w-full border border-gray-300/70 [&.active]:border-primary duration-150 rounded-2xl overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
                   <button type="button"
                     class="flex items-center justify-between gap-3 cursor-pointer p-5 hover:bg-primary hover:text-white [.active_&]:hover:bg-hover w-full [.active_&]:bg-primary [.active_&]:text-white duration-150">
                     <h2 class="text-xl font-medium text-left">
@@ -66,7 +66,7 @@
                   </div>
                 </div>
                 <div
-                  class="w-full border border-gray-100 [&.active]:border-primary duration-150 rounded-2xl shadow-sm overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
+                  class="w-full border border-gray-300/70 [&.active]:border-primary duration-150 rounded-2xl overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
                   <button type="button"
                     class="flex items-center justify-between gap-3 cursor-pointer p-5 hover:bg-primary hover:text-white [.active_&]:hover:bg-hover w-full [.active_&]:bg-primary [.active_&]:text-white duration-150">
                     <h2 class="text-xl font-medium text-left">
@@ -86,7 +86,7 @@
                   </div>
                 </div>
                 <div
-                  class="w-full border border-gray-100 [&.active]:border-primary duration-150 rounded-2xl shadow-sm overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
+                  class="w-full border border-gray-300/70 [&.active]:border-primary duration-150 rounded-2xl overflow-hidden faq-div bg-white transition-all faqElements translate-y-10 opacity-0 [&.scroll-faq]:translate-y-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
                   <button type="button"
                     class="flex items-center justify-between gap-3 cursor-pointer p-5 hover:bg-primary hover:text-white [.active_&]:hover:bg-hover w-full [.active_&]:bg-primary [.active_&]:text-white duration-150">
                     <h2 class="text-xl font-medium text-left">
