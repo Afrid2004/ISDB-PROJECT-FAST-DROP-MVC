@@ -1,4 +1,5 @@
 <!-- header  -->
+<?php require_once('bootstrap.php'); ?>
 <?php include_once('header.php') ?>
 
 <!-- banner  -->

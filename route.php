@@ -1,4 +1,5 @@
 <?php 
+require_once('bootstrap.php');
 
 //hiding header layout for register and login page
 $hideLayout = false;
