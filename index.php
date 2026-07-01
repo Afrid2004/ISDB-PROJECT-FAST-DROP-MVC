@@ -34,3 +34,4 @@
 
 <!-- footer  -->
 <?php include_once('footer.php') ?>
+<?php require_once('bootstrap-footer.php'); ?>

@@ -35,15 +35,17 @@ let aboutSection = document.querySelector("#about"),
   logo = document.querySelector("#logo");
 
 // header animation trigger
-document.addEventListener("scroll", () => {
-  if (window.scrollY > 100) {
-    header.classList.add("scroll-header");
-    logo.src = `${BASE_URL}/assets/images/logo_black.png`;
-  } else {
-    header.classList.remove("scroll-header");
-    logo.src = `${BASE_URL}/assets/images/logo_white.png`;
-  }
-});
+if (header && logo) {
+  document.addEventListener("scroll", () => {
+    if (window.scrollY > 100) {
+      header.classList.add("scroll-header");
+      logo.src = `${BASE_URL}/assets/images/logo_black.png`;
+    } else {
+      header.classList.remove("scroll-header");
+      logo.src = `${BASE_URL}/assets/images/logo_white.png`;
+    }
+  });
+}
 
 const animationTriggerFunction = (
   targetSection = "",
@@ -62,7 +64,9 @@ const animationTriggerFunction = (
       threshold,
     },
   );
-  observer.observe(targetSection);
+  if (targetSection) {
+    observer.observe(targetSection);
+  }
 };
 
 // about section animation
@@ -95,28 +99,30 @@ faqElements.forEach((element) => {
 });
 
 //video modal
-let videoModal = document.getElementById("video_modal"),
-  iframe = videoModal.querySelector("iframe"),
-  modalCloseButton = document.getElementById("modalCloseButton"),
-  videoPlayButton = document.getElementById("videoPlayButton");
+let videoModal = document.getElementById("video_modal");
 
-function handleVideoModal(src = "") {
-  if (videoModal.classList.contains("active-modal")) {
-    videoModal.classList.remove("active-modal");
-    iframe.src = "";
-    return;
+if (videoModal) {
+  let iframe = videoModal.querySelector("iframe"),
+    modalCloseButton = document.getElementById("modalCloseButton"),
+    videoPlayButton = document.getElementById("videoPlayButton");
+  function handleVideoModal(src = "") {
+    if (videoModal.classList.contains("active-modal")) {
+      videoModal.classList.remove("active-modal");
+      iframe.src = "";
+      return;
+    }
+    videoModal.classList.add("active-modal");
+    iframe.src = src;
   }
-  videoModal.classList.add("active-modal");
-  iframe.src = src;
-}
 
-videoPlayButton.addEventListener("click", () => {
-  handleVideoModal(
-    "https://www.youtube.com/embed/FikkQTfbaOs?si=jmp2mfdXyQ0qoT62",
-  );
-});
-videoModal.addEventListener("click", () => handleVideoModal());
-modalCloseButton.addEventListener("click", () => handleVideoModal());
+  videoPlayButton.addEventListener("click", () => {
+    handleVideoModal(
+      "https://www.youtube.com/embed/FikkQTfbaOs?si=jmp2mfdXyQ0qoT62",
+    );
+  });
+  videoModal.addEventListener("click", () => handleVideoModal());
+  modalCloseButton.addEventListener("click", () => handleVideoModal());
+}
 
 // testomonial swipper
 const reviewSwiper = new Swiper(".reviewSwiper", {
@@ -171,6 +177,21 @@ faqDivs.forEach((faq, index) => {
     if (!isActive) {
       // if not exist active class then add it
       faq.classList.add("active");
+    }
+  });
+});
+
+//show pass and hide pass
+let allShowPassIcon = document.querySelectorAll(".showpassIcon");
+allShowPassIcon.forEach((icon) => {
+  let input = icon.parentElement.previousElementSibling;
+  icon.addEventListener("click", () => {
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      input.type = "password";
+      icon.classList.replace("fa-eye-slash", "fa-eye");
     }
   });
 });

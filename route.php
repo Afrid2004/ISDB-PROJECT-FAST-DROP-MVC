@@ -1,15 +1,16 @@
-<?php 
+<?php
+// all header link 
 require_once('bootstrap.php');
 
 //hiding header layout for register and login page
 $hideLayout = false;
 $class = $_GET['class'] ?? "";
 $authPages = ['register', 'login'];
-if(in_array($class, $authPages)){
-//  if auth page class present then hide the layout
- $hideLayout = true;
+if (in_array($class, $authPages)) {
+    //  if auth page class present then hide the layout
+    $hideLayout = true;
 }
-if(!$hideLayout){
+if (!$hideLayout) {
     include_once("header.php");
 }
 
@@ -366,7 +367,7 @@ function view($path = "", $data = [])
     $id = isset($_GET["id"]) ? $_GET["id"] : "";
     //${strtolower($class)} = (object) $data;
     $bag = $data;
-    extract( $data);
+    extract($data);
     ${strtolower($class)} = json_decode(json_encode($data), FALSE);
 
 
@@ -393,6 +394,8 @@ function redirect($method = "index", $message = "")
 }
 
 
-if(!$hideLayout){
+if (!$hideLayout) {
     include("footer.php");
 }
+// all script link
+include_once('bootstrap-footer.php');
