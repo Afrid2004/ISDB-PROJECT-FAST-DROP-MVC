@@ -101,4 +101,35 @@ class User
     }
     return 0;
   }
+
+  //update remember token when user login and check remember me
+  public static function updateRememberToken($id, $token)
+  {
+    global $db;
+    if ($token === NULL) {
+      $db->query("
+            UPDATE users
+            SET remember_token=NULL
+            WHERE id='$id'
+        ");
+    } else {
+      $db->query("
+            UPDATE users
+            SET remember_token='$token'
+            WHERE id='$id'
+        ");
+    }
+  }
+
+  //find remember token
+  public static function findRememberToken($token)
+  {
+    global $db;
+    $sql = "SELECT * FROM users WHERE remember_token='$token' LIMIT 1";
+    $stmt = $db->query($sql);
+    if ($stmt && $stmt->num_rows > 0) {
+      return $stmt->fetch_object();
+    }
+    return null;
+  }
 }

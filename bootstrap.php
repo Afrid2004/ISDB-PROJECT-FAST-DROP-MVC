@@ -1,13 +1,28 @@
 <?php
 
-  session_start();
-  require_once("configs/config.php");
-  require_once("models/model.php");
-  require_once("controllers/controller.php");
+session_start();
+require_once("configs/config.php");
+require_once("models/model.php");
+require_once("controllers/controller.php");
 
-  ?>
+// Automatically log in the user if a valid remember token exists
+if (!isset($_SESSION['user']) && isset($_COOKIE['remember_token'])) {
 
-  <!doctype html>
+  $user = User::findRememberToken($_COOKIE['remember_token']);
+
+  // Restore the user session from the remember token
+  if ($user) {
+    $_SESSION['user'] = [
+      "id"      => $user->id,
+      "role_id" => $user->role_id,
+      "name"    => $user->name,
+      "email"   => $user->email
+    ];
+  }
+}
+?>
+
+<!doctype html>
 <html lang="en">
 
 <head>

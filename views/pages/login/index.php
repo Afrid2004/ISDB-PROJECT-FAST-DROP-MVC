@@ -1,3 +1,10 @@
+<?php
+if (isset($_SESSION['user']['email'])) {
+  redirect();
+  exit;
+}
+?>
+
 <div>
   <div
     class="flex items-center justify-center bg-[linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url('<?php echo $base_url ?>/assets/images/auth-bg.jpg')] bg-cover bg-center min-h-screen p-5">
@@ -11,13 +18,22 @@
                   href="<?php echo $base_url ?>/register">Create now</a></p>
             </div>
             <div>
-              <form method="post">
+              <form method="post" action="<?php echo $base_url ?>/login/authenticate">
+                <?php if (isset($_SESSION['error'])): ?>
+                  <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-2">
+                    <?php
+                    echo $_SESSION["error"];
+                    unset($_SESSION["error"]);
+                    ?>
+                  </div>
+                <?php endif ?>
                 <div class="mb-3">
                   <label for="email">
                     <div class="mb-1 cursor-pointer w-fit">Email</div>
                   </label>
                   <div class="bg-gray-200/50 relative px-3 py-1.5 group">
-                    <input class="outline-none border-none w-full bg-transparent" id="email" type="email" name="email"
+                    <input value="<?php echo $_SESSION['old']['email'] ?? "" ?>"
+                      class="outline-none border-none w-full bg-transparent" id="email" type="email" name="email"
                       placeholder="you@example.com">
                     <div
                       class="absolute left-0 bottom-0 h-0.5 bg-primary w-full scale-x-[0]  duration-300 group-focus-within:scale-x-[1] z-1">
@@ -30,13 +46,25 @@
                     <div class="mb-1 cursor-pointer w-fit">Password</div>
                   </label>
                   <div class="bg-gray-200/50 relative px-3 py-1.5 group">
-                    <input class="outline-none border-none w-full bg-transparent" id="password" type="password"
-                      name="password" placeholder="••••••••">
+                    <div class="flex items-center gap-1">
+                      <input class="outline-none border-none w-full bg-transparent" id="password" type="password"
+                        name="password" placeholder="••••••••">
+                      <div>
+                        <i class="fa-regular fa-eye text-gray cursor-pointer showpassIcon"></i>
+                      </div>
+                    </div>
                     <div
                       class="absolute left-0 bottom-0 h-0.5 bg-primary w-full scale-x-[0]  duration-300 group-focus-within:scale-x-[1] z-1">
                     </div>
                     <div class="absolute left-0 bottom-0 h-0.5 bg-gray-300/70 w-full"></div>
                   </div>
+                </div>
+                <!-- Remember Me -->
+                <div class="mb-3 flex items-center gap-2">
+                  <input id="remember" type="checkbox" name="remember" value="1">
+                  <label for="remember" class="cursor-pointer">
+                    Remember Me
+                  </label>
                 </div>
                 <div>
                   <button

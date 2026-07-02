@@ -5,7 +5,7 @@ require_once('bootstrap.php');
 //hiding header layout for register and login page
 $hideLayout = false;
 $class = $_GET['class'] ?? "";
-$authPages = ['register', 'login'];
+$authPages = ['register', 'login', 'logout'];
 if (in_array($class, $authPages)) {
     //  if auth page class present then hide the layout
     $hideLayout = true;
@@ -378,19 +378,27 @@ function view($path = "", $data = [])
     }
 }
 
-function redirect($method = "index", $message = "")
+// function redirect($method = "index", $message = "")
+// {
+
+//     $class = isset($_GET["class"]) ? $_GET["class"] : "home";
+//     global $base_url;
+//     //header("location:$class/$method");
+//     if (isset($method)) {
+//         echo "<script>window.location='$base_url/$class'</script>";
+//     } else {
+//         echo "<script>window.location='$base_url/$class/$method'</script>";
+//     }
+
+//     //echo "<script>alert('$base_url/$class/$method')</script>";
+// }
+
+function redirect($url = "")
 {
-
-    $class = isset($_GET["class"]) ? $_GET["class"] : "home";
     global $base_url;
-    //header("location:$class/$method");
-    if (isset($method)) {
-        echo "<script>window.location='$base_url/$class'</script>";
-    } else {
-        echo "<script>window.location='$base_url/$class/$method'</script>";
-    }
 
-    //echo "<script>alert('$base_url/$class/$method')</script>";
+    header("Location: $base_url/$url");
+    exit;
 }
 
 
