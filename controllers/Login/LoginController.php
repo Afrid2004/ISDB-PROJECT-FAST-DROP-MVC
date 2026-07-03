@@ -67,8 +67,8 @@ class LoginController
         // insert it into remember_token column in users table 
         User::updateRememberToken($user->id, $token);
 
-        // set cookie for 30 days 
-        setcookie('remember_token', $token, time() + (30 * 24 * 60 * 60), "/");
+        // set cookie for 7 days 
+        setcookie('remember_token', $token, time() + (7 * 24 * 60 * 60), "/");
       }
       unset($_SESSION["old"]);
       redirect("");

@@ -1,11 +1,11 @@
 <?php
-// all header link 
+// all header style link 
 require_once('bootstrap.php');
 
 //hiding header layout for register and login page
 $hideLayout = false;
 $class = $_GET['class'] ?? "";
-$authPages = ['register', 'login', 'logout'];
+$authPages = ['register', 'login', 'logout', 'dashboard'];
 if (in_array($class, $authPages)) {
     //  if auth page class present then hide the layout
     $hideLayout = true;
