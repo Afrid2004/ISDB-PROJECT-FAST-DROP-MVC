@@ -56,6 +56,7 @@ class LoginController
       $_SESSION['user'] = [
         "id"       => $user->id,
         "role_id"  => $user->role_id,
+        "photo_url" => $user->photo_url,
         "name"     => $user->name,
         "email"    => $user->email,
       ];

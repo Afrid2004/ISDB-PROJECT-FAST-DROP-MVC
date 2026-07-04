@@ -14,6 +14,7 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_token'])) {
   if ($user) {
     $_SESSION['user'] = [
       "id"      => $user->id,
+      "photo_url" => $user->photo_url,
       "role_id" => $user->role_id,
       "name"    => $user->name,
       "email"   => $user->email

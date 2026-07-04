@@ -31,7 +31,10 @@ class User
   public static function showUser()
   {
     global $db;
-    $sql = "SELECT * FROM users";
+    // $sql = "SELECT * FROM users";
+    $sql = "SELECT users.*, roles.role_name AS rolename
+        FROM users
+        JOIN roles ON users.role_id = roles.id";
     $stmt = $db->query($sql);
     if ($stmt && $stmt->num_rows > 0) {
       return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
@@ -49,6 +52,20 @@ class User
       return $stmt->fetch_object();
     }
     return null;
+  }
+
+  //find user role and id
+  public static function userRole($id)
+  {
+    global $db;
+    $sql = "SELECT users.*, roles.role_name AS rolename
+        FROM users
+        JOIN roles ON users.role_id = roles.id
+        WHERE users.id = $id";
+    $stmt = $db->query($sql);
+    if ($stmt) {
+      return $stmt->fetch_object();
+    }
   }
 
   //update user

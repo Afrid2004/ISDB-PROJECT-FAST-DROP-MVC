@@ -1,0 +1,4 @@
+<?
+
+
+echo "All parcels page";

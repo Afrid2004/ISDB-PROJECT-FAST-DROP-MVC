@@ -15,14 +15,25 @@ class DashboardController
   }
 
   // dynamicly render role based pages
-  function allusers(){
-     $role = $_SESSION['user']['role_id'];
-     if (!isset($_SESSION['user']) || $_SESSION['user']['role_id'] != 1) {
+  function allusers()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
       redirect("");
       exit;
     }
     $allUserdata = User::showUser();
     $page = 'allusers';
     view("dashboard", compact('role', 'page', 'allUserdata'));
+  }
+
+  // dynamically render all parcels page 
+  function allparcels()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
   }
 }
