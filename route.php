@@ -371,8 +371,14 @@ function view($path = "", $data = [])
     ${strtolower($class)} = json_decode(json_encode($data), FALSE);
 
 
-    if (isset($path)) {
-        include_once("views/pages/$path/$class/$method.php");
+    // if (isset($path)) {
+    //     include_once("views/pages/$path/$class/$method.php");
+    // } else {
+    //     include_once("views/pages/$class/$method.php");
+    // }
+
+    if ($path != "") {
+        include_once("views/pages/$path/index.php");
     } else {
         include_once("views/pages/$class/$method.php");
     }

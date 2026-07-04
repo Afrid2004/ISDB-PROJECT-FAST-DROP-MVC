@@ -112,3 +112,24 @@
 .reviewSwiper .swiper-pagination-bullet {
   background-color: #162636;
 }
+
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgb(0 0 0 / 30%);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgb(0 0 0 / 40%);
+    cursor: pointer;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}

@@ -211,3 +211,13 @@ if (profileBtn && profileMenu) {
     }
   });
 }
+
+
+//all submenus in manu function
+let submenuToggler = document.querySelectorAll('.submenu_toggler');
+
+submenuToggler.forEach((toggler) => {
+  toggler.addEventListener('click',() => {
+    toggler.classList.toggle("active");
+  })
+})

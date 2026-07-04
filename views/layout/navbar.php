@@ -48,7 +48,7 @@
                               <?php echo $_SESSION['user']['email']; ?></p>
                           </li>
                           <li>
-                            <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg" href="#">Account</a>
+                            <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg" href="<?php echo $base_url ?>/dashboard">Dashboard</a>
                           </li>
                           <li>
                             <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg"

@@ -89,5 +89,6 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_token'])) {
       .menu-sidebar-toggle {
         @apply translate-x-0 duration-300;
       }
+
     </style>
 </head>
