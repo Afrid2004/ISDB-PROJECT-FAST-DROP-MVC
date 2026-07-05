@@ -20,6 +20,27 @@ $alldistricts = Districts::allDistricts();
       <div class="py-5">
         <div>
           <form method="post" action="<?php echo $base_url ?>/parcel/submit">
+            <!-- error message show  -->
+            <?php if (!empty($_SESSION['errors'])): ?>
+              <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-3">
+                <ul class="list-disc pl-5">
+                  <?php foreach ($_SESSION['errors'] as $error): ?>
+                    <li><?= htmlspecialchars($error) ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            <?php
+              unset($_SESSION['errors']);
+            endif;
+            ?>
+            <!-- success message show  -->
+            <?php if (isset($_SESSION['success'])): ?>
+              <div class="mb-4 rounded bg-green-100 border border-green-300 text-green-700 px-4 py-3">
+                <?= htmlspecialchars($_SESSION['success']) ?>
+              </div>
+            <?php
+              unset($_SESSION['success']);
+            endif; ?>
             <div class="grid grid-cols-12 gap-5 mb-3">
               <!-- parcel info  -->
               <div class="col-span-12">
@@ -48,7 +69,7 @@ $alldistricts = Districts::allDistricts();
                           <input id="document"
                             class="box-content h-1.5 w-1.5 appearance-none rounded-full border-[5px] border-white bg-white bg-clip-padding ring-1 ring-teal-950/20 duration-150 transition-all outline-none checked:border-teal-500 checked:ring-teal-500"
                             type="radio" value="document" name="parceltype" />
-                           Document
+                          Document
                         </label>
                         <label for="fragile"
                           class="flex duration-150 transition-all md:justify-between items-center gap-3 rounded-sm px-2.5 h-10 ring-1 ring-gray-300/70 text-gray-600  bg-white hover:bg-teal-50 has-checked:text-teal-500 has-checked:ring-teal-500 shrink-0 w-full md:w-fit cursor-pointer">
@@ -131,7 +152,7 @@ $alldistricts = Districts::allDistricts();
                       <label for="senderemail" class="block mb-2 text-gray">
                         Sender Email
                       </label>
-                      <input type="tel"
+                      <input type="email"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="senderemail" name="senderemail" placeholder="Enter sender email" required>
                     </div>
@@ -139,7 +160,7 @@ $alldistricts = Districts::allDistricts();
                       <label for="senderaddress" class="block mb-2 text-gray">
                         Sender Address
                       </label>
-                      <input type="tel"
+                      <input type="text"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="senderaddress" name="senderaddress" placeholder="Enter sender address" required>
                     </div>
@@ -154,7 +175,7 @@ $alldistricts = Districts::allDistricts();
                         <?php if ($alldistricts) {
                           foreach ($alldistricts as $district) {
                         ?>
-                        <option value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
+                            <option value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
                         <?php }
                         } ?>
                       </select>
@@ -200,7 +221,7 @@ $alldistricts = Districts::allDistricts();
                       <label for="receiveremail" class="block mb-2 text-gray">
                         Receiver Email
                       </label>
-                      <input type="tel"
+                      <input type="email"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="receiveremail" name="receiveremail" placeholder="Enter receiver email" required>
                     </div>
@@ -208,7 +229,7 @@ $alldistricts = Districts::allDistricts();
                       <label for="receiveraddress" class="block mb-2 text-gray">
                         Receiver Address
                       </label>
-                      <input type="tel"
+                      <input type="text"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="receiveraddress" name="receiveraddress" placeholder="Enter receiver address" required>
                     </div>
@@ -223,7 +244,7 @@ $alldistricts = Districts::allDistricts();
                         <?php if ($alldistricts) {
                           foreach ($alldistricts as $district) {
                         ?>
-                        <option value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
+                            <option value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
                         <?php }
                         } ?>
                       </select>
@@ -233,15 +254,17 @@ $alldistricts = Districts::allDistricts();
               </div>
 
               <!-- note  -->
-               <div class="col-span-12">
-                 <label for="note" class="block mb-2 text-gray">
-                        Note:
-                      </label>
-                <textarea name="note" id="note" class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"></textarea>
-               </div>
+              <div class="col-span-12">
+                <label for="parcelnote" class="block mb-2 text-gray">
+                  Note:
+                </label>
+                <textarea name="parcelnote" id="parcelnote"
+                  class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"></textarea>
+              </div>
             </div>
             <div>
-              <button class="px-4 py-2 bg-primary text-lg hover:bg-hover text-white duration-150 w-full cursor-pointer" type="submit" name="btn_submit">Create Parcel 
+              <button class="px-4 py-2 bg-primary text-lg hover:bg-hover text-white duration-150 w-full cursor-pointer"
+                type="submit" name="btn_submit">Create Parcel
 
 
               </button>
