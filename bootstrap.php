@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 session_start();
 require_once("configs/config.php");
 require_once("models/model.php");

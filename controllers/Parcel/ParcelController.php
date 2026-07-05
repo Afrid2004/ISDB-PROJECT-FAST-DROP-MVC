@@ -11,6 +11,8 @@ class ParcelController
     view("");
   }
 
+
+
   function submit()
   {
     if (isset($_POST['btn_submit'])) {
@@ -18,23 +20,26 @@ class ParcelController
       // Logged in user
       $sender_user_id = $_SESSION['user']['id'];
       // Parcel Information
-      $parcel_type   = trim($_POST['parceltype']);
-      $parcel_name   = trim($_POST['parcelname']);
-      $parcel_weight = floatval($_POST['parcelweight']);
-      // Sender Information
-      $sender_name      = trim($_POST['sendername']);
-      $sender_phone     = trim($_POST['senderphone']);
-      $sender_email     = trim($_POST['senderemail']);
-      $sender_address   = trim($_POST['senderaddress']);
-      $sender_district  = intval($_POST['senderdistrict']);
-      // Receiver Information
-      $receiver_name      = trim($_POST['receivername']);
-      $receiver_phone     = trim($_POST['receiverphone']);
-      $receiver_email     = trim($_POST['receiveremail']);
-      $receiver_address   = trim($_POST['receiveraddress']);
-      $receiver_district  = intval($_POST['receiverdistrict']);
-      // Optional fields
-      $parcel_note = $_POST['parcelnote'] ?? "";
+      $parcel_type = trim($_POST['parceltype'] ?? '');
+      $parcel_name = trim($_POST['parcelname'] ?? '');
+      $parcel_weight = floatval($_POST['parcelweight'] ?? 0);
+
+      $sender_name = trim($_POST['sendername'] ?? '');
+      $sender_phone = trim($_POST['senderphone'] ?? '');
+      $sender_email = trim($_POST['senderemail'] ?? '');
+      $sender_address = trim($_POST['senderaddress'] ?? '');
+      $sender_district = intval($_POST['senderdistrict'] ?? 0);
+
+      $receiver_name = trim($_POST['receivername'] ?? '');
+      $receiver_phone = trim($_POST['receiverphone'] ?? '');
+      $receiver_email = trim($_POST['receiveremail'] ?? '');
+      $receiver_address = trim($_POST['receiveraddress'] ?? '');
+      $receiver_district = intval($_POST['receiverdistrict'] ?? 0);
+
+      $parcel_note = trim($_POST['parcelnote'] ?? '');
+
+      //store old value
+      $_SESSION['old'] = $_POST;
 
       // Validation
       $errors = [];
@@ -84,7 +89,10 @@ class ParcelController
       }
 
       // But same phone is not allowed
-      if ($sender_phone == $receiver_phone) {
+      if (
+        !empty($sender_phone) &&
+        !empty($receiver_phone) && $sender_phone == $receiver_phone
+      ) {
         $errors[] = "Sender and receiver phone number cannot be the same.";
       }
 
@@ -142,6 +150,7 @@ class ParcelController
         // if all operation is ok then create 
         $db->commit();
         $_SESSION['success'] = "Parcel created successfully.";
+        unset($_SESSION['old']);
         redirect("parcel");
         exit;
       } catch (Exception $e) {

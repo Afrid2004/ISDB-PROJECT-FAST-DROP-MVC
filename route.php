@@ -413,3 +413,4 @@ if (!$hideLayout) {
 }
 // all script link
 include_once('bootstrap-footer.php');
+ob_end_flush();
