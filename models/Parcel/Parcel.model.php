@@ -69,7 +69,7 @@ class Parcel
     public static function generateTrackingId(){
         global $db;
         do{
-
+            $trackingId = "FD-".date("ymd").rand(100000, 99999);
         }
     }
 
