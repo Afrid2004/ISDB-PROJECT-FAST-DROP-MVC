@@ -52,6 +52,10 @@
                           </li>
                           <li>
                             <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg"
+                              href="<?php echo $base_url ?>/parcel">Send Parcel</a>
+                          </li>
+                          <li>
+                            <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg"
                               href="<?php echo $base_url ?>/logout">Logout</a>
                           </li>
                         </ul>

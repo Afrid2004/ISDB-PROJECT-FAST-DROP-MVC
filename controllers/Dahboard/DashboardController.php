@@ -35,5 +35,27 @@ class DashboardController
       redirect("");
       exit;
     }
+    $allParcelData = Parcel::allparcels();
+    $page = "allparcels";
+    view("dashboard", compact('role', 'page', 'allParcelData'));
+  }
+
+
+  // parceldetails page 
+  function parceldetails()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    $parcelData = Parcel::findParcelById($id);
+    $page = "parceldetails";
+    view("dashboard", compact(
+      'role',
+      'page',
+      'parcelData'
+    ));
   }
 }

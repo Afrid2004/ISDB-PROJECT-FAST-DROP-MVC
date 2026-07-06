@@ -1,7 +1,8 @@
 <?php
 
-function renderDashboard($role, $page = "index", $allUserdata = null)
+function renderDashboard($role, $page = "index", $data = [])
 {
+  extract($data);
   global $base_url;
   // dynamic render dashboard page on user role
   switch ($role) {
@@ -143,7 +144,7 @@ $photo = $_SESSION['user']['photo_url'];
           <!--/ header  -->
           <div class="p-5 h-full overflow-auto custom-scrollbar">
             <!-- dashboard wrapper  -->
-            <?php renderDashboard($role, $page, $allUserdata ?? null) ?>
+            <?php renderDashboard($role, $page, get_defined_vars()) ?>
           </div>
         </div>
         <!-- content box  -->

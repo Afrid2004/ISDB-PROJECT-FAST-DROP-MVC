@@ -94,7 +94,15 @@ class Parcel
     public static function allparcels()
     {
         global $db;
-        $sql = "SELECT * FROM parcels ORDER BY id DESC";
+        $sql = "SELECT parcels.*, 
+        sender.district_name AS sender_district_name,
+        receiver.district_name AS receiver_district_name
+        FROM parcels 
+        JOIN districts AS sender 
+            ON parcels.sender_district_id=sender.id
+        JOIN districts AS receiver
+            ON parcels.receiver_district_id=receiver.id
+        ORDER BY parcels.id DESC";
         $stmt = $db->query($sql);
         if ($stmt && $stmt->num_rows > 0) {
             return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
