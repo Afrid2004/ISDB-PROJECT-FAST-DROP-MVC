@@ -1,5 +1,6 @@
 <?php
 $alldistricts = Districts::allDistricts();
+$old = $_SESSION['old'] ?? [];
 ?>
 
 <div>
@@ -17,9 +18,30 @@ $alldistricts = Districts::allDistricts();
     <div class="container">
       <div class="py-5">
         <div>
-          <form method="post">
-            <div class="grid grid-cols-12 gap-7">
+          <form method="post" action="<?php echo $base_url ?>/rider/submit">
+            <!-- error message show  -->
+            <?php if (!empty($_SESSION['errors'])): ?>
+              <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-3">
+                <ul class="list-disc pl-5">
+                  <?php foreach ($_SESSION['errors'] as $error): ?>
+                    <li><?php echo $error ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              </div>
+            <?php
+              unset($_SESSION['errors']);
+            endif;
+            ?>
+            <!-- success message show  -->
+            <?php if (isset($_SESSION['success'])): ?>
+              <div class="mb-4 rounded bg-green-100 border border-green-300 text-green-700 px-4 py-3">
+                <?php echo $_SESSION['success'] ?>
+              </div>
+            <?php
+              unset($_SESSION['success']);
+            endif; ?>
 
+            <div class="grid grid-cols-12 gap-7">
               <!-- Personal Information -->
               <div class="col-span-12">
                 <div class="flex items-center gap-3 mb-6">
@@ -40,7 +62,7 @@ $alldistricts = Districts::allDistricts();
                     <label for="ridername" class="block mb-2 text-gray">
                       Rider Name
                     </label>
-                    <input type="text"
+                    <input value="<?php echo $old['ridername'] ?? '' ?>" type="text"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="ridername" name="ridername" placeholder="Enter rider name" required>
                   </div>
@@ -48,7 +70,7 @@ $alldistricts = Districts::allDistricts();
                     <label for="rideremail" class="block mb-2 text-gray">
                       Rider Email
                     </label>
-                    <input type="email"
+                    <input value="<?php echo $old['rideremail'] ?? '' ?>" type="email"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="rideremail" name="rideremail" placeholder="Enter rider email" required>
                   </div>
@@ -56,7 +78,7 @@ $alldistricts = Districts::allDistricts();
                     <label for="riderphone" class="block mb-2 text-gray">
                       Rider Phone
                     </label>
-                    <input type="tel"
+                    <input value="<?php echo $old['riderphone'] ?? '' ?>" type="tel"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="riderphone" name="riderphone" placeholder="Enter rider phone" required>
                   </div>
@@ -64,7 +86,7 @@ $alldistricts = Districts::allDistricts();
                     <label for="licenseno" class="block mb-2 text-gray">
                       License Number
                     </label>
-                    <input type="text"
+                    <input value="<?php echo $old['licenseno'] ?? '' ?>" type="text"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="licenseno" name="licenseno" placeholder="Enter license number" required>
                   </div>
@@ -91,24 +113,32 @@ $alldistricts = Districts::allDistricts();
                     <label for="vehicletype" class="block mb-2 text-gray">
                       Vehicle Type
                     </label>
-                    <select name="vehicletype"
+                    <select name="vehicletype" id="vehicletype"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 text-secondary focus:border-teal-500 outline-none">
-                      <option value="" selected disabled>Select Vehicle</option>
-                      <option value="bike">Bike</option>
-                      <option value="bicycle">Bicycle</option>
-                      <option value="car">Car</option>
-                      <option value="pickup">Pickup</option>
-                      <option value="container">Container</option>
+                      <option value="" <?php echo (($old['vehicletype'] ?? '') == '') ? 'selected' : "" ?> disabled>
+                        Select Vehicle</option>
+                      <option <?php echo (($old['vehicletype'] ?? '') == 'bike') ? 'selected' : "" ?> value="bike">Bike
+                      </option>
+                      <option <?php echo (($old['vehicletype'] ?? '') == 'bicycle') ? 'selected' : "" ?>
+                        value="bicycle">Bicycle
+                      </option>
+                      <option <?php echo (($old['vehicletype'] ?? '') == 'car') ? 'selected' : "" ?> value="car">Car
+                      </option>
+                      <option <?php echo (($old['vehicletype'] ?? '') == 'pickup') ? 'selected' : "" ?> value="pickup">
+                        Pickup</option>
+                      <option <?php echo (($old['vehicletype'] ?? '') == 'container') ? 'selected' : "" ?>
+                        value="container">
+                        Container</option>
                     </select>
                   </div>
                   <div>
                     <label for="vehicleregistration" class="block mb-2 text-gray">
-                      Vehicle Registration
+                      Vehicle Registration Number
                     </label>
-                    <input type="text"
+                    <input value="<?php echo $old['vehicleregistration'] ?? '' ?>" type="text"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
-                      id="vehicleregistration" name="vehicleregistration" placeholder="Enter Vehicle Registration"
-                      required>
+                      id="vehicleregistration" name="vehicleregistration"
+                      placeholder="Enter Vehicle Registration Number" required>
                   </div>
                 </div>
               </div>
@@ -131,18 +161,18 @@ $alldistricts = Districts::allDistricts();
                 </div>
                 <div class="mb-3">
                   <label for="senderdistrict" class="block mb-2 text-gray">
-                    Sender District
+                    Rider District
                   </label>
                   <select
                     class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 text-secondary focus:border-teal-500 outline-none"
-                    name="senderdistrict" id="senderdistrict" required>
-                    <option value="" <?php echo empty($old['senderdistrict']) ? 'selected' : '' ?> disabled>Select
+                    name="riderdistrict" id="riderdistrict" required>
+                    <option value="" <?php echo empty($old['riderdistrict']) ? 'selected' : '' ?> disabled>Select
                       District
                     </option>
                     <?php if ($alldistricts) {
                       foreach ($alldistricts as $district) {
                     ?>
-                        <option <?php echo (($old['senderdistrict'] ?? '') == $district->id) ? 'selected' : '' ?>
+                        <option <?php echo (($old['riderdistrict'] ?? '') == $district->id) ? 'selected' : '' ?>
                           value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
                     <?php }
                     } ?>
