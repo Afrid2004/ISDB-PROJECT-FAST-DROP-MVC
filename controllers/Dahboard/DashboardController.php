@@ -58,4 +58,43 @@ class DashboardController
       'parcelData'
     ));
   }
+
+  //pending parcels page 
+  function pendingparcels(){
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+
+    $page = "pendingparcels";
+    $pendingParcelsData = Parcel::allPendingParcels();
+    view("dashboard", compact('role', 'page', 'pendingParcelsData'));
+  }
+
+  //delivered parcels page 
+  function deliveredparcels(){
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+
+    $page = "deliveredparcels";
+    $deliveredParcelsData = Parcel::allDeliveredParcels();
+    view("dashboard", compact('role', 'page', 'deliveredParcelsData'));
+  }
+
+  //cancelled parcels page 
+  function cancelledparcels(){
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+
+    $page = "cancelledparcels";
+    $cancelledParcelsData = Parcel::allCancelledParcels();
+    view("dashboard", compact('role', 'page', 'cancelledParcelsData'));
+  }
 }

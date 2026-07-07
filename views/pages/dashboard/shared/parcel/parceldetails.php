@@ -27,7 +27,7 @@ $parcelClass = match ($parcelData->parcel_status) {
         <div class="col-span-12 lg:col-span-6">
             <div class="text-center px-4 py-3 bg-black/40 mb-3 border border-gray-500/30">
                 <h2 class="text-2xl font-medium text-white">
-                    <i class="fa-solid fa-box-archive text-xl"></i>
+                    <i class="fa-solid fa-box-archive text-xl text-teal-400"></i>
                     Parcel Information
                 </h2>
             </div>
@@ -64,7 +64,7 @@ $parcelClass = match ($parcelData->parcel_status) {
         <div class="col-span-12 lg:col-span-6">
             <div class="text-center px-4 py-3 bg-black/40 mb-3 border border-gray-500/30">
                 <h2 class="text-white text-2xl font-medium">
-                    <i class="fa-solid fa-truck text-xl"></i>
+                    <i class="fa-solid fa-truck text-xl text-teal-400"></i>
                     Delivery Information
                 </h2>
             </div>
@@ -106,7 +106,7 @@ $parcelClass = match ($parcelData->parcel_status) {
         <div class="col-span-12 lg:col-span-6">
             <div class="text-center px-4 py-3 bg-black/40 mb-3 border border-gray-500/30">
                 <h2 class="text-white text-2xl font-medium">
-                    <i class="fa-solid fa-user text-xl"></i>
+                    <i class="fa-solid fa-user text-xl text-teal-400"></i>
                     Sender Information
                 </h2>
             </div>
@@ -133,7 +133,7 @@ $parcelClass = match ($parcelData->parcel_status) {
         <div class="col-span-12 lg:col-span-6">
             <div class="text-center px-4 py-3 bg-black/40 mb-3 border border-gray-500/30">
                 <h2 class="text-white text-2xl font-medium">
-                    <i class="fa-solid fa-location-dot text-xl"></i>
+                    <i class="fa-solid fa-location-dot text-xl text-teal-400"></i>
                     Receiver Information
                 </h2>
             </div>
@@ -160,7 +160,7 @@ $parcelClass = match ($parcelData->parcel_status) {
         <div class="col-span-12 lg:col-span-6">
             <div class="text-center px-4 py-3 bg-black/40 mb-3 border border-gray-500/30">
                 <h2 class="text-white text-2xl font-medium">
-                    <i class="fa-solid fa-note-sticky text-xl"></i>
+                    <i class="fa-solid fa-note-sticky text-xl text-teal-400"></i>
                     Additional Information
                 </h2>
             </div>
@@ -169,11 +169,11 @@ $parcelClass = match ($parcelData->parcel_status) {
             </div>
         </div>
 
-        <!-- Rider -->
+        <!-- Rider Information -->
         <div class="col-span-12 lg:col-span-6">
             <div class="text-center px-4 py-3 bg-black/40 mb-3 border border-gray-500/30">
                 <h2 class="text-white text-2xl font-medium">
-                    <i class="fa-solid fa-motorcycle text-xl"></i>
+                    <i class="fa-solid fa-motorcycle text-xl text-teal-400"></i>
                     Rider Information
                 </h2>
             </div>

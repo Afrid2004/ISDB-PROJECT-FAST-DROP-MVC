@@ -37,21 +37,21 @@
                 All Parcels
               </div>
             </a>
-            <a class="block" href="<?php echo $base_url ?>/dashboard/adduser">
+            <a class="block" href="<?php echo $base_url ?>/dashboard/pendingparcels">
               <div
                 class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 duration-150  leading-none">
                 <i class="fa-solid fa-hourglass text-sm shrink-0"></i>
                 Pending Parcels
               </div>
             </a>
-            <a class="block" href="<?php echo $base_url ?>/dashboard/adduser">
+            <a class="block" href="<?php echo $base_url ?>/dashboard/deliveredparcels">
               <div
                 class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 duration-150  leading-none">
                 <i class="fa-solid fa-check text-sm shrink-0"></i>
                 Delivered Parcels
               </div>
             </a>
-            <a class="block" href="<?php echo $base_url ?>/dashboard/adduser">
+            <a class="block" href="<?php echo $base_url ?>/dashboard/cancelledparcels">
               <div
                 class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 duration-150  leading-none">
                 <i class="fa-solid fa-xmark text-sm shrink-0"></i>

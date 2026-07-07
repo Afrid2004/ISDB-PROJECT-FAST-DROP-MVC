@@ -1,8 +1,13 @@
+<?php
+print_r($pendingParcelsData);
+?>
+
+
 <div>
     <div>
-        <h2 class="text-white font-medium text-2xl mb-3">All Parcels</h2>
+        <h2 class="text-white font-medium text-2xl mb-3">All Pending Parcels</h2>
         <div>
-            <?php if ($allParcelData) { ?>
+            <?php if ($pendingParcelsData) { ?>
                 <div class="overflow-x-auto border border-gray-500/30 shadow-sm">
                     <table class="min-w-full">
                         <thead class="bg-black/30 border-b border-gray-500/30 text-white uppercase text-sm">
@@ -19,7 +24,7 @@
                             </tr>
                         </thead>
                         <tbody class="text-gray-700 text-sm">
-                            <?php foreach ($allParcelData as $key => $data) {
+                            <?php foreach ($pendingParcelsData as $key => $data) {
                                 $key++;
                                 $paymentClass = match ($data->payment_status) {
                                     "pending"             => "bg-yellow-500/20 text-yellow-400",
@@ -94,7 +99,7 @@
             <?php } else { ?>
 
                 <div class="bg-black/40 border border-gray-500/30 text-white px-4 py-3">
-                    No Data found!
+                    No Pending Parcels Data found!
                 </div>
             <?php } ?>
         </div>

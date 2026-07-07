@@ -139,4 +139,70 @@ class Parcel
         $stmt->execute();
         return array_map(fn($item) => (object)$item, $stmt->get_result()->fetch_all(MYSQLI_ASSOC));
     }
+
+
+    // pending parcel that payment status is paid
+    public static function allPendingParcels()
+    {
+        global $db;
+        $sql = "SELECT parcels.*, 
+        sender.district_name AS sender_district_name,
+        receiver.district_name AS receiver_district_name
+        FROM parcels 
+        JOIN districts AS sender 
+            ON parcels.sender_district_id=sender.id
+        JOIN districts AS receiver
+            ON parcels.receiver_district_id=receiver.id
+        WHERE parcels.payment_status='paid' AND parcels.parcel_status='pending' 
+        ORDER BY parcels.id DESC";
+        $stmt = $db->query($sql);
+        if ($stmt && $stmt->num_rows > 0) {
+            return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+        }
+        return null;
+    }
+
+    // parcel that are delivered
+    public static function allDeliveredParcels()
+    {
+        global $db;
+        $sql = "SELECT parcels.*, 
+        sender.district_name AS sender_district_name,
+        receiver.district_name AS receiver_district_name
+        FROM parcels 
+        JOIN districts AS sender 
+            ON parcels.sender_district_id=sender.id
+        JOIN districts AS receiver
+            ON parcels.receiver_district_id=receiver.id
+        WHERE parcels.payment_status='paid' AND parcels.parcel_status='delivered' 
+        ORDER BY parcels.id DESC";
+        $stmt = $db->query($sql);
+        if ($stmt && $stmt->num_rows > 0) {
+            return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+        }
+        return null;
+    }
+
+    // parcel that are delivered
+    public static function allCancelledParcels()
+    {
+        global $db;
+        $sql = "SELECT parcels.*, 
+        sender.district_name AS sender_district_name,
+        receiver.district_name AS receiver_district_name
+        FROM parcels 
+        JOIN districts AS sender 
+            ON parcels.sender_district_id=sender.id
+        JOIN districts AS receiver
+            ON parcels.receiver_district_id=receiver.id
+        WHERE parcels.payment_status='paid' AND parcels.parcel_status='cancelled' 
+        ORDER BY parcels.id DESC";
+        $stmt = $db->query($sql);
+        if ($stmt && $stmt->num_rows > 0) {
+            return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+        }
+        return null;
+    }
+
+    
 }
