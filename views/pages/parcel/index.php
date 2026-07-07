@@ -1,7 +1,6 @@
 <?php
 $alldistricts = Districts::allDistricts();
 $old = $_SESSION['old'] ?? [];
-
 ?>
 
 <div>
