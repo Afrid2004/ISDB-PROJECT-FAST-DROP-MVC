@@ -6,7 +6,7 @@
         <!-- destop menu and logo start -->
         <div class="flex items-center justify-between gap-5 py-3">
           <div class="w-40 md:w-50 shrink-0">
-            <a href="/">
+            <a href="<?php echo $base_url ?>">
               <img id="logo" src="<?php echo $base_url ?>/assets/images/logo_white.png" alt="fast-drop"
                 class="w-full" />
             </a>
@@ -48,7 +48,8 @@
                               <?php echo $_SESSION['user']['email']; ?></p>
                           </li>
                           <li>
-                            <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg" href="<?php echo $base_url ?>/dashboard">Dashboard</a>
+                            <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg"
+                              href="<?php echo $base_url ?>/dashboard">Dashboard</a>
                           </li>
                           <li>
                             <a class="px-3 py-1 rounded-sm hover:bg-gray-200 block text-lg"
@@ -86,7 +87,7 @@
               class="bg-white translate-x-full w-full max-w-sm h-full overflow-y-auto p-4 duration-300">
               <div class="flex items-center justify-between border-b border-gray-300 pb-4 mb-4">
                 <div class="w-40 shrink-0">
-                  <a href="/">
+                  <a href="<?php echo $base_url ?>">
                     <img src="<?php echo $base_url ?>/assets/images/logo_black.png" alt="fast-drop" class="w-full" />
                   </a>
                 </div>
