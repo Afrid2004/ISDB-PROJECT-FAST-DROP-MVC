@@ -111,8 +111,22 @@ class DashboardController
     }
 
     $page = "addrider";
-    $addRiderData = Rider::allPendingRiders();
+    $addRiderData = Rider::allPendingDeclineRiders();
     view("dashboard", compact('role', 'page', 'addRiderData'));
+  }
+
+  // allrider page 
+  function allriders()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+
+    $page = "allriders";
+    $allRiderData = Rider::allApprovedSuspendedRiders();
+    view("dashboard", compact('role', 'page', 'allRiderData'));
   }
 
   // approver rider 
@@ -143,5 +157,33 @@ class DashboardController
       $_SESSION['success'] = "Rider application has been declined.";
     }
     redirect("dashboard/addrider");
+  }
+
+  // suspend rider 
+  function suspendrider()
+  {
+    if ($_SESSION['user']['role_id'] != 1) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    if (Rider::suspendRiderById($id)) {
+      $_SESSION['success'] = "Rider has been suspended successfully.";
+    }
+    redirect("dashboard/allriders");
+  }
+
+  //unsuspend rider 
+  function unsuspendrider()
+  {
+    if ($_SESSION['user']['role_id'] != 1) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    if (Rider::unsuspendRiderById($id)) {
+      $_SESSION['success'] = "Rider has been activated successfully.";
+    }
+    redirect("dashboard/allriders");
   }
 }

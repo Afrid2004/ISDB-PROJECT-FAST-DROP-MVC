@@ -80,7 +80,7 @@ class Rider
   }
 
   //show all approved riders
-  public static function allApprovedRiders()
+  public static function allApprovedSuspendedRiders()
   {
     global $db;
     $sql = "SELECT riders.*,
@@ -88,7 +88,7 @@ class Rider
     FROM riders
     JOIN districts
     ON riders.district_id=districts.id
-    WHERE riders.status='approved'
+    WHERE (riders.status='approved' OR riders.status='suspended')
     ORDER BY riders.created_at DESC";
     $stmt = $db->query($sql);
     if ($stmt && $stmt->num_rows > 0) {
@@ -98,7 +98,7 @@ class Rider
   }
 
   //show all pending riders
-  public static function allPendingRiders()
+  public static function allPendingDeclineRiders()
   {
     global $db;
     $sql = "SELECT riders.*,
@@ -154,21 +154,98 @@ class Rider
       return true;
     } catch (Exception $e) {
       $db->rollback();
-      $_SESSION['errors'][]=$e->getMessage();
+      $_SESSION['errors'][] = $e->getMessage();
       return false;
     }
   }
 
-  public static function declineRiderById($id){
+  public static function declineRiderById($id)
+  {
     global $db;
     $sql = "UPDATE riders SET status='declined' WHERE id=? AND status!='declined'";
     $stmt = $db->prepare($sql);
     $stmt->bind_param('i', $id);
     $stmt->execute();
     if ($stmt->affected_rows > 0) {
-        return true;
+      return true;
     }
     $_SESSION['errors'][] = "Rider application not found.";
     return false;
+  }
+
+  public static function suspendRiderById($id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT user_id FROM riders WHERE id=? LIMIT 1";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $rider = $stmt->get_result()->fetch_object();
+      if (!$rider) {
+        throw new Exception("Rider not found.");
+      }
+      // Update rider status
+      $sql = "UPDATE riders 
+                SET status='suspended', work_status='unavailable' 
+                WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+
+      // Change role back to user
+      $userRole = 3;
+      $sql = "UPDATE users 
+                SET role_id=? 
+                WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("ii", $userRole, $rider->user_id);
+      $stmt->execute();
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
+      return false;
+    }
+  }
+
+  public static function unsuspendRiderById($id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT user_id FROM riders WHERE id=? LIMIT 1";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $rider = $stmt->get_result()->fetch_object();
+      if (!$rider) {
+        throw new Exception("Rider not found.");
+      }
+      // Update rider status
+      $sql = "UPDATE riders 
+                SET status='approved', work_status='available' 
+                WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+
+      // Change role to rider
+      $riderRole = 4;
+      $sql = "UPDATE users 
+                SET role_id=? 
+                WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("ii", $riderRole, $rider->user_id);
+      $stmt->execute();
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
+      return false;
+    }
   }
 }
