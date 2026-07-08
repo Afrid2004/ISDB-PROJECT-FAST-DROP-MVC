@@ -2,6 +2,7 @@
 
 class DashboardController
 {
+  /*====================super admin dashboard================ */
   // root index folder 
   function index()
   {
@@ -185,5 +186,21 @@ class DashboardController
       $_SESSION['success'] = "Rider has been activated successfully.";
     }
     redirect("dashboard/allriders");
+  }
+
+  /*====================user dashboard================ */
+  function myparcels()
+  {
+    if (!isset($_SESSION['user'])) {
+      redirect("login");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    $userId = $_SESSION['user']['id'];
+    if ($role == 3) {
+      $myParcelData = Parcel::findParcelByUserId($userId);
+    }
+    $page = "myparcels";
+    view("dashboard", compact('role', 'page', 'myParcelData'));
   }
 }

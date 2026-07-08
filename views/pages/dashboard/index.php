@@ -14,10 +14,10 @@ function renderDashboard($role, $page = "index", $data = [])
     // case 2:
     //   include_once('partials/$page.php');
     //   break;
-    // //user dashboard
-    // case 3:
-    //   include_once('partials/$page.php');
-    //   break;
+    //user dashboard
+    case 3:
+      include_once("partials/user/$page.php");
+      break;
     // //rider dashboard
     // case 4:
     //   include_once('partials/$page.php');

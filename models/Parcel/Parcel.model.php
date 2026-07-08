@@ -133,7 +133,15 @@ class Parcel
     public static function findParcelByUserId($id)
     {
         global $db;
-        $sql = "SELECT * FROM parcels WHERE sender_user_id=? ORDER BY id DESC";
+        $sql = "SELECT parcels.*, 
+        sender.district_name AS sender_district_name,
+        receiver.district_name AS receiver_district_name
+        FROM parcels 
+        JOIN districts AS sender 
+            ON parcels.sender_district_id=sender.id
+        JOIN districts AS receiver
+            ON parcels.receiver_district_id=receiver.id
+        WHERE parcels.sender_user_id=? parcels.id DESC";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -203,6 +211,4 @@ class Parcel
         }
         return null;
     }
-
-    
 }
