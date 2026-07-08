@@ -42,7 +42,7 @@
                             ?>
 
                                 <tr
-                                    class="border-b border-gray-500/30 last:border-b-0 bg-black/25 hover:bg-black/40 duration-150 text-white">
+                                    class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
                                     <td class="px-6 py-4"><?php echo $key ?></td>
                                     <td class="px-6 py-4">
                                         <div>

@@ -60,7 +60,8 @@ class DashboardController
   }
 
   //pending parcels page 
-  function pendingparcels(){
+  function pendingparcels()
+  {
     $role = $_SESSION['user']['role_id'];
     if (!isset($_SESSION['user']) || $role != 1) {
       redirect("");
@@ -73,7 +74,8 @@ class DashboardController
   }
 
   //delivered parcels page 
-  function deliveredparcels(){
+  function deliveredparcels()
+  {
     $role = $_SESSION['user']['role_id'];
     if (!isset($_SESSION['user']) || $role != 1) {
       redirect("");
@@ -86,7 +88,8 @@ class DashboardController
   }
 
   //cancelled parcels page 
-  function cancelledparcels(){
+  function cancelledparcels()
+  {
     $role = $_SESSION['user']['role_id'];
     if (!isset($_SESSION['user']) || $role != 1) {
       redirect("");
@@ -96,5 +99,49 @@ class DashboardController
     $page = "cancelledparcels";
     $cancelledParcelsData = Parcel::allCancelledParcels();
     view("dashboard", compact('role', 'page', 'cancelledParcelsData'));
+  }
+
+  // addrider page 
+  function addrider()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+
+    $page = "addrider";
+    $addRiderData = Rider::allPendingRiders();
+    view("dashboard", compact('role', 'page', 'addRiderData'));
+  }
+
+  // approver rider 
+  function approverider()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    if (Rider::approveRiderById($id)) {
+      $_SESSION['success'] = "Rider approved successfully.";
+    }
+    redirect("dashboard/addrider");
+  }
+
+  // decline rider
+  function declinerider()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    if (Rider::declineRiderById($id)) {
+      $_SESSION['success'] = "Rider application has been declined.";
+    }
+    redirect("dashboard/addrider");
   }
 }

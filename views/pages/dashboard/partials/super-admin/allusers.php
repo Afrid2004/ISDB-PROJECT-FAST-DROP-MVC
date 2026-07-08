@@ -22,16 +22,16 @@
                 // role design dynamic 
                 $role = $data->rolename;
                 $roleClass = match ($role) {
-                  "super_admin" => "bg-red-500/20 text-red-400",
+                  "super_admin" => "bg-lime-500/20 text-lime-400",
                   "admin"       => "bg-blue-500/20 text-blue-400",
                   "rider"       => "bg-yellow-500/20 text-yellow-400",
-                  "user"        => "bg-green-500/20 text-green-400",
+                  "user"        => "bg-gray-500/20 text-gray-400",
                   default       => "bg-gray-500/20 text-gray-300",
                 };
               ?>
 
             <tr
-              class="border-b border-gray-500/30 last:border-b-0 bg-black/25 hover:bg-black/40 duration-150 text-white">
+              class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
               <td class="px-6 py-4"><?php echo $key ?></td>
               <td class="px-6 py-4">
                 <div class="flex items-center gap-2">
@@ -46,7 +46,7 @@
               </td>
               <td class="px-6 py-4"><?php echo "{$data->email}" ?></td>
               <td class="px-6 py-4">
-                <span class="px-2 py-1 rounded <?php echo $roleClass ?>">
+                <span class="px-3 text-sm py-1 rounded <?php echo $roleClass ?>">
                   <?php echo implode(" ", explode("_", $data->rolename)) ?>
                 </span>
               </td>

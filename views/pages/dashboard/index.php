@@ -117,7 +117,7 @@ $photo = $_SESSION['user']['photo_url'];
                           <?php echo avatar($name, $photo) ?>
                         </div>
                         <div>
-                          <h2 class="text-white text-left line-clamp-1"><?php echo $name ?></h2>
+                          <h2 class="text-white text-left line-clamp-1 text-sm"><?php echo $name ?></h2>
                           <p class="text-white/70 uppercase line-clamp-1  text-left text-sm"><?php echo $rolename ?></p>
                         </div>
                       </div>

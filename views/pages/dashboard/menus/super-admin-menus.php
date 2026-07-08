@@ -207,11 +207,11 @@
                 All Riders
               </div>
             </a>
-            <a class="block" href="<?php echo $base_url ?>/dashboard/adduser">
+            <a class="block" href="<?php echo $base_url ?>/dashboard/addrider">
               <div
                 class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 duration-150  leading-none">
                 <i class="fa-solid fa-user-plus text-sm shrink-0"></i>
-                Add Rider
+                Approve Rider
               </div>
             </a>
           </div>

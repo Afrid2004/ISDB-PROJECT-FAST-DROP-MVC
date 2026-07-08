@@ -106,12 +106,69 @@ class Rider
     FROM riders
     JOIN districts
     ON riders.district_id=districts.id
-    WHERE riders.status='pending'
+    WHERE (riders.status='pending' OR riders.status='declined')
     ORDER BY riders.created_at DESC";
     $stmt = $db->query($sql);
     if ($stmt && $stmt->num_rows > 0) {
       return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
     }
     return null;
+  }
+
+  // add rider by id 
+  public static function approveRiderById($id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT * FROM riders WHERE id=? AND (status='pending' OR status='declined') LIMIT 1";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      $rider = $stmt->get_result()->fetch_object();
+
+      if (!$rider) {
+        throw new Exception("Rider not found!");
+      }
+
+      // rider table upadate 
+      $ridersql = "UPDATE riders SET status='approved', work_status='available' WHERE id=?";
+      $stmt = $db->prepare($ridersql);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
+      if ($stmt->affected_rows == 0) {
+        throw new Exception("Failed to update rider status.");
+      }
+
+      //user table update
+      $role_id = 4;
+      $usersql = "UPDATE users SET role_id=? WHERE id=?";
+      $stmt = $db->prepare($usersql);
+      $stmt->bind_param("ii", $role_id, $rider->user_id);
+      $stmt->execute();
+      if ($stmt->errno) {
+        throw new Exception("Failed to update user role.");
+      }
+
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][]=$e->getMessage();
+      return false;
+    }
+  }
+
+  public static function declineRiderById($id){
+    global $db;
+    $sql = "UPDATE riders SET status='declined' WHERE id=? AND status!='declined'";
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param('i', $id);
+    $stmt->execute();
+    if ($stmt->affected_rows > 0) {
+        return true;
+    }
+    $_SESSION['errors'][] = "Rider application not found.";
+    return false;
   }
 }
