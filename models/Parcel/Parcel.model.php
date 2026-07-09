@@ -122,6 +122,52 @@ class Parcel
         return $stmt->execute();
     }
 
+    //delete parcel
+    public static function deleteParcelById($id, $sender_user_id)
+    {
+        global $db;
+        $db->begin_transaction();
+        try {
+            $sql = "SELECT * FROM parcels
+                WHERE id=?
+                AND sender_user_id=?
+                AND payment_status='pending'
+                AND parcel_status='pending'
+                LIMIT 1";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $id, $sender_user_id);
+            $stmt->execute();
+            $parcel = $stmt->get_result()->fetch_object();
+            if (!$parcel) {
+                throw new Exception("Parcel cannot be deleted.");
+            }
+            // Delete tracking
+            $stmt = $db->prepare("DELETE FROM trackings WHERE parcel_id=?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+
+            // payments table
+            $stmt = $db->prepare("DELETE FROM payments WHERE parcel_id=?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+
+            // Delete parcel
+            $stmt = $db->prepare("DELETE FROM parcels WHERE id=?");
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to delete parcel.");
+            }
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            $_SESSION['errors'][] = $e->getMessage();
+            return false;
+        }
+    }
+
     // find tracking id 
     public static function findByTrackingID($tracking)
     {

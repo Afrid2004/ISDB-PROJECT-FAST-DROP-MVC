@@ -1,9 +1,9 @@
-
 <div>
   <div>
     <div class="mb-3 flex items-center justify-between gap-2">
       <h2 class="text-white font-medium text-2xl ">All Parcels</h2>
-      <a href="#" class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
+      <a href="#"
+        class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
         Create new<i class="fa-solid fa-plus text-xs"></i>
       </a>
     </div>
@@ -68,7 +68,8 @@
                   <td class="px-6 py-4"><?php echo $data->delivery_charge ?> TK</td>
                   <td class="px-6 py-4">
                     <?php if ($data->payment_status == 'pending' || $data->payment_status == 'failed'): ?>
-                      <button class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
+                      <button
+                        class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
                         Pay <i class="fa-solid fa-sack-dollar text-xs"></i>
                       </button>
                     <?php else: ?>
@@ -92,14 +93,18 @@
                         <i class="fa-regular fa-eye text-xs"></i> View
                       </a>
                       <?php if ($data->payment_status == 'pending'): ?>
-                        <a href="<?php echo $base_url.'/dashboard/editparcel?id='.$data->id ?>" class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">
-                          <i class="fa-regular fa-pen-to-square text-xs"></i> Edit 
+                        <a href="<?php echo $base_url . '/dashboard/editparcel?id=' . $data->id ?>"
+                          class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">
+                          <i class="fa-regular fa-pen-to-square text-xs"></i> Edit
                         </a>
                       <?php endif; ?>
-                      <span
-                        class="px-3 flex items-center gap-1 py-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/20 cursor-pointer justify-center">
-                        <i class="fa-regular fa-trash-can text-xs"></i> Delete
-                      </span>
+
+                      <?php if ($data->payment_status == 'pending' && $data->parcel_status == 'pending'): ?>
+                        <a href="<?php echo $base_url . '/dashboard/deleteparcel?id=' . $data->id ?>"
+                          class="px-3 flex items-center gap-1 py-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/20 cursor-pointer justify-center">
+                          <i class="fa-regular fa-trash-can text-xs"></i> Delete
+                        </a>
+                      <?php endif; ?>
                     </div>
                   </td>
                 </tr>

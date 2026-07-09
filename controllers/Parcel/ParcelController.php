@@ -307,4 +307,19 @@ class ParcelController
       exit;
     }
   }
+
+  function delete()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 3) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    $sender_user_id = $_SESSION['user']['id'];
+    if (Parcel::deleteParcelById($id, $sender_user_id)) {
+      $_SESSION['success'] = "Parcel deleted successfully.";
+    }
+    redirect("dashboard/myparcels");
+  }
 }
