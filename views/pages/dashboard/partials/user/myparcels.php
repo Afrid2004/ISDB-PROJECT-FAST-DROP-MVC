@@ -1,11 +1,12 @@
-<?php
-print_r($myParcelData);
-
-?>
 
 <div>
   <div>
-    <h2 class="text-white font-medium text-2xl mb-3">All Parcels</h2>
+    <div class="mb-3 flex items-center justify-between gap-2">
+      <h2 class="text-white font-medium text-2xl ">All Parcels</h2>
+      <a href="#" class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
+        Create new<i class="fa-solid fa-plus text-xs"></i>
+      </a>
+    </div>
     <div>
       <?php if ($myParcelData) { ?>
         <div class="overflow-x-auto border border-gray-500/30 shadow-sm">
@@ -66,12 +67,18 @@ print_r($myParcelData);
                   </td>
                   <td class="px-6 py-4"><?php echo $data->delivery_charge ?> TK</td>
                   <td class="px-6 py-4">
-                    <span class="px-2 py-1 rounded <?php echo $paymentClass ?>">
-                      <?php echo $data->payment_status ?>
-                    </span>
+                    <?php if ($data->payment_status == 'pending' || $data->payment_status == 'failed'): ?>
+                      <button class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
+                        Pay <i class="fa-solid fa-sack-dollar text-xs"></i>
+                      </button>
+                    <?php else: ?>
+                      <span class="px-3 py-2 rounded <?php echo $paymentClass ?>">
+                        <?php echo $data->payment_status ?>
+                      </span>
+                    <?php endif; ?>
                   </td>
                   <td class="px-6 py-4">
-                    <span class="px-2 py-1 rounded <?php echo $parcelClass ?>">
+                    <span class="px-3 py-2 rounded <?php echo $parcelClass ?>">
                       <?php echo $data->parcel_status ?>
                     </span>
                   </td>
@@ -84,10 +91,11 @@ print_r($myParcelData);
                         class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
                         <i class="fa-regular fa-eye text-xs"></i> View
                       </a>
-                      <span
-                        class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">
-                        <i class="fa-regular fa-pen-to-square text-xs"></i> Edit
-                      </span>
+                      <?php if ($data->payment_status == 'pending'): ?>
+                        <a href="<?php echo $base_url.'/dashboard/editparcel?id='.$data->id ?>" class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">
+                          <i class="fa-regular fa-pen-to-square text-xs"></i> Edit 
+                        </a>
+                      <?php endif; ?>
                       <span
                         class="px-3 flex items-center gap-1 py-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/20 cursor-pointer justify-center">
                         <i class="fa-regular fa-trash-can text-xs"></i> Delete

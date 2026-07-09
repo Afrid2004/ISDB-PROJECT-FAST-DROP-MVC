@@ -77,6 +77,51 @@ class Parcel
         return $trackings;
     }
 
+    // upadate parcel
+    public function update($id, $user_id)
+    {
+        global $db;
+        $sql = "UPDATE parcels SET
+        parcel_name=?,
+        parcel_type=?,
+        weight=?,
+        sender_name=?,
+        sender_phone=?,
+        sender_email=?,
+        sender_address=?,
+        sender_district_id=?,
+        receiver_name=?,
+        receiver_phone=?,
+        receiver_email=?,
+        receiver_address=?,
+        receiver_district_id=?,
+        delivery_charge=?,
+        note=?
+        WHERE id=? AND sender_user_id=?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param(
+            "ssdssssissssidsii",
+            $this->parcel_name,
+            $this->parcel_type,
+            $this->parcel_weight,
+            $this->sender_name,
+            $this->sender_phone,
+            $this->sender_email,
+            $this->sender_address,
+            $this->sender_district,
+            $this->receiver_name,
+            $this->receiver_phone,
+            $this->receiver_email,
+            $this->receiver_address,
+            $this->receiver_district,
+            $this->delivery_charge,
+            $this->parcel_note,
+            $id,
+            $user_id
+        );
+        return $stmt->execute();
+    }
+
     // find tracking id 
     public static function findByTrackingID($tracking)
     {
@@ -141,7 +186,7 @@ class Parcel
             ON parcels.sender_district_id=sender.id
         JOIN districts AS receiver
             ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.sender_user_id=? parcels.id DESC";
+        WHERE parcels.sender_user_id=? ORDER BY parcels.id DESC";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();

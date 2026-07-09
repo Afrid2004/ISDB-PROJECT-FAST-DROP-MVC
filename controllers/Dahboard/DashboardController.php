@@ -46,13 +46,31 @@ class DashboardController
   function parceldetails()
   {
     $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if (!isset($_SESSION['user']) || ($role != 1 && $role != 3)) {
       redirect("");
       exit;
     }
     $id = intval($_GET['id']);
     $parcelData = Parcel::findParcelById($id);
     $page = "parceldetails";
+    view("dashboard", compact(
+      'role',
+      'page',
+      'parcelData'
+    ));
+  }
+
+  // parceldetails page 
+  function editparcel()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || ($role != 3)) {
+      redirect("");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    $parcelData = Parcel::findParcelById($id);
+    $page = "editparcel";
     view("dashboard", compact(
       'role',
       'page',

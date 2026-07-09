@@ -66,12 +66,12 @@ print_r($pendingParcelsData);
                                     </td>
                                     <td class="px-6 py-4"><?php echo $data->delivery_charge ?> TK</td>
                                     <td class="px-6 py-4">
-                                        <span class="px-2 py-1 rounded <?php echo $paymentClass ?>">
+                                        <span class="px-3 py-2 rounded <?php echo $paymentClass ?>">
                                             <?php echo $data->payment_status ?>
                                         </span>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <span class="px-2 py-1 rounded <?php echo $parcelClass ?>">
+                                        <span class="px-3 py-2 rounded <?php echo $parcelClass ?>">
                                             <?php echo $data->parcel_status ?>
                                         </span>
                                     </td>

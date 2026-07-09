@@ -18,10 +18,10 @@ function renderDashboard($role, $page = "index", $data = [])
     case 3:
       include_once("partials/user/$page.php");
       break;
-    // //rider dashboard
-    // case 4:
-    //   include_once('partials/$page.php');
-    //   break;
+    //rider dashboard
+    case 4:
+      include_once("partials/rider/$page.php");
+      break;
     default:
       redirect("");
       break;
