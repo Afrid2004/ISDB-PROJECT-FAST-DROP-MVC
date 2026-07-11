@@ -2,7 +2,7 @@
   <div>
     <div class="mb-3 flex items-center justify-between gap-2">
       <h2 class="text-white font-medium text-2xl ">All Parcels</h2>
-      <a href="#"
+      <a href="<?php echo $base_url ?>/parcel"
         class="px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
         Create new<i class="fa-solid fa-plus text-xs"></i>
       </a>
@@ -100,7 +100,7 @@
                       <?php endif; ?>
 
                       <?php if ($data->payment_status == 'pending' && $data->parcel_status == 'pending'): ?>
-                        <a href="<?php echo $base_url . '/dashboard/deleteparcel?id=' . $data->id ?>"
+                        <a href="<?= $base_url ?>/parcel/delete?id=<?= $data->id ?>"
                           class="px-3 flex items-center gap-1 py-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/20 cursor-pointer justify-center">
                           <i class="fa-regular fa-trash-can text-xs"></i> Delete
                         </a>

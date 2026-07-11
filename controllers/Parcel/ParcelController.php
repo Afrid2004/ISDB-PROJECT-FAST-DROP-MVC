@@ -303,7 +303,7 @@ class ParcelController
         $_SESSION['errors'][] = "Unable to update parcel.";
       }
 
-      redirect("dashboard/editparcel" . $id);
+      redirect("dashboard/editparcel?id=" . $id);
       exit;
     }
   }

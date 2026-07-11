@@ -206,6 +206,7 @@ class DashboardController
     view("dashboard", compact('role', 'page', 'myParcelData'));
   }
 
+
   // edit parcel page 
   function editparcel()
   {
@@ -222,18 +223,5 @@ class DashboardController
       'page',
       'parcelData'
     ));
-  }
-
-  //delete parcel page
-  function deleteparcel()
-  {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || ($role != 3)) {
-      redirect("");
-      exit;
-    }
-    $id = intval($_GET['id']);
-    $sender_user_id = $_SESSION['user']['id'];
-    
   }
 }
