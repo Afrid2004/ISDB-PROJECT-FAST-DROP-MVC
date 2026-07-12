@@ -212,12 +212,76 @@ if (profileBtn && profileMenu) {
   });
 }
 
-
 //all submenus in manu function
-let submenuToggler = document.querySelectorAll('.submenu_toggler');
+let submenuToggler = document.querySelectorAll(".submenu_toggler");
 
 submenuToggler.forEach((toggler) => {
-  toggler.addEventListener('click',() => {
+  toggler.addEventListener("click", () => {
     toggler.classList.toggle("active");
-  })
-})
+  });
+});
+
+//show available rider
+let allShowRidersBtn = document.querySelectorAll(".showRidersBtn");
+let allRiderDiv = document.getElementById("allRiderDiv");
+let riderModal = document.getElementById("riderModal");
+if (allShowRidersBtn) {
+  allShowRidersBtn.forEach((btn) => {
+    let parcelId = btn.dataset.parcel;
+    let districtId = btn.dataset.district;
+    btn.addEventListener("click", async () => {
+      toggleModal();
+      await showRider(districtId);
+    });
+  });
+  function toggleModal() {
+    riderModal.classList.toggle("opacity-0");
+    riderModal.classList.toggle("pointer-events-none");
+  }
+  const showRider = async (id) => {
+    let html = "";
+    try {
+      let res = await fetch(`${BASE_URL}/api/rider/available?district=${id}`);
+      let jsondata = await res.json();
+      let alldata = jsondata.data || [];
+
+      if (alldata.length <= 0) {
+        allRiderDiv.innerHTML = `<tr><td class="p-3 text-amber-500 text-center bg-amber-500/20" colspan="5">No Rider found! Please try agin later.</td></tr>`;
+        return;
+      }
+
+      alldata.map((data, index) => {
+        return (html += `
+            <tr>
+              <td class="px-6 py-4">
+                ${index + 1}
+              </td>
+              <td class="px-6 py-4">
+                <div>
+                  <p class="font-medium text-[17px]">${data.rider_name}</p>
+                  <p>${data.rider_email}</p>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                ${data.rider_phone}
+              </td>
+              <td class="px-6 py-4">
+                <p class="uppercase font-medium">${data.vehicle_type}</p>
+              </td>
+              <td class="px-5">
+                <span
+                    class="px-3 flex items-center gap-1 py-2 rounded bg-teal-500 text-white hover:bg-teal-600 active:bg-teal-500 cursor-pointer justify-center">
+                    <i class="fa-solid fa-user-check text-xs"></i> Assign Rider
+                </span>
+              </td>
+            </tr>
+        `);
+      });
+
+      allRiderDiv.innerHTML = html;
+    } catch (error) {
+      console.log(error.message);
+      allRiderDiv.innerHTML = `${error.message}`;
+    }
+  };
+}

@@ -248,4 +248,21 @@ class Rider
       return false;
     }
   }
+
+  // avilable rider 
+  public static function availableByDistrict($district)
+  {
+    global $db;
+    $sql = "SELECT * FROM riders
+    WHERE district_id=?
+    AND work_status='available'";
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("i", $district);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+      return $result->fetch_all(MYSQLI_ASSOC);
+    }
+    return [];
+  }
 }

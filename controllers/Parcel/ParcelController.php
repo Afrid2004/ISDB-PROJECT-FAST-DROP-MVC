@@ -322,4 +322,20 @@ class ParcelController
     }
     redirect("dashboard/myparcels");
   }
+
+  function pay()
+  {
+    if (!isset($_SESSION['user'])) {
+      redirect("login");
+      exit;
+    }
+    $id = intval($_GET['id']);
+    $sender_user_id = $_SESSION['user']['id'];
+    if (Parcel::makePayment($id, $sender_user_id)) {
+      $_SESSION['success'] = "Payment completed successfully.";
+    } else {
+      $_SESSION['errors'][] = "Payment failed.";
+    }
+    redirect("dashboard/myparcels");
+  }
 }

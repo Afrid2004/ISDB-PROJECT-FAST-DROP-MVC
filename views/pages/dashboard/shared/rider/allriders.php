@@ -30,8 +30,8 @@
     ?>
     <div>
       <?php if ($allRiderData) { ?>
-        <div class="overflow-x-auto border border-gray-500/30 shadow-sm">
-          <table class="min-w-full">
+        <div class="overflow-x-auto table-scrollbar border border-gray-500/30 shadow-sm">
+          <table class="min-w-full whitespace-nowrap">
             <thead class="bg-black/30 border-b border-gray-500/30 text-white uppercase text-sm">
               <tr>
                 <th class="px-6 py-3 text-left">#Sl</th>

@@ -8,8 +8,8 @@ print_r($cancelledParcelsData);
         <h2 class="text-white font-medium text-2xl mb-3">All Cancelled Parcels</h2>
         <div>
             <?php if ($cancelledParcelsData) { ?>
-                <div class="overflow-x-auto border border-gray-500/30 shadow-sm">
-                    <table class="min-w-full">
+                <div class="overflow-x-auto table-scrollbar border border-gray-500/30 shadow-sm">
+                    <table class="min-w-full whitespace-nowrap">
                         <thead class="bg-black/30 border-b border-gray-500/30 text-white uppercase text-sm">
                             <tr>
                                 <th class="px-6 py-3 text-left">#Sl</th>
@@ -79,7 +79,7 @@ print_r($cancelledParcelsData);
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col gap-2">
-                                            <a href="<?php echo $base_url."/dashboard/parceldetails?id=".$data->id ?>" class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
+                                            <a href="<?php echo $base_url . "/dashboard/parceldetails?id=" . $data->id ?>" class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
                                                 <i class="fa-regular fa-eye text-xs"></i> View
                                             </a>
                                             <span class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">

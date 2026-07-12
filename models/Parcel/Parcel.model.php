@@ -168,6 +168,18 @@ class Parcel
         }
     }
 
+    public static function makePayment($id, $sender_user_id)
+    {
+        global $db;
+        $sql = "UPDATE parcels SET payment_status='paid', parcel_status='pending_pickup' WHERE id=? AND sender_user_id=? AND payment_status='pending'";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("ii", $id, $sender_user_id);
+        if ($stmt->execute() && $stmt->affected_rows > 0) {
+            return true;
+        }
+        return false;
+    }
+
     // find tracking id 
     public static function findByTrackingID($tracking)
     {
@@ -252,7 +264,7 @@ class Parcel
             ON parcels.sender_district_id=sender.id
         JOIN districts AS receiver
             ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' AND parcels.parcel_status='pending' 
+        WHERE parcels.payment_status='paid' AND parcels.parcel_status='pending_pickup' 
         ORDER BY parcels.id DESC";
         $stmt = $db->query($sql);
         if ($stmt && $stmt->num_rows > 0) {
@@ -260,6 +272,8 @@ class Parcel
         }
         return null;
     }
+
+
 
     // parcel that are delivered
     public static function allDeliveredParcels()
