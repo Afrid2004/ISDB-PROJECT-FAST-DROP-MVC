@@ -244,7 +244,7 @@ if (allShowRidersBtn) {
       let res = await fetch(`${BASE_URL}/api/rider/available?district=${id}`);
       let jsondata = await res.json();
       let alldata = jsondata.data || [];
-
+      console.log(alldata);
       if (alldata.length <= 0) {
         allRiderDiv.innerHTML = `<tr><td class="p-3 text-amber-500 text-center bg-amber-500/20" colspan="5">No Rider found! Please try agin later.</td></tr>`;
         return;
@@ -269,10 +269,10 @@ if (allShowRidersBtn) {
                 <p class="uppercase font-medium">${data.vehicle_type}</p>
               </td>
               <td class="px-5">
-                <span
+                <button onclick="assignRider(${data.id})"
                     class="px-3 flex items-center gap-1 py-2 rounded bg-teal-500 text-white hover:bg-teal-600 active:bg-teal-500 cursor-pointer justify-center">
                     <i class="fa-solid fa-user-check text-xs"></i> Assign Rider
-                </span>
+                </button>
               </td>
             </tr>
         `);
@@ -280,8 +280,12 @@ if (allShowRidersBtn) {
 
       allRiderDiv.innerHTML = html;
     } catch (error) {
-      console.log(error.message);
       allRiderDiv.innerHTML = `${error.message}`;
     }
   };
 }
+
+const assignRider = async (id) => {
+  try {
+  } catch (error) {}
+};

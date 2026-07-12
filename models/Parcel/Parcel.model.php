@@ -273,6 +273,30 @@ class Parcel
         return null;
     }
 
+    // parcel that which have assigned rider
+    public static function allAssignedParcels($id)
+    {
+        global $db;
+        $sql = "SELECT parcels.*, 
+        sender.district_name AS sender_district_name,
+        receiver.district_name AS receiver_district_name
+        FROM parcels 
+        JOIN districts AS sender 
+            ON parcels.sender_district_id=sender.id
+        JOIN districts AS receiver
+            ON parcels.receiver_district_id=receiver.id
+        WHERE parcels.payment_status='paid' 
+        AND parcels.parcel_status='assigned'
+        AND parcels.assigned_rider_id=?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return $result->fetch_all(MYSQLI_ASSOC);
+        }
+        return [];
+    }
 
 
     // parcel that are delivered

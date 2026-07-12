@@ -68,7 +68,7 @@
               </td>
               <td class="px-6 py-4">
                 <span class="px-3 py-2 rounded <?php echo $parcelClass ?>">
-                  <?php echo $data->parcel_status ?>
+                  <?php echo str_replace("_", " ", $data->parcel_status) ?>
                 </span>
               </td>
 

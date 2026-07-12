@@ -199,7 +199,7 @@ class DashboardController
     }
     $role = $_SESSION['user']['role_id'];
     $userId = $_SESSION['user']['id'];
-    if ($role == 3) {
+    if ($role == 3 || $role == 4) {
       $myParcelData = Parcel::findParcelByUserId($userId);
     }
     $page = "myparcels";
@@ -223,5 +223,20 @@ class DashboardController
       'page',
       'parcelData'
     ));
+  }
+
+
+  /*====================rider dashboard================ */
+  function assignedparcels()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || ($role != 4)) {
+      redirect("");
+      exit;
+    }
+
+    $page = 'assignedparcels';
+    $data = "";
+    view('dashboard', compact('role', 'page', 'data'));
   }
 }

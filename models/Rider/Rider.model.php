@@ -265,4 +265,7 @@ class Rider
     }
     return [];
   }
+
+  //assign rider
+
 }
