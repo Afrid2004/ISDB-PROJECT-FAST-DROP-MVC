@@ -292,6 +292,104 @@ class Parcel
         return $stmt->execute();
     }
 
+    // accept parcel
+    public static function acceptParcel($parcelId, $riderId)
+    {
+        global $db;
+        $db->begin_transaction();
+        try {
+
+            // find parcel 
+            $sql = "SELECT * FROM parcels 
+            WHERE id=?
+            AND parcel_status='assigned'
+            AND assigned_rider_id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $parcelId, $riderId);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_object();
+            if (!$result) {
+                throw new Exception("Parcel not found!");
+            }
+
+            //update parcel status
+            $sql = "UPDATE parcels set parcel_status='rider_accepted'
+        WHERE id=? AND assigned_rider_id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $parcelId, $riderId);
+            $stmt->execute();
+
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to update parcel status!");
+            }
+
+            //update rider status
+            $sql = "UPDATE riders set work_status='busy'
+        WHERE id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("i", $riderId);
+            $stmt->execute();
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to update rider status!");
+            }
+
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            $_SESSION['errors'][] = $e->getMessage();
+            return false;
+        }
+    }
+
+    // reject parcel
+    public static function rejectParcel($parcelId, $riderId)
+    {
+        global $db;
+        $db->begin_transaction();
+        try {
+            // find parcel 
+            $sql = "SELECT * FROM parcels 
+            WHERE id=?
+            AND parcel_status='assigned'
+            AND assigned_rider_id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $parcelId, $riderId);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_object();
+            if (!$result) {
+                throw new Exception("Parcel not found!");
+            }
+
+            //update parcel status
+            $sql = "UPDATE parcels set parcel_status='rider_rejected', assigned_rider_id=NULL
+        WHERE id=? AND assigned_rider_id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $parcelId, $riderId);
+            $stmt->execute();
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to update parcel status!");
+            }
+
+            //update rider status
+            $sql = "UPDATE riders set work_status='available'
+        WHERE id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("i", $riderId);
+            $stmt->execute();
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to update rider status!");
+            }
+
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            $_SESSION['errors'][] = $e->getMessage();
+            return false;
+        }
+    }
+
     // parcel that which have assigned rider
     public static function allAssignedParcels($id)
     {

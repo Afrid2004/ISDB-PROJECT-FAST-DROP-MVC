@@ -19,13 +19,24 @@
       </div>
     </a>
   </div>
-  <!-- my parcels link  -->
+  <!-- assigned parcels link  -->
   <div>
     <a class="block" href="<?php echo $base_url ?>/dashboard/assignedparcels">
       <div
         class="flex items-center gap-2 text-white/70 hover:text-white px-4 py-3 hover:bg-white/20 duration-150 text-lg leading-none">
         <i class="fa-solid fa-layer-group"></i>
         Assigned Parcels
+      </div>
+    </a>
+  </div>
+
+  <!-- accepted parcels link  -->
+  <div>
+    <a class="block" href="<?php echo $base_url ?>/dashboard/acceptedparcels">
+      <div
+        class="flex items-center gap-2 text-white/70 hover:text-white px-4 py-3 hover:bg-white/20 duration-150 text-lg leading-none">
+        <i class="fa-solid fa-layer-group"></i>
+        Accepted Parcels
       </div>
     </a>
   </div>

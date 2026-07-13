@@ -39,6 +39,7 @@
                 <th class="px-6 py-3 text-left">Service Info</th>
                 <th class="px-6 py-3 text-left">Vehicle Info</th>
                 <th class="px-6 py-3 text-left">Status</th>
+                <th class="px-6 py-3 text-left">Work Status</th>
                 <th class="px-6 py-3 text-left">Created At</th>
                 <th class="px-6 py-3 text-left">Action</th>
               </tr>
@@ -49,6 +50,11 @@
                 $statusClass = match ($data->status) {
                   'approved' => 'bg-lime-500/20 text-lime-400',
                   'suspended' => 'bg-red-500/20 text-red-400',
+                  default     => 'bg-gray-500/20 text-gray-400'
+                };
+                $workStatusClass = match ($data->work_status) {
+                  'available' => 'bg-lime-500/20 text-lime-400',
+                  'busy' => 'bg-yellow-500/20 text-yellow-400',
                   default     => 'bg-gray-500/20 text-gray-400'
                 }
               ?>
@@ -82,7 +88,12 @@
                   </td>
                   <td class="px-6 py-4">
                     <span class="px-3 text-sm py-1 rounded <?php echo $statusClass ?>">
-                      <?php echo $data->status ?>
+                      <?php echo ucfirst($data->status) ?>
+                    </span>
+                  </td>
+                  <td class="px-6 py-4">
+                    <span class="px-3 text-sm py-1 rounded <?php echo $workStatusClass ?>">
+                      <?php echo ucfirst($data->work_status) ?>
                     </span>
                   </td>
                   <td class="px-6 py-4">

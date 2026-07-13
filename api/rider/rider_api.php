@@ -27,9 +27,4 @@ class RiderApi
       ]);
     }
   }
-
-  function assingrider()
-  {
-    $riderid = intval($_GET['id']);
-  }
 }

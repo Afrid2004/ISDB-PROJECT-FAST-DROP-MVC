@@ -307,3 +307,63 @@ const assignRider = async (parcelId, riderId) => {
     console.log(err);
   }
 };
+
+let acceptParcelBtn = document.querySelectorAll(".accept_parcel");
+let rejectParcelBtn = document.querySelectorAll(".reject_parcel");
+
+if (acceptParcelBtn && rejectParcelBtn) {
+  acceptParcelBtn.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      let parcel_id = btn.dataset.parcelid;
+      let rider_id = btn.dataset.riderid;
+      let parceldata = {
+        parcel_id: parcel_id,
+        rider_id: rider_id,
+      };
+      try {
+        let res = await fetch(`${BASE_URL}/api/parcel/acceptparcel`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(parceldata),
+        });
+        let data = await res.json();
+        if (data.success) {
+          alert("Accepted Parcel. Work status updated to busy.");
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    });
+  });
+
+  rejectParcelBtn.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      let parcel_id = btn.dataset.parcelid;
+      let rider_id = btn.dataset.riderid;
+      let parceldata = {
+        parcel_id: parcel_id,
+        rider_id: rider_id,
+      };
+      try {
+        let res = await fetch(`${BASE_URL}/api/parcel/rejectparcel`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(parceldata),
+        });
+        let data = await res.json();
+        if (data.success) {
+          alert("Accepted Parcel.");
+          location.reload();
+        } else {
+          alert("Failed to accept parcel.");
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    });
+  });
+}
