@@ -32,14 +32,14 @@ class Tracking
   }
 
   // update create trackings 
-  public function update($id)
-  {
-    global $db;
-    $sql = "UPDATE trackings SET parcel_id=?, tracking_status=?, location=?, details=? WHERE id=?";
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param("isssi", $this->parcel_id, $this->tracking_status, $this->location, $this->details, $id);
-    return $stmt->execute();
-  }
+  // public function update($id)
+  // {
+  //   global $db;
+  //   $sql = "UPDATE trackings SET parcel_id=?, tracking_status=?, location=?, details=? WHERE id=?";
+  //   $stmt = $db->prepare($sql);
+  //   $stmt->bind_param("isssi", $this->parcel_id, $this->tracking_status, $this->location, $this->details, $id);
+  //   return $stmt->execute();
+  // }
 
 
   // All Tracking History

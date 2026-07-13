@@ -240,4 +240,18 @@ class DashboardController
     $assgnedParcelData = Parcel::allAssignedParcels($rider->id);
     view('dashboard', compact('role', 'page', 'assgnedParcelData'));
   }
+
+  function acceptedparcels()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || ($role != 4)) {
+      redirect("");
+      exit;
+    }
+    $userid = $_SESSION['user']['id'];
+    $rider = Rider::findRiderByUserId($userid);
+    $page = 'acceptedparcels';
+    $acceptedParcelData = Rider::allAcceptedParcels($rider->id);
+    view('dashboard', compact('role', 'page', 'acceptedParcelData'));
+  }
 }

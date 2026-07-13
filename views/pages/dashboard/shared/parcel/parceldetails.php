@@ -9,14 +9,15 @@ $paymentClass = match ($parcelData->payment_status) {
 };
 
 $parcelClass = match ($parcelData->parcel_status) {
-    "pending"     => "bg-yellow-500/20 text-yellow-400",
-    "assigned"    => "bg-blue-500/20 text-blue-400",
-    "picked_up"   => "bg-cyan-500/20 text-cyan-400",
-    "in_transit"  => "bg-purple-500/20 text-purple-400",
-    "delivered"   => "bg-green-500/20 text-green-400",
-    "cancelled"   => "bg-red-500/20 text-red-400",
-    "returned"    => "bg-orange-500/20 text-orange-400",
-    default       => "bg-gray-500/20 text-gray-300",
+    "pending"            => "bg-yellow-500/20 text-yellow-400",
+    "pending_pickup"     => "bg-yellow-500/20 text-yellow-400",
+    "assigned"           => "bg-blue-500/20 text-blue-400",
+    "rider_accepted"     => "bg-lime-500/20 text-lime-400",
+    "rider_rejected"     => "bg-orange-500/20 text-orange-400",
+    "picked_up"          => "bg-cyan-500/20 text-cyan-400",
+    "in_transit"         => "bg-purple-500/20 text-purple-400",
+    "delivered"          => "bg-green-500/20 text-green-400",
+    default              => "bg-gray-500/20 text-gray-300",
 };
 
 ?>

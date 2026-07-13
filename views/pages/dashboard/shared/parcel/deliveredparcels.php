@@ -35,14 +35,15 @@ print_r($deliveredParcelsData);
                                 };
 
                                 $parcelClass = match ($data->parcel_status) {
-                                    "pending"     => "bg-yellow-500/20 text-yellow-400",
-                                    "assigned"    => "bg-blue-500/20 text-blue-400",
-                                    "picked_up"   => "bg-cyan-500/20 text-cyan-400",
-                                    "in_transit"  => "bg-purple-500/20 text-purple-400",
-                                    "delivered"   => "bg-green-500/20 text-green-400",
-                                    "cancelled"   => "bg-red-500/20 text-red-400",
-                                    "returned"    => "bg-orange-500/20 text-orange-400",
-                                    default       => "bg-gray-500/20 text-gray-300",
+                                    "pending"            => "bg-yellow-500/20 text-yellow-400",
+                                    "pending_pickup"     => "bg-yellow-500/20 text-yellow-400",
+                                    "assigned"           => "bg-blue-500/20 text-blue-400",
+                                    "rider_accepted"     => "bg-lime-500/20 text-lime-400",
+                                    "rider_rejected"     => "bg-orange-500/20 text-orange-400",
+                                    "picked_up"          => "bg-cyan-500/20 text-cyan-400",
+                                    "in_transit"         => "bg-purple-500/20 text-purple-400",
+                                    "delivered"          => "bg-green-500/20 text-green-400",
+                                    default              => "bg-gray-500/20 text-gray-300",
                                 };
                             ?>
 
@@ -80,13 +81,16 @@ print_r($deliveredParcelsData);
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex flex-col gap-2">
-                                            <a href="<?php echo $base_url . "/dashboard/parceldetails?id=" . $data->id ?>" class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
+                                            <a href="<?php echo $base_url . "/dashboard/parceldetails?id=" . $data->id ?>"
+                                                class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
                                                 <i class="fa-regular fa-eye text-xs"></i> View
                                             </a>
-                                            <span class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">
+                                            <span
+                                                class="px-3 flex items-center gap-1 py-2 rounded bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 active:bg-yellow-500/20 cursor-pointer justify-center">
                                                 <i class="fa-regular fa-pen-to-square text-xs"></i> Edit
                                             </span>
-                                            <span class="px-3 flex items-center gap-1 py-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/20 cursor-pointer justify-center">
+                                            <span
+                                                class="px-3 flex items-center gap-1 py-2 rounded bg-red-500/20 text-red-400 hover:bg-red-500/30 active:bg-red-500/20 cursor-pointer justify-center">
                                                 <i class="fa-regular fa-trash-can text-xs"></i> Delete
                                             </span>
                                         </div>

@@ -141,7 +141,7 @@ class ParcelController
         }
 
         // create tracking 
-        $tracking->set($parcel_id, "pending");
+        $tracking->set($parcel_id, "pending", NULL, "Parcel request created.");
         $trackingId = $tracking->create();
         if (!$trackingId) {
           throw new Exception("Tracking creation failed!");

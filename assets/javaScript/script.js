@@ -367,3 +367,53 @@ if (acceptParcelBtn && rejectParcelBtn) {
     });
   });
 }
+
+//status update
+let statusBtn = document.querySelectorAll(
+  ".pickup_parcel, .transit_parcel, .deliver_parcel",
+);
+
+if (statusBtn) {
+  statusBtn.forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      let status = "";
+      let parcelId = btn.dataset.parcelid;
+      if (btn.classList.contains("pickup_parcel")) {
+        status = "picked_up";
+      }
+      if (btn.classList.contains("transit_parcel")) {
+        status = "in_transit";
+      }
+      if (btn.classList.contains("deliver_parcel")) {
+        status = "delivered";
+      }
+
+      let statusData = {
+        parcel_id: parcelId,
+        parcel_status: status,
+      };
+
+      await updateStatus(statusData);
+    });
+  });
+}
+
+const updateStatus = async (status) => {
+  try {
+    const res = await fetch(`${BASE_URL}/api/parcel/updatestatus`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(status),
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert(`Updated parcel status to ${status.parcel_status}`);
+    } else {
+      alert("Failed to update status");
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};

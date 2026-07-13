@@ -171,13 +171,31 @@ class Parcel
     public static function makePayment($id, $sender_user_id)
     {
         global $db;
-        $sql = "UPDATE parcels SET payment_status='paid', parcel_status='pending_pickup' WHERE id=? AND sender_user_id=? AND payment_status='pending'";
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param("ii", $id, $sender_user_id);
-        if ($stmt->execute() && $stmt->affected_rows > 0) {
+        $db->begin_transaction();
+        try {
+            $sql = "UPDATE parcels SET payment_status='paid', parcel_status='pending_pickup' WHERE id=? AND sender_user_id=? AND payment_status='pending'";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $id, $sender_user_id);
+            $stmt->execute();
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Payment failed!");
+            };
+
+            // create tracking 
+            $tracking = new Tracking();
+            $tracking->set($id, "pending", NULL, "Parcel request created.");
+            $trackingId = $tracking->create();
+            if (!$trackingId) {
+                throw new Exception("Tracking creation failed!");
+            }
+
+            $db->commit();
             return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            $_SESSION['errors'][] = $e->getMessage();
+            return false;
         }
-        return false;
     }
 
     // find tracking id 
@@ -413,6 +431,70 @@ class Parcel
             return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
         }
         return [];
+    }
+
+    // update parcel status
+    public static function updateParcelStatus($parcel_id, $parcel_status, $rider_id)
+    {
+        global $db;
+        $db->begin_transaction();
+        try {
+            $sql = "SELECT * FROM parcels WHERE id=? AND assigned_rider_id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $parcel_id, $rider_id);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_object();
+
+            if (!$result) {
+                throw new Exception("Parcel not found or not assigned to this rider.");
+            }
+
+            // update status 
+            $allowedStatus = [
+                "rider_accepted" => "picked_up",
+                "picked_up"      => "in_transit",
+                "in_transit"     => "delivered",
+            ];
+
+            if (
+                !isset($allowedStatus[$parcel->parcel_status]) ||
+                $allowedStatus[$parcel->parcel_status] !== $parcel_status
+            ) {
+                throw new Exception("Invalid parcel status transition.");
+            }
+
+            $sql = "UPDATE parcels SET 
+            parcel_status=?
+            WHERE id=? AND assigned_rider_id=?
+            ";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("sii", $parcel_status, $parcel_id, $rider_id);
+            $stmt->execute();
+            if ($stmt->affected_rows <= 0) {
+                throw new Exception("Failed to update parcel status.");
+            }
+
+
+            // rider status switch to available 
+            if ($parcel_status === "delivered") {
+                $sql = "UPDATE riders
+                    SET work_status='available'
+                    WHERE id=?";
+                $stmt = $db->prepare($sql);
+                $stmt->bind_param("i", $rider_id);
+                $stmt->execute();
+                if ($stmt->affected_rows <= 0) {
+                    throw new Exception("Failed to update rider status.");
+                }
+            }
+
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            $_SESSION['errors'][] = $e->getMessage();
+            return false;
+        }
     }
 
 

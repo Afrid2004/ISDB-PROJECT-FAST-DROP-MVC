@@ -25,4 +25,14 @@ class ParcelApi
     $result = Parcel::rejectParcel($parcel_id, $rider_id);
     echo json_encode(['success' => $result]);
   }
+
+  function updatestatus($params)
+  {
+    $parcel_id = $params['parcel_id'];
+    $parcel_status = $params['parcel_status'];
+    $user_id = $_SESSION['user']['id'];
+    $rider = Rider::findRiderByUserId($user_id);
+    $result = Parcel::updateParcelStatus($parcel_id, $parcel_status, $rider->id);
+    echo json_encode(['success' => $result]);
+  }
 }
