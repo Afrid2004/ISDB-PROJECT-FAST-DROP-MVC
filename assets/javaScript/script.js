@@ -231,14 +231,14 @@ if (allShowRidersBtn) {
     let districtId = btn.dataset.district;
     btn.addEventListener("click", async () => {
       toggleModal();
-      await showRider(districtId);
+      await showRider(districtId, parcelId);
     });
   });
   function toggleModal() {
     riderModal.classList.toggle("opacity-0");
     riderModal.classList.toggle("pointer-events-none");
   }
-  const showRider = async (id) => {
+  const showRider = async (id, parcelId) => {
     let html = "";
     try {
       let res = await fetch(`${BASE_URL}/api/rider/available?district=${id}`);
@@ -269,7 +269,7 @@ if (allShowRidersBtn) {
                 <p class="uppercase font-medium">${data.vehicle_type}</p>
               </td>
               <td class="px-5">
-                <button onclick="assignRider(${data.id})"
+                <button onclick="assignRider(${parcelId}, ${data.id})"
                     class="px-3 flex items-center gap-1 py-2 rounded bg-teal-500 text-white hover:bg-teal-600 active:bg-teal-500 cursor-pointer justify-center">
                     <i class="fa-solid fa-user-check text-xs"></i> Assign Rider
                 </button>
@@ -285,7 +285,25 @@ if (allShowRidersBtn) {
   };
 }
 
-const assignRider = async (id) => {
+const assignRider = async (parcelId, riderId) => {
   try {
-  } catch (error) {}
+    let res = await fetch(`${BASE_URL}/api/parcel/assignrider`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        parcel_id: parcelId,
+        rider_id: riderId,
+      }),
+    });
+    let data = await res.json();
+    if (data.success) {
+      alert("Rider Assigned Successfully");
+      toggleModal();
+      location.reload();
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };

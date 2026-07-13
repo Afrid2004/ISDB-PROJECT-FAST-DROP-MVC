@@ -1,3 +1,7 @@
+<?php
+print_r($assgnedParcelData);
+?>
+
 <div>
   <div>
     <div class="mb-3 flex items-center justify-between gap-2">
@@ -8,7 +12,7 @@
       </a>
     </div>
     <div>
-      <?php if ($myParcelData) { ?>
+      <?php if ($assgnedParcelData) { ?>
       <div class="overflow-x-auto table-scrollbar border border-gray-500/30 shadow-sm">
         <table class="min-w-full whitespace-nowrap">
           <thead class="bg-black/30 border-b border-gray-500/30 text-white uppercase text-sm">
@@ -25,7 +29,7 @@
             </tr>
           </thead>
           <tbody class="text-gray-700 text-sm">
-            <?php foreach ($myParcelData as $key => $data) {
+            <?php foreach ($assgnedParcelData as $key => $data) {
                 $key++;
                 $paymentClass = match ($data->payment_status) {
                   "pending"             => "bg-yellow-500/20 text-yellow-400",

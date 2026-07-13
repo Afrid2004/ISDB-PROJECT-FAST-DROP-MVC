@@ -46,7 +46,7 @@ class DashboardController
   function parceldetails()
   {
     $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || ($role != 1 && $role != 3)) {
+    if (!isset($_SESSION['user']) || ($role != 1 && $role != 3 && $role != 4)) {
       redirect("");
       exit;
     }
@@ -234,9 +234,10 @@ class DashboardController
       redirect("");
       exit;
     }
-
+    $userid = $_SESSION['user']['id'];
+    $rider = Rider::findRiderByUserId($userid);
     $page = 'assignedparcels';
-    $data = "";
-    view('dashboard', compact('role', 'page', 'data'));
+    $assgnedParcelData = Parcel::allAssignedParcels($rider->id);
+    view('dashboard', compact('role', 'page', 'assgnedParcelData'));
   }
 }

@@ -218,9 +218,15 @@ class Parcel
     {
         global $db;
         $sql = "SELECT parcels.*, 
+        riders.rider_name AS rider_name,
+        riders.rider_email AS rider_email,
+        riders.rider_phone AS rider_phone,
+        riders.vehicle_type AS vehicle_type,
         sender.district_name AS sender_district_name,
         receiver.district_name AS receiver_district_name
         FROM parcels 
+        LEFT JOIN riders 
+            ON parcels.assigned_rider_id=riders.id
         JOIN districts AS sender 
             ON parcels.sender_district_id=sender.id
         JOIN districts AS receiver
@@ -273,6 +279,19 @@ class Parcel
         return null;
     }
 
+    // assign parcel 
+    public static function assignRider($parcelId, $riderId)
+    {
+        global $db;
+        $sql = "UPDATE parcels
+        SET assigned_rider_id=?,
+        parcel_status='assigned'
+        WHERE id=?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("ii", $riderId, $parcelId);
+        return $stmt->execute();
+    }
+
     // parcel that which have assigned rider
     public static function allAssignedParcels($id)
     {
@@ -293,7 +312,7 @@ class Parcel
         $stmt->execute();
         $result = $stmt->get_result();
         if ($result->num_rows > 0) {
-            return $result->fetch_all(MYSQLI_ASSOC);
+            return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
         }
         return [];
     }
