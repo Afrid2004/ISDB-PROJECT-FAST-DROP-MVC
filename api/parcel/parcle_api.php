@@ -6,8 +6,18 @@ class ParcelApi
   {
     $parcel_id = $params['parcel_id'];
     $rider_id = $params['rider_id'];
-    Parcel::assignRider($parcel_id, $rider_id);
-    echo json_encode(['success' => true]);
+    $result = Parcel::assignRider($parcel_id, $rider_id);
+    if ($result) {
+      echo json_encode([
+        "success" => true,
+        "message" => "Rider assigned successfully."
+      ]);
+    } else {
+      echo json_encode([
+        "success" => false,
+        "message" => $_SESSION['errors'][0] ?? "Failed to assign rider."
+      ]);
+    }
   }
 
   function acceptparcel($params)
@@ -15,7 +25,17 @@ class ParcelApi
     $parcel_id = $params['parcel_id'];
     $rider_id = $params['rider_id'];
     $result = Parcel::acceptParcel($parcel_id, $rider_id);
-    echo json_encode(['success' => $result]);
+    if ($result) {
+      echo json_encode([
+        "success" => true,
+        "message" => "Parcel accepted successfully."
+      ]);
+    } else {
+      echo json_encode([
+        "success" => false,
+        "message" => $_SESSION['errors'][0] ?? "Failed to accept parcel."
+      ]);
+    }
   }
 
   function rejectparcel($params)
@@ -23,7 +43,17 @@ class ParcelApi
     $parcel_id = $params['parcel_id'];
     $rider_id = $params['rider_id'];
     $result = Parcel::rejectParcel($parcel_id, $rider_id);
-    echo json_encode(['success' => $result]);
+    if ($result) {
+      echo json_encode([
+        "success" => true,
+        "message" => "Parcel rejected successfully."
+      ]);
+    } else {
+      echo json_encode([
+        "success" => false,
+        "message" => $_SESSION['errors'][0] ?? "Failed to reject parcel."
+      ]);
+    }
   }
 
   function updatestatus($params)
@@ -51,15 +81,16 @@ class ParcelApi
       $parcel_status,
       $rider->id
     );
-    if (!$result) {
+    if ($result) {
+      echo json_encode([
+        "success" => true,
+        "message" => "Parcel status updated successfully."
+      ]);
+    } else {
       echo json_encode([
         "success" => false,
-        "message" => $_SESSION['errors'][0] ?? "Unknown error"
+        "message" => $_SESSION['errors'][0] ?? "Failed to update parcel status."
       ]);
-      return;
     }
-    echo json_encode([
-      "success" => $result
-    ]);
   }
 }

@@ -279,7 +279,7 @@ class Rider
         JOIN districts AS receiver
             ON parcels.receiver_district_id=receiver.id
         WHERE parcels.payment_status='paid' 
-        AND parcels.assigned_rider_id=?";
+        AND parcels.assigned_rider_id=? ORDER BY parcels.id DESC";
     $stmt = $db->prepare($sql);
     $stmt->bind_param("i", $id);
     $stmt->execute();

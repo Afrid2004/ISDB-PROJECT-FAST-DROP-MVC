@@ -244,7 +244,7 @@ class DashboardController
   function acceptedparcels()
   {
     $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || ($role != 4)) {
+    if (!isset($_SESSION['user']) && ($role != 4)) {
       redirect("");
       exit;
     }

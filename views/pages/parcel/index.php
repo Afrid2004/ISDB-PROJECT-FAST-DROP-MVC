@@ -19,27 +19,31 @@ $old = $_SESSION['old'] ?? [];
       <div class="py-5">
         <div>
           <form method="post" action="<?php echo $base_url ?>/parcel/submit">
-            <!-- error message show  -->
+            <!-- Error Messages -->
             <?php if (!empty($_SESSION['errors'])): ?>
-              <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-3">
-                <ul class="list-disc pl-5">
+              <div class="mb-4 rounded-lg border border-red-300 bg-red-100 px-4 py-3 text-red-700">
+                <ul class="list-disc pl-5 space-y-1">
                   <?php foreach ($_SESSION['errors'] as $error): ?>
-                    <li><?php echo $error ?></li>
+                    <li><?php echo htmlspecialchars($error); ?></li>
                   <?php endforeach; ?>
                 </ul>
               </div>
-            <?php
-              unset($_SESSION['errors']);
-            endif;
-            ?>
-            <!-- success message show  -->
-            <?php if (isset($_SESSION['success'])): ?>
-              <div class="mb-4 rounded bg-green-100 border border-green-300 text-green-700 px-4 py-3">
-                <?php echo $_SESSION['success'] ?>
+              <?php unset($_SESSION['errors']); ?>
+            <?php endif; ?>
+
+            <!-- Success Messages -->
+            <?php if (!empty($_SESSION['success'])): ?>
+              <div class="mb-4 rounded-lg border border-green-300 bg-green-100 px-4 py-3 text-green-700">
+                <ul class="list-disc pl-5 space-y-1">
+                  <?php foreach ($_SESSION['success'] as $success): ?>
+                    <li><?php echo htmlspecialchars($success); ?></li>
+                  <?php endforeach; ?>
+                </ul>
               </div>
-            <?php
-              unset($_SESSION['success']);
-            endif; ?>
+              <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
+
             <div class="grid grid-cols-12 gap-5 mb-3">
               <!-- parcel info  -->
               <div class="col-span-12">

@@ -168,11 +168,13 @@ class Parcel
         }
     }
 
+    //update payment status
     public static function updatePaymentStatus($parcel_id, $status)
     {
         global $db;
         $sql = "UPDATE parcels
-            SET payment_status=?
+            SET payment_status=?,
+            parcel_status='pending_pickup'
             WHERE id=?";
         $stmt = $db->prepare($sql);
         $stmt->bind_param("si", $status, $parcel_id);
@@ -269,7 +271,7 @@ class Parcel
             ON parcels.sender_district_id=sender.id
         JOIN districts AS receiver
             ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' AND parcels.parcel_status='pending_pickup' 
+        WHERE parcels.payment_status='paid' AND (parcels.parcel_status='pending_pickup' OR parcels.parcel_status='rider_rejected') 
         ORDER BY parcels.id DESC";
         $stmt = $db->query($sql);
         if ($stmt && $stmt->num_rows > 0) {
@@ -307,6 +309,16 @@ class Parcel
             $stmt->execute();
             if ($stmt->affected_rows == 0) {
                 throw new Exception("Failed to assign rider!");
+            }
+
+            //update rider status
+            $sql = "UPDATE riders set work_status='busy'
+        WHERE id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("i", $riderId);
+            $stmt->execute();
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to update rider status!");
             }
 
             // Tracking
@@ -358,16 +370,6 @@ class Parcel
 
             if ($stmt->affected_rows == 0) {
                 throw new Exception("Failed to update parcel status!");
-            }
-
-            //update rider status
-            $sql = "UPDATE riders set work_status='busy'
-        WHERE id=?";
-            $stmt = $db->prepare($sql);
-            $stmt->bind_param("i", $riderId);
-            $stmt->execute();
-            if ($stmt->affected_rows == 0) {
-                throw new Exception("Failed to update rider status!");
             }
 
             // Tracking

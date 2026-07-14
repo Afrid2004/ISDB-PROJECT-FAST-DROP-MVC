@@ -43,6 +43,10 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_token'])) {
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- tailwind css cdn -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- sweet alert  -->
+  <link href="
+https://cdn.jsdelivr.net/npm/sweetalert2@11.26.25/dist/sweetalert2.min.css
+" rel="stylesheet">
   <link rel="stylesheet" href="<?php echo $base_url ?>/assets/css/style.css" />
   <link rel="shortcut icon" href="<?php echo $base_url ?>/assets/images/favicon.ico" type="image/x-icon">
   <title>Fast Drop | Logistic Website</title>

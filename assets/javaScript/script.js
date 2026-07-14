@@ -299,9 +299,19 @@ const assignRider = async (parcelId, riderId) => {
     });
     let data = await res.json();
     if (data.success) {
-      alert("Rider Assigned Successfully");
+      await Swal.fire({
+        title: "Rider Assigned!",
+        text: `${data.message}`,
+        icon: "success",
+      });
       toggleModal();
       location.reload();
+    } else {
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `${data.message}`,
+      });
     }
   } catch (err) {
     console.log(err);
@@ -330,10 +340,22 @@ if (acceptParcelBtn && rejectParcelBtn) {
         });
         let data = await res.json();
         if (data.success) {
-          alert("Accepted Parcel. Work status updated to busy.");
+          await Swal.fire({
+            title: "Accepted!",
+            text: `${data.message}`,
+            icon: "success",
+          });
+          location.reload();
+        } else {
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: `${data.message}`,
+          });
         }
       } catch (error) {
         console.log(error.message);
+        location.reload();
       }
     });
   });
@@ -356,10 +378,18 @@ if (acceptParcelBtn && rejectParcelBtn) {
         });
         let data = await res.json();
         if (data.success) {
-          alert("Accepted Parcel.");
+          await Swal.fire({
+            title: "Rejected!",
+            text: `${data.message}`,
+            icon: "success",
+          });
           location.reload();
         } else {
-          alert("Failed to accept parcel.");
+          await Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: `${data.message}`,
+          });
         }
       } catch (error) {
         console.log(error.message);
@@ -409,10 +439,18 @@ const updateStatus = async (status) => {
     });
     const data = await res.json();
     if (data.success) {
-      alert(`Updated parcel status to ${status.parcel_status}`);
+      await Swal.fire({
+        title: `${status.parcel_status.replaceAll("_", " ").replace(/\b\w/g, (c) => c.toUpperCase())}`,
+        text: `${data.message}`,
+        icon: "success",
+      });
       location.reload();
     } else {
-      alert("Failed to update status");
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: `${data.message}`,
+      });
     }
   } catch (error) {
     console.log(error.message);
