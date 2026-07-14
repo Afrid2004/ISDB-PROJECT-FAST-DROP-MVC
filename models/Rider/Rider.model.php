@@ -304,10 +304,10 @@ class Rider
                 ON parcels.receiver_district_id = receiver.id
             WHERE parcels.assigned_rider_id = ?
             AND parcels.parcel_status = 'delivered'
-            ORDER BY parcels.updated_at DESC";
+            ORDER BY parcels.id DESC";
 
     $stmt = $db->prepare($sql);
-    $stmt->bind_param("i", $riderId);
+    $stmt->bind_param("i", $id);
     $stmt->execute();
 
     $result = $stmt->get_result();

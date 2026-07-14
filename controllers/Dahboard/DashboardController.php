@@ -254,4 +254,18 @@ class DashboardController
     $acceptedParcelData = Rider::allAcceptedParcels($rider->id);
     view('dashboard', compact('role', 'page', 'acceptedParcelData'));
   }
+
+  function completedtasks()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) && ($role != 4)) {
+      redirect("");
+      exit;
+    }
+    $userid = $_SESSION['user']['id'];
+    $rider = Rider::findRiderByUserId($userid);
+    $page = 'completedtasks';
+    $completedParcelData = Rider::deliverCompetedParcels($rider->id);
+    view('dashboard', compact('role', 'page', 'completedParcelData'));
+  }
 }
