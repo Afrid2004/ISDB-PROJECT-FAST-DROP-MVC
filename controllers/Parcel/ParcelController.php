@@ -325,16 +325,62 @@ class ParcelController
 
   function pay()
   {
+    global $db;
     if (!isset($_SESSION['user'])) {
       redirect("login");
       exit;
     }
-    $id = intval($_GET['id']);
+    $parcel_id = intval($_GET['id']);
     $sender_user_id = $_SESSION['user']['id'];
-    if (Parcel::makePayment($id, $sender_user_id)) {
-      $_SESSION['success'] = "Payment completed successfully.";
-    } else {
-      $_SESSION['errors'][] = "Payment failed.";
+
+    $parcel = Parcel::findParcelById($parcel_id);
+    if (!$parcel || $parcel->sender_user_id != $sender_user_id) {
+      $_SESSION['errors'][] = "Invalid parcel!";
+      redirect("dashboard/myparcels");
+      exit;
+    }
+
+    // transaction 
+    $db->begin_transaction();
+    try {
+      // Payment Insert
+      $payment = new Payment();
+      $payment->set(
+        $parcel->id,
+        $parcel->delivery_charge,
+        "cash",
+        null,
+        "paid",
+        "BDT",
+        date("Y-m-d H:i:s")
+      );
+      if (!$payment->create()) {
+        throw new Exception("Payment insert failed!");
+      }
+
+      // Parcel Payment Status Update
+      $success = Parcel::updatePaymentStatus($parcel->id, "paid");
+      if (!$success) {
+        throw new Exception("Parcel payment update failed!");
+      }
+
+      // Tracking Insert
+      $tracking = new Tracking();
+      $tracking->set(
+        $parcel->id,
+        "payment_paid",
+        $parcel->sender_district_id,
+        "Payment completed successfully."
+      );
+      if (!$tracking->create()) {
+        throw new Exception("Tracking insert failed!");
+      }
+
+      $db->commit();
+      $_SESSION['success'][] = "Payment completed successfully.";
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
     }
     redirect("dashboard/myparcels");
   }

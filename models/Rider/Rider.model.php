@@ -289,4 +289,31 @@ class Rider
     }
     return [];
   }
+
+  //pracel that have been delivered successfully 
+  public static function deliverCompetedParcels($id)
+  {
+    global $db;
+    $sql = "SELECT parcels.*,
+            sender.district_name AS sender_district_name,
+            receiver.district_name AS receiver_district_name
+            FROM parcels
+            JOIN districts AS sender
+                ON parcels.sender_district_id = sender.id
+            JOIN districts AS receiver
+                ON parcels.receiver_district_id = receiver.id
+            WHERE parcels.assigned_rider_id = ?
+            AND parcels.parcel_status = 'delivered'
+            ORDER BY parcels.updated_at DESC";
+
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("i", $riderId);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+      return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
+    }
+    return [];
+  }
 }

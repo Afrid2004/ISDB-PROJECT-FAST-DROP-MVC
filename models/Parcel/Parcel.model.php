@@ -168,34 +168,15 @@ class Parcel
         }
     }
 
-    public static function makePayment($id, $sender_user_id)
+    public static function updatePaymentStatus($parcel_id, $status)
     {
         global $db;
-        $db->begin_transaction();
-        try {
-            $sql = "UPDATE parcels SET payment_status='paid', parcel_status='pending_pickup' WHERE id=? AND sender_user_id=? AND payment_status='pending'";
-            $stmt = $db->prepare($sql);
-            $stmt->bind_param("ii", $id, $sender_user_id);
-            $stmt->execute();
-            if ($stmt->affected_rows == 0) {
-                throw new Exception("Payment failed!");
-            };
-
-            // create tracking 
-            $tracking = new Tracking();
-            $tracking->set($id, "pending", NULL, "Parcel request created.");
-            $trackingId = $tracking->create();
-            if (!$trackingId) {
-                throw new Exception("Tracking creation failed!");
-            }
-
-            $db->commit();
-            return true;
-        } catch (Exception $e) {
-            $db->rollback();
-            $_SESSION['errors'][] = $e->getMessage();
-            return false;
-        }
+        $sql = "UPDATE parcels
+            SET payment_status=?
+            WHERE id=?";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("si", $status, $parcel_id);
+        return $stmt->execute();
     }
 
     // find tracking id 
@@ -301,13 +282,51 @@ class Parcel
     public static function assignRider($parcelId, $riderId)
     {
         global $db;
-        $sql = "UPDATE parcels
-        SET assigned_rider_id=?,
-        parcel_status='assigned'
-        WHERE id=?";
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param("ii", $riderId, $parcelId);
-        return $stmt->execute();
+        $db->begin_transaction();
+        try {
+            // find 
+            $sql = "SELECT * From parcels
+                WHERE id=?
+                AND assigned_rider_id IS NULL
+                AND parcel_status='pending_pickup'";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("i", $parcelId);
+            $stmt->execute();
+            $parcel = $stmt->get_result()->fetch_object();
+            if (!$parcel) {
+                throw new Exception("Parcel not found!");
+            }
+
+            // update 
+            $sql = "UPDATE parcels
+                SET assigned_rider_id=?,
+                    parcel_status='assigned'
+                WHERE id=?";
+            $stmt = $db->prepare($sql);
+            $stmt->bind_param("ii", $riderId, $parcelId);
+            $stmt->execute();
+            if ($stmt->affected_rows == 0) {
+                throw new Exception("Failed to assign rider!");
+            }
+
+            // Tracking
+            $tracking = new Tracking();
+            $tracking->set(
+                $parcelId,
+                "assigned",
+                $parcel->sender_district_id,
+                "Parcel assigned to rider."
+            );
+            if (!$tracking->create()) {
+                throw new Exception("Tracking insert failed!");
+            }
+            $db->commit();
+            return true;
+        } catch (Exception $e) {
+            $db->rollback();
+            $_SESSION['errors'][] = $e->getMessage();
+            return false;
+        }
     }
 
     // accept parcel
@@ -325,8 +344,8 @@ class Parcel
             $stmt = $db->prepare($sql);
             $stmt->bind_param("ii", $parcelId, $riderId);
             $stmt->execute();
-            $result = $stmt->get_result()->fetch_object();
-            if (!$result) {
+            $parcel = $stmt->get_result()->fetch_object();
+            if (!$parcel) {
                 throw new Exception("Parcel not found!");
             }
 
@@ -349,6 +368,18 @@ class Parcel
             $stmt->execute();
             if ($stmt->affected_rows == 0) {
                 throw new Exception("Failed to update rider status!");
+            }
+
+            // Tracking
+            $tracking = new Tracking();
+            $tracking->set(
+                $parcelId,
+                "rider_accepted",
+                $parcel->sender_district_id,
+                "Rider accepted the parcel."
+            );
+            if (!$tracking->create()) {
+                throw new Exception("Tracking insert failed!");
             }
 
             $db->commit();
@@ -374,8 +405,8 @@ class Parcel
             $stmt = $db->prepare($sql);
             $stmt->bind_param("ii", $parcelId, $riderId);
             $stmt->execute();
-            $result = $stmt->get_result()->fetch_object();
-            if (!$result) {
+            $parcel = $stmt->get_result()->fetch_object();
+            if (!$parcel) {
                 throw new Exception("Parcel not found!");
             }
 
@@ -399,6 +430,17 @@ class Parcel
                 throw new Exception("Failed to update rider status!");
             }
 
+            // Tracking
+            $tracking = new Tracking();
+            $tracking->set(
+                $parcelId,
+                "rider_rejected",
+                $parcel->sender_district_id,
+                "Rider rejected the parcel."
+            );
+            if (!$tracking->create()) {
+                throw new Exception("Tracking insert failed!");
+            }
             $db->commit();
             return true;
         } catch (Exception $e) {
@@ -443,9 +485,9 @@ class Parcel
             $stmt = $db->prepare($sql);
             $stmt->bind_param("ii", $parcel_id, $rider_id);
             $stmt->execute();
-            $result = $stmt->get_result()->fetch_object();
+            $parcel = $stmt->get_result()->fetch_object();
 
-            if (!$result) {
+            if (!$parcel) {
                 throw new Exception("Parcel not found or not assigned to this rider.");
             }
 
@@ -474,6 +516,31 @@ class Parcel
                 throw new Exception("Failed to update parcel status.");
             }
 
+
+            // Tracking Insert
+            $details = match ($parcel_status) {
+                "picked_up"      => "Parcel has been picked up by the rider.",
+                "in_transit"     => "Parcel is on the way to the destination.",
+                "delivered"      => "Parcel has been delivered successfully.",
+                default          => ucfirst(str_replace("_", " ", $parcel_status)),
+            };
+
+            $location = match ($parcel_status) {
+                "picked_up"      => $parcel->sender_district_id,
+                "in_transit"     => $parcel->receiver_district_id,
+                "delivered"      => $parcel->receiver_district_id,
+                default          => null,
+            };
+            $tracking = new Tracking();
+            $tracking->set(
+                $parcel_id,
+                $parcel_status,
+                $location,
+                $details
+            );
+            if (!$tracking->create()) {
+                throw new Exception("Tracking insert failed!");
+            }
 
             // rider status switch to available 
             if ($parcel_status === "delivered") {

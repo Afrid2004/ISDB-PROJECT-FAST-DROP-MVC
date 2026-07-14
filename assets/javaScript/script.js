@@ -410,6 +410,7 @@ const updateStatus = async (status) => {
     const data = await res.json();
     if (data.success) {
       alert(`Updated parcel status to ${status.parcel_status}`);
+      location.reload();
     } else {
       alert("Failed to update status");
     }
