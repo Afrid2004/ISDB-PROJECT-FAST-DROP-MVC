@@ -1,8 +1,3 @@
-<?php
-print_r($cancelledParcelsData);
-?>
-
-
 <div>
     <div>
         <h2 class="text-white font-medium text-2xl mb-3">All Cancelled Parcels</h2>

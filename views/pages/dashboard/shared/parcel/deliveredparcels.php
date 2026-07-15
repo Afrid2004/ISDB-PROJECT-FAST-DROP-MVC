@@ -1,8 +1,3 @@
-<?php
-print_r($deliveredParcelsData);
-?>
-
-
 <div>
     <div>
         <h2 class="text-white font-medium text-2xl mb-3">All Delivered Parcels</h2>

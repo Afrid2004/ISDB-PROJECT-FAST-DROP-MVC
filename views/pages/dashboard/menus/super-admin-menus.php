@@ -105,6 +105,15 @@
 
   <!-- users tab  -->
   <div>
+    <a class="block" href="<?php echo $base_url ?>/dashboard/allusers">
+      <div
+        class="flex items-center gap-2 text-white/70 hover:text-white px-4 py-3 hover:bg-white/20 duration-150 text-lg leading-none">
+        <i class="fa-solid fa-users text-sm shrink-0"></i>
+        All Users
+      </div>
+    </a>
+  </div>
+  <!-- <div>
     <div class="submenu_toggler">
       <button class="w-full cursor-pointer">
         <div
@@ -140,7 +149,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- admins tab  -->
   <div>
