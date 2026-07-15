@@ -48,62 +48,50 @@
 
   <?php if ($completedParcelData) { ?>
 
-  <div class="overflow-x-auto table-scrollbar border border-gray-500/30 shadow-sm">
+    <div class="overflow-x-auto table-scrollbar border border-gray-500/30 shadow-sm">
 
-    <table class="min-w-full whitespace-nowrap">
+      <table class="min-w-full whitespace-nowrap">
 
-      <thead class="bg-black/30 border-b border-gray-500/30 text-white uppercase text-sm">
+        <thead class="bg-black/30 border-b border-gray-500/30 text-white uppercase text-sm">
 
-        <tr>
+          <tr>
 
-          <th class="px-6 py-3 text-left">#Sl</th>
+            <th class="px-6 py-3 text-left">#Sl</th>
 
-          <th class="px-6 py-3 text-left">
-            Parcel Info
-          </th>
+            <th class="px-6 py-3 text-left">
+              Parcel Info
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            From
-          </th>
+            <th class="px-6 py-3 text-left">
+              Delivery Charge
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            To
-          </th>
+            <th class="px-6 py-3 text-left">
+              Rider Earnings
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            Delivery Charge
-          </th>
+            <th class="px-6 py-3 text-left">
+              Payment Status
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            Rider Earnings
-          </th>
+            <th class="px-6 py-3 text-left">
+              Cashout Status
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            Payment Status
-          </th>
+            <th class="px-6 py-3 text-left">
+              Action
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            Parcel Status
-          </th>
+            <th class="px-6 py-3 text-left">
+              Delivered At
+            </th>
 
-          <th class="px-6 py-3 text-left">
-            Cashout Status
-          </th>
+          </tr>
 
-          <th class="px-6 py-3 text-left">
-            Action
-          </th>
+        </thead>
 
-          <th class="px-6 py-3 text-left">
-            Delivered At
-          </th>
-
-        </tr>
-
-      </thead>
-
-      <tbody class="text-gray-700 text-sm">
-        <?php foreach ($completedParcelData as $key => $data):
+        <tbody class="text-gray-700 text-sm">
+          <?php foreach ($completedParcelData as $key => $data):
 
             $key++;
 
@@ -115,25 +103,7 @@
               default    => "bg-gray-500/20 text-gray-300",
             };
 
-            $parcelClass = match ($data->parcel_status) {
-              "delivered" => "bg-green-500/20 text-green-400",
-              default     => "bg-gray-500/20 text-gray-300",
-            };
-
-            /*
-    Rider Earnings
-    পরে চাইলে commission system বসাবে।
-    এখন full delivery charge দেখাচ্ছে।
-*/
-            $riderEarn = $data->delivery_charge;
-
-            /*
-    Future Cashout Status
-    DB field হলে replace করবে।
-*/
-            $cashoutStatus = "pending";
-
-            $cashoutClass = match ($cashoutStatus) {
+            $cashoutClass = match ($data->cashout_status) {
               "paid" => "bg-green-500/20 text-green-400",
               "processing" => "bg-blue-500/20 text-blue-400",
               default => "bg-yellow-500/20 text-yellow-400"
@@ -141,109 +111,94 @@
 
           ?>
 
-        <tr class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
+            <tr class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
 
-          <td class="px-6 py-4">
-            <?= $key ?>
-          </td>
+              <td class="px-6 py-4">
+                <?= $key ?>
+              </td>
 
-          <td class="px-6 py-4">
-            <div>
-              <p><?= $data->parcel_name ?></p>
-              <small class="text-gray-400">
-                <?= $data->weight ?> KG
-              </small>
-            </div>
-          </td>
+              <td class="px-6 py-4">
+                <div>
+                  <p><?= $data->parcel_name ?></p>
+                  <small class="text-gray-400">
+                    <?= $data->weight ?> KG
+                  </small>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <?= number_format($data->delivery_charge, 2) ?> TK
+              </td>
 
-          <td class="px-6 py-4">
-            <?= $data->sender_district_name ?>
-          </td>
+              <td class="px-6 py-4">
+                <span class="text-lime-400 font-medium">
+                  <?= number_format($data->rider_commission, 2) ?> TK
+                </span>
+              </td>
 
-          <td class="px-6 py-4">
-            <?= $data->receiver_district_name ?>
-          </td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-2 rounded <?= $paymentClass ?>">
+                  <?= ucfirst($data->payment_status) ?>
+                </span>
+              </td>
 
-          <td class="px-6 py-4">
-            <?= number_format($data->delivery_charge, 2) ?> TK
-          </td>
+              <td class="px-6 py-4">
+                <span class="px-3 py-2 rounded <?= $cashoutClass ?>">
+                  <?= ucfirst($data->cashout_status) ?>
+                </span>
+              </td>
 
-          <td class="px-6 py-4">
-            <span class="text-lime-400 font-medium">
-              <?= number_format($riderEarn, 2) ?> TK
-            </span>
-          </td>
+              <td class="px-6 py-4">
 
-          <td class="px-6 py-4">
-            <span class="px-3 py-2 rounded <?= $paymentClass ?>">
-              <?= ucfirst($data->payment_status) ?>
-            </span>
-          </td>
+                <div class="flex flex-col gap-2">
 
-          <td class="px-6 py-4">
-            <span class="px-3 py-2 rounded <?= $parcelClass ?>">
-              Delivered
-            </span>
-          </td>
+                  <a href="<?= $base_url ?>/dashboard/parceldetails?id=<?= $data->id ?>"
+                    class="px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
 
-          <td class="px-6 py-4">
-            <span class="px-3 py-2 rounded <?= $cashoutClass ?>">
-              <?= ucfirst($cashoutStatus) ?>
-            </span>
-          </td>
+                    <i class="fa-regular fa-eye text-sm"></i>
 
-          <td class="px-6 py-4">
+                    View
 
-            <div class="flex flex-col gap-2">
+                  </a>
 
-              <a href="<?= $base_url ?>/dashboard/parceldetails?id=<?= $data->id ?>"
-                class="px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
+                  <?php if ($data->cashout_status == "pending"): ?>
 
-                <i class="fa-regular fa-eye text-sm"></i>
+                    <button data-parcelid="<?= $data->id ?>"
+                      class="cashoutBtn px-3 flex items-center gap-1 py-2 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 active:bg-green-500/20 cursor-pointer justify-center">
 
-                View
+                      <i class="fa-solid fa-wallet text-sm"></i>
 
-              </a>
+                      Cashout
 
-              <?php if ($cashoutStatus == "pending"): ?>
+                    </button>
 
-              <button data-id="<?= $data->id ?>"
-                class="cashoutBtn px-3 flex items-center gap-1 py-2 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 active:bg-green-500/20 cursor-pointer justify-center">
+                  <?php endif; ?>
 
-                <i class="fa-solid fa-wallet text-sm"></i>
+                </div>
 
-                Cashout
+              </td>
 
-              </button>
+              <td class="px-6 py-4">
 
-              <?php endif; ?>
+                <?= date("d F Y", strtotime($data->updated_at)) ?>
 
-            </div>
+              </td>
 
-          </td>
+            </tr>
 
-          <td class="px-6 py-4">
+          <?php endforeach; ?>
+        </tbody>
 
-            <?= date("d F Y", strtotime($data->updated_at)) ?>
+      </table>
 
-          </td>
-
-        </tr>
-
-        <?php endforeach; ?>
-      </tbody>
-
-    </table>
-
-  </div>
+    </div>
 
   <?php } else { ?>
 
-  <div class="bg-black/40 border border-gray-500/30 text-white px-4 py-3">
+    <div class="bg-black/40 border border-gray-500/30 text-white px-4 py-3">
 
-    No Completed Task Found!
+      No Completed Task Found!
 
-  </div>
+    </div>
 
   <?php } ?>
 

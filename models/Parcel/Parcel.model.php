@@ -222,6 +222,7 @@ class Parcel
         riders.rider_name AS rider_name,
         riders.rider_email AS rider_email,
         riders.rider_phone AS rider_phone,
+        riders.district_id AS district,
         riders.vehicle_type AS vehicle_type,
         sender.district_name AS sender_district_name,
         receiver.district_name AS receiver_district_name
@@ -544,6 +545,7 @@ class Parcel
                 throw new Exception("Tracking insert failed!");
             }
 
+
             // rider status switch to available 
             if ($parcel_status === "delivered") {
                 $sql = "UPDATE riders
@@ -555,8 +557,45 @@ class Parcel
                 if ($stmt->affected_rows <= 0) {
                     throw new Exception("Failed to update rider status.");
                 }
-            }
 
+                //cash out 
+                $sql = "SELECT district_id FROM riders WHERE id=?";
+                $stmt = $db->prepare($sql);
+                $stmt->bind_param("i", $rider_id);
+                $stmt->execute();
+
+                $rider = $stmt->get_result()->fetch_object();
+
+                if (!$rider) {
+                    throw new Exception("Rider not found.");
+                }
+
+                $sameDistrict = ($parcel->receiver_district_id == $rider->district_id);
+
+                $riderCommission = $sameDistrict
+                    ? round($parcel->delivery_charge * 0.60, 2)
+                    : round($parcel->delivery_charge * 0.80, 2);
+
+                // Prevent duplicate cashout
+                if (Cashout::findByParcelId($parcel_id)) {
+                    throw new Exception("Cashout already created.");
+                }
+
+                $cashout = new Cashout();
+                $cashout->set(
+                    $parcel_id,
+                    $rider_id,
+                    $parcel->delivery_charge,
+                    $riderCommission,
+                    "cash",
+                    null,
+                    "pending"
+                );
+
+                if (!$cashout->create()) {
+                    throw new Exception("Failed to create cashout.");
+                }
+            }
             $db->commit();
             return true;
         } catch (Exception $e) {
@@ -571,16 +610,18 @@ class Parcel
     public static function allDeliveredParcels()
     {
         global $db;
-        $sql = "SELECT parcels.*, 
-        sender.district_name AS sender_district_name,
-        receiver.district_name AS receiver_district_name
-        FROM parcels 
-        JOIN districts AS sender 
-            ON parcels.sender_district_id=sender.id
-        JOIN districts AS receiver
-            ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' AND parcels.parcel_status='delivered' 
-        ORDER BY parcels.id DESC";
+        $sql = "SELECT
+                parcels.*,
+                sender.district_name AS sender_district_name,
+                receiver.district_name AS receiver_district_name
+            FROM parcels
+            JOIN districts AS sender
+                ON parcels.sender_district_id = sender.id
+            JOIN districts AS receiver
+                ON parcels.receiver_district_id = receiver.id
+            WHERE parcels.payment_status='paid'
+            AND parcels.parcel_status='delivered'
+            ORDER BY parcels.id DESC";
         $stmt = $db->query($sql);
         if ($stmt && $stmt->num_rows > 0) {
             return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));

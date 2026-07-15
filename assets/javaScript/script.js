@@ -456,3 +456,46 @@ const updateStatus = async (status) => {
     console.log(error.message);
   }
 };
+
+// cashout operation
+let allCashoutBtn = document.querySelectorAll(".cashoutBtn");
+allCashoutBtn.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    let parcelid = btn.dataset.parcelid;
+    let method = "cash";
+    let cashoutData = {
+      parcel_id: parcelid,
+      method: method,
+    };
+    try {
+      let res = await fetch(`${BASE_URL}/api/rider/cashout`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cashoutData),
+      });
+      let data = await res.json();
+      if (data.success) {
+        await Swal.fire({
+          title: "Cashout Successful",
+          text: `${data.message}`,
+          icon: "success",
+        });
+        location.reload();
+      } else {
+        await Swal.fire({
+          icon: "error",
+          title: "Cashout Failed",
+          text: `${data.message}`,
+        });
+      }
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Request Failed",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
+  });
+});

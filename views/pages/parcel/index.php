@@ -34,11 +34,7 @@ $old = $_SESSION['old'] ?? [];
             <!-- Success Messages -->
             <?php if (!empty($_SESSION['success'])): ?>
               <div class="mb-4 rounded-lg border border-green-300 bg-green-100 px-4 py-3 text-green-700">
-                <ul class="list-disc pl-5 space-y-1">
-                  <?php foreach ($_SESSION['success'] as $success): ?>
-                    <li><?php echo htmlspecialchars($success); ?></li>
-                  <?php endforeach; ?>
-                </ul>
+                <?php echo $_SESSION['success'];  ?>
               </div>
               <?php unset($_SESSION['success']); ?>
             <?php endif; ?>

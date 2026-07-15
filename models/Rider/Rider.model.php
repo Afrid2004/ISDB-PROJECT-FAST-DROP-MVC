@@ -295,6 +295,15 @@ class Rider
   {
     global $db;
     $sql = "SELECT parcels.*,
+    cashouts.id AS cashout_id,
+                cashouts.original_delivery_charge,
+                cashouts.rider_commission,
+                cashouts.payment_method,
+                cashouts.transaction_id,
+                cashouts.cashout_status,
+                cashouts.created_at AS cashout_created_at,
+                cashouts.updated_at AS cashout_updated_at,
+                cashouts.paid_at,
             sender.district_name AS sender_district_name,
             receiver.district_name AS receiver_district_name
             FROM parcels
@@ -302,6 +311,8 @@ class Rider
                 ON parcels.sender_district_id = sender.id
             JOIN districts AS receiver
                 ON parcels.receiver_district_id = receiver.id
+            LEFT JOIN cashouts
+                ON cashouts.parcel_id = parcels.id
             WHERE parcels.assigned_rider_id = ?
             AND parcels.parcel_status = 'delivered'
             ORDER BY parcels.id DESC";
