@@ -629,6 +629,62 @@ class Parcel
         return null;
     }
 
+    // track the parcel
+    public static function trackParcel($tracking_id)
+    {
+        global $db;
+        $sql = "SELECT
+
+    parcels.id AS parcel_id,
+    parcels.tracking_id,
+    parcels.parcel_name,
+    parcels.parcel_type,
+    parcels.weight,
+    parcels.sender_name,
+    parcels.sender_district_id,
+    parcels.delivery_charge,
+    parcels.receiver_name,
+    parcels.receiver_district_id,
+    parcels.payment_status,
+    parcels.parcel_status,
+
+    trackings.id AS tracking_row_id,
+    trackings.tracking_status,
+    trackings.location_id,
+    trackings.details,
+    trackings.created_at AS tracking_time,
+
+    location.district_name AS current_location,
+    sender.district_name AS sender_district_name,
+    receiver.district_name AS receiver_district_name
+
+FROM parcels
+
+INNER JOIN trackings
+    ON parcels.id = trackings.parcel_id
+
+LEFT JOIN districts AS location
+    ON location.id = trackings.location_id
+
+LEFT JOIN districts AS sender
+    ON sender.id = parcels.sender_district_id
+
+LEFT JOIN districts AS receiver
+    ON receiver.id = parcels.receiver_district_id
+
+WHERE parcels.tracking_id = ?
+
+ORDER BY trackings.created_at ASC";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("s", $tracking_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result && $result->num_rows > 0) {
+            return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
+        }
+        return [];
+    }
+
     // parcel that are delivered
     public static function allCancelledParcels()
     {

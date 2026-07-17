@@ -444,7 +444,11 @@ const updateStatus = async (status) => {
         text: `${data.message}`,
         icon: "success",
       });
-      location.reload();
+      if (status.parcel_status === "delivered") {
+        window.location.href = `${BASE_URL}/dashboard/completedtasks`;
+      } else {
+        location.reload();
+      }
     } else {
       await Swal.fire({
         icon: "error",
