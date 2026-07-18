@@ -1,6 +1,6 @@
 <div>
   <div>
-    <h2 class="text-white font-medium text-2xl mb-3">All Users</h2>
+    <h2 class="text-white font-medium text-2xl mb-3">Add Admin</h2>
     <div>
       <?php if ($allUserdata) { ?>
       <div class="overflow-x-auto table-scrollbar border border-gray-500/30 shadow-sm">
@@ -11,6 +11,7 @@
               <th class="px-6 py-3 text-left">Name</th>
               <th class="px-6 py-3 text-left">Email</th>
               <th class="px-6 py-3 text-left">Role</th>
+              <th class="px-6 py-3 text-left">Action</th>
               <th class="px-6 py-3 text-left">Created At</th>
             </tr>
           </thead>
@@ -50,6 +51,13 @@
                 <span class="px-3 text-sm py-1 rounded <?php echo $roleClass ?>">
                   <?php echo implode(" ", explode("_", $data->rolename)) ?>
                 </span>
+              </td>
+              <td class="px-6 py-4">
+                <?php if ($data->role_id == 3): ?>
+                <button data-userid="<?php echo $data->id ?>"
+                  class="makeadminBtn px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
+                  <i class="fa-solid fa-check text-sm"></i> Make Admin</button>
+                <?php endif; ?>
               </td>
               <td class="px-6 py-4">
                 <?php echo date("d F Y", strtotime($data->created_at)) ?>

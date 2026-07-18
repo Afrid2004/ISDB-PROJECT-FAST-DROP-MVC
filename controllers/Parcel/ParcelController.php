@@ -151,7 +151,7 @@ class ParcelController
         $db->commit();
         $_SESSION['success'] = "Parcel created successfully.";
         unset($_SESSION['old']);
-        redirect("parcel");
+        redirect("dashboard/myparcels");
         exit;
       } catch (Exception $e) {
         // if occured any error then rollback 

@@ -65,7 +65,7 @@
   </div>
 
   <!-- payments tab  -->
-  <div>
+  <!-- <div>
     <div class="submenu_toggler">
       <button class="w-full cursor-pointer">
         <div
@@ -101,7 +101,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- users tab  -->
   <div>
@@ -170,14 +170,14 @@
         class="max-h-0 opacity-0 [.active_&]:py-3 [.active_&]:max-h-100 [.active_&]:opacity-100 duration-150 overflow-hidden">
         <div class="pl-2 border-l-2 border-gray-500/30">
           <div class="flex flex-col gap-1">
-            <a class="block" href="<?php echo $base_url ?>/dashboard/allusers">
+            <a class="block" href="<?php echo $base_url ?>/dashboard/alladmin">
               <div
                 class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 duration-150  leading-none">
                 <i class="fa-solid fa-user-shield text-sm shrink-0"></i>
                 All Admins
               </div>
             </a>
-            <a class="block" href="<?php echo $base_url ?>/dashboard/adduser">
+            <a class="block" href="<?php echo $base_url ?>/dashboard/addadmin">
               <div
                 class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 duration-150  leading-none">
                 <i class="fa-solid fa-user-plus text-sm shrink-0"></i>

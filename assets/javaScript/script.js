@@ -503,3 +503,100 @@ allCashoutBtn.forEach((btn) => {
     }
   });
 });
+
+// make admin operation
+let makeadminBtn = document.querySelectorAll(".makeadminBtn");
+let removeadminBtn = document.querySelectorAll(".removeadminBtn");
+makeadminBtn.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    let userid = btn.dataset.userid;
+    const result = await Swal.fire({
+      title: "Make this user an Admin?",
+      text: "This user will receive administrator privileges.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00bba7",
+      cancelButtonColor: "#162636",
+      confirmButtonText: "Yes, Make Admin",
+    });
+
+    if (!result.isConfirmed) return;
+    try {
+      let res = await fetch(`${BASE_URL}/api/user/makeadmin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `id=${userid}`,
+      });
+      let data = await res.json();
+      if (data.success) {
+        await Swal.fire({
+          title: "Admin Updated",
+          text: `${data.message}`,
+          icon: "success",
+        });
+        location.reload();
+      } else {
+        await Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `${data.message}`,
+        });
+      }
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Request Failed",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
+  });
+});
+
+removeadminBtn.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    let userid = btn.dataset.userid;
+    const result = await Swal.fire({
+      title: "Remove this user from Admin?",
+      text: "This user will removed administrator privileges.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00bba7",
+      cancelButtonColor: "#162636",
+      confirmButtonText: "Yes, Remove Admin",
+    });
+
+    if (!result.isConfirmed) return;
+    try {
+      let res = await fetch(`${BASE_URL}/api/user/removeadmin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `id=${userid}`,
+      });
+      let data = await res.json();
+      if (data.success) {
+        await Swal.fire({
+          title: "Admin removed successfully.",
+          text: `${data.message}`,
+          icon: "success",
+        });
+        location.reload();
+      } else {
+        await Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `${data.message}`,
+        });
+      }
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Request Failed",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
+  });
+});

@@ -286,8 +286,13 @@ class Rider
   //pracel that have been delivered successfully 
   public static function deliverCompetedParcels($id)
   {
-    global $db;
-    $sql = "SELECT parcels.*,
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total
+FROM parcels
+WHERE assigned_rider_id = ?
+AND parcel_status = 'delivered'
+";
+    $dataSql = "SELECT parcels.*,
     cashouts.id AS cashout_id,
                 cashouts.original_delivery_charge,
                 cashouts.rider_commission,
@@ -310,14 +315,16 @@ class Rider
             AND parcels.parcel_status = 'delivered'
             ORDER BY parcels.id DESC";
 
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
-    }
-    return [];
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql,
+        "i",
+        [$id]
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
   }
 }

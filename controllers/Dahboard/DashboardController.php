@@ -23,9 +23,46 @@ class DashboardController
       redirect("");
       exit;
     }
-    $allUserdata = User::showUser();
     $page = 'allusers';
-    view("dashboard", compact('role', 'page', 'allUserdata'));
+    $result = User::showUser();
+    $allUserdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allUserdata', 'pagination', 'perPage', 'currentPage'));
+  }
+
+  // add admin
+  function addadmin()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+    $page = 'addadmin';
+    $result = User::pendingAdmin();
+    $allUserdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allUserdata', 'pagination', 'perPage', 'currentPage'));
+  }
+
+  function alladmin()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+    $page = 'alladmin';
+    $result = User::allAdmin();
+    $allUserdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allUserdata', 'pagination', 'perPage', 'currentPage'));
   }
 
   // dynamically render all parcels page 
@@ -300,21 +337,12 @@ class DashboardController
     }
     $userid = $_SESSION['user']['id'];
     $rider = Rider::findRiderByUserId($userid);
-    $page = 'completedtasks';
-    $completedParcelData = Rider::deliverCompetedParcels($rider->id);
-    view('dashboard', compact('role', 'page', 'completedParcelData'));
-
-    $page = "assignedparcels";
-    $result = Parcel::getParcelsByStatus(
-      ['assigned'],
-      'paid',
-      10,
-      $rider->id,
-    );
-    $assgnedParcelData  = $result['data'];
+    $page = "completedtasks";
+    $result = Rider::deliverCompetedParcels($rider->id);
+    $completedParcelData  = $result['data'];
     $pagination = $result['links'];
     $perPage = $result['perPage'];
     $currentPage = $result['currentPage'];
-    view("dashboard", compact('role', 'page', 'assgnedParcelData', 'pagination', 'perPage', 'currentPage'));
+    view("dashboard", compact('role', 'page', 'completedParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 }
