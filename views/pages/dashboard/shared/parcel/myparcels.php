@@ -20,8 +20,8 @@
               <th class="px-6 py-3 text-left">Delivery Charge</th>
               <th class="px-6 py-3 text-left">Payment Status</th>
               <th class="px-6 py-3 text-left">Parcel Status</th>
-              <th class="px-6 py-3 text-left">Created At</th>
               <th class="px-6 py-3 text-left">Action</th>
+              <th class="px-6 py-3 text-left">Created At</th>
             </tr>
           </thead>
           <tbody class="text-gray-700 text-sm">
@@ -84,14 +84,16 @@
                   <?php echo str_replace("_", " ", $data->parcel_status) ?>
                 </span>
               </td>
-              <td class="px-6 py-4">
-                <?php echo date("d F Y", strtotime($data->created_at)) ?>
-              </td>
+
               <td class="px-6 py-4">
                 <div class="flex flex-col gap-2">
                   <a href="<?php echo $base_url . "/dashboard/parceldetails?id=" . $data->id ?>"
                     class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 active:bg-blue-500/20 cursor-pointer justify-center">
                     <i class="fa-regular fa-eye text-xs"></i> View
+                  </a>
+                  <a href="<?php echo $base_url . "/trackparcel?id=" . $data->tracking_id ?>"
+                    class="viewParcelBtn px-3 flex items-center gap-1 py-2 rounded bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 active:bg-lime-500/20 cursor-pointer justify-center">
+                    <i class="fa-solid fa-location-dot text-xs"></i> Track Parcel
                   </a>
                   <?php if ($data->payment_status == 'pending'): ?>
                   <a href="<?php echo $base_url . '/dashboard/editparcel?id=' . $data->id ?>"
@@ -107,6 +109,9 @@
                   </a>
                   <?php endif; ?>
                 </div>
+              </td>
+              <td class="px-6 py-4">
+                <?php echo date("d F Y", strtotime($data->created_at)) ?>
               </td>
             </tr>
             <?php } ?>

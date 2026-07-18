@@ -70,7 +70,9 @@ class Parcel
     public static function generateTrackingId()
     {
         do {
-            $trackings = "FD-" . date("ymd") . rand(100000, 999999);
+            $trackings = "FD-" .
+                date("ymd") . "-" .
+                strtoupper(bin2hex(random_bytes(3)));
             $existTrackingId = self::findByTrackingID($trackings);
         } while ($existTrackingId);
 
@@ -291,7 +293,7 @@ class Parcel
             $sql = "SELECT * From parcels
                 WHERE id=?
                 AND assigned_rider_id IS NULL
-                AND parcel_status='pending_pickup'";
+                AND parcel_status IN ('pending_pickup','rider_rejected')";
             $stmt = $db->prepare($sql);
             $stmt->bind_param("i", $parcelId);
             $stmt->execute();
