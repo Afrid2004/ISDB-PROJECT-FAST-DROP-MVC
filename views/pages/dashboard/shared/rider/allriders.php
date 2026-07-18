@@ -45,8 +45,9 @@
               </tr>
             </thead>
             <tbody class="text-gray-700 text-sm">
-              <?php foreach ($allRiderData as $key => $data) {
-                $key++;
+              <?php
+              $start = ($currentPage - 1) * $perPage;
+              foreach ($allRiderData as $key => $data) {
                 $statusClass = match ($data->status) {
                   'approved' => 'bg-lime-500/20 text-lime-400',
                   'suspended' => 'bg-red-500/20 text-red-400',
@@ -61,7 +62,7 @@
 
                 <tr
                   class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
-                  <td class="px-6 py-4"><?php echo $key ?></td>
+                  <td class="px-6 py-4"><?= $start + $key + 1 ?></td>
                   <td class="px-6 py-4">
                     <div class="flex items-center gap-2">
                       <div class="w-9 h-9 flex items-center justify-center overflow-hidden rounded-full">
@@ -119,8 +120,8 @@
             </tbody>
           </table>
         </div>
+        <?= $pagination ?>
       <?php } else { ?>
-
         <div class="bg-black/40 border border-gray-500/30 text-white px-4 py-3">
           No Rider Data found!
         </div>

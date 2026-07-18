@@ -377,7 +377,7 @@ class ParcelController
       }
 
       $db->commit();
-      $_SESSION['success'][] = "Payment completed successfully.";
+      $_SESSION['success'] = "Payment completed successfully.";
     } catch (Exception $e) {
       $db->rollback();
       $_SESSION['errors'][] = $e->getMessage();

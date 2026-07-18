@@ -50,20 +50,6 @@ class Rider
     return $db->insert_id;
   }
 
-  //show all riders
-  public static function allRiders()
-  {
-    global $db;
-    $sql = "SELECT riders.*, districts.district_name 
-    FROM riders JOIN districts
-    ON riders.district_id=districts.id";
-    $stmt = $db->query($sql);
-    if ($stmt && $stmt->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
-    }
-    return null;
-  }
-
   // find rider by id 
   public static function findRiderByUserId($id)
   {
@@ -82,19 +68,25 @@ class Rider
   //show all approved riders
   public static function allApprovedSuspendedRiders()
   {
-    global $db;
-    $sql = "SELECT riders.*,
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total
+          FROM riders WHERE status IN ('approved','suspended')";
+    $dataSql = "SELECT riders.*,
     districts.district_name
     FROM riders
     JOIN districts
     ON riders.district_id=districts.id
-    WHERE (riders.status='approved' OR riders.status='suspended')
+    WHERE riders.status IN ('approved','suspended')
     ORDER BY riders.created_at DESC";
-    $stmt = $db->query($sql);
-    if ($stmt && $stmt->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
-    }
-    return null;
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
   }
 
   //show all pending riders

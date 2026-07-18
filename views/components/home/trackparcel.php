@@ -15,12 +15,12 @@
             business to every destination.
           </p>
           <div>
-            <form>
+            <form action="<?php echo $base_url ?>/trackparcel" method="get">
               <div class="flex items-center h-13 w-full">
-                <input type="text" name="trackingId"
-                  class="w-full bg-white h-full px-4 outline-none border-none text-lg" id="trackingId"
+                <input type="text" name="id"
+                  class="w-full bg-white h-full px-4 outline-none border-none text-lg uppercase" id="trackingId"
                   placeholder="Enter your tracking id..." required />
-                <button type="submit" name="btn_track"
+                <button type="submit"
                   class="uppercase cursor-pointer text-white bg-primary hover:bg-hover active:bg-primary flex gap-2 items-center justify-center px-4 h-full shrink-0 text-lg">
                   Track
                   <i class="fa-solid fa-location-crosshairs"></i>

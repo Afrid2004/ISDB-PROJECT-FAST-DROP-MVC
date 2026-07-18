@@ -19,7 +19,7 @@
                 <div>
                   <ul class="flex items-center gap-5 text-lg uppercase text-white desktop-menu">
                     <li>
-                      <a class="hover:text-primary" href="/">Home</a>
+                      <a class="hover:text-primary" href="<?php echo $base_url ?>">Home</a>
                     </li>
                     <li>
                       <a class="hover:text-primary" href="#">About</a>
@@ -33,7 +33,8 @@
                   </ul>
                 </div>
                 <div class="btn bg-primary">
-                  <a href="#" class="uppercase px-4 py-2 block text-white">Tracking</a>
+                  <a href="<?php echo $base_url ?>/trackparcel"
+                    class="uppercase px-4 py-2 block text-white">Tracking</a>
                 </div>
                 <?php if (isset($_SESSION['user']['email'])): ?>
                 <div>
@@ -101,7 +102,7 @@
               <div>
                 <ul class="flex flex-col gap-3 uppercase mb-3 mobile-menu">
                   <li>
-                    <a href="/"
+                    <a href="<?php echo $base_url ?>"
                       class="bg-gray-200/70 block py-2 px-4 hover:bg-primary hover:text-white duration-150">Home</a>
                   </li>
                   <li>
@@ -136,7 +137,8 @@
                   <?php endif; ?>
                 </ul>
                 <div class="btn bg-primary">
-                  <a href="#" class="uppercase px-4 py-2 block text-white">Tracking</a>
+                  <a href="<?php echo $base_url ?>/trackparcel"
+                    class="uppercase px-4 py-2 block text-white">Tracking</a>
                 </div>
               </div>
               <!-- menus -->

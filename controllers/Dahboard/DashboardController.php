@@ -70,10 +70,16 @@ class DashboardController
       redirect("");
       exit;
     }
-
     $page = "pendingparcels";
-    $pendingParcelsData = Parcel::allPendingParcels();
-    view("dashboard", compact('role', 'page', 'pendingParcelsData'));
+    $result = Parcel::getParcelsByStatus(
+      ['pending_pickup', 'rider_rejected'],
+      'paid'
+    );
+    $pendingParcelsData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'pendingParcelsData', 'pagination', 'perPage', 'currentPage'));
   }
 
   //delivered parcels page 
@@ -86,8 +92,15 @@ class DashboardController
     }
 
     $page = "deliveredparcels";
-    $deliveredParcelsData = Parcel::allDeliveredParcels();
-    view("dashboard", compact('role', 'page', 'deliveredParcelsData'));
+    $result = Parcel::getParcelsByStatus(
+      ['delivered'],
+      'paid'
+    );
+    $deliveredParcelsData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'deliveredParcelsData', 'pagination', 'perPage', 'currentPage'));
   }
 
   //cancelled parcels page 
@@ -98,10 +111,16 @@ class DashboardController
       redirect("");
       exit;
     }
-
     $page = "cancelledparcels";
-    $cancelledParcelsData = Parcel::allCancelledParcels();
-    view("dashboard", compact('role', 'page', 'cancelledParcelsData'));
+    $result = Parcel::getParcelsByStatus(
+      ['cancelled'],
+      'paid'
+    );
+    $cancelledParcelsData  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'cancelledParcelsData', 'pagination', 'perPage', 'currentPage'));
   }
 
   // addrider page 
@@ -126,10 +145,13 @@ class DashboardController
       redirect("");
       exit;
     }
-
     $page = "allriders";
-    $allRiderData = Rider::allApprovedSuspendedRiders();
-    view("dashboard", compact('role', 'page', 'allRiderData'));
+    $result = Rider::allApprovedSuspendedRiders();
+    $allRiderData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allRiderData', 'pagination', 'perPage', 'currentPage'));
   }
 
   // approver rider 
@@ -200,10 +222,14 @@ class DashboardController
     $role = $_SESSION['user']['role_id'];
     $userId = $_SESSION['user']['id'];
     if ($role == 3 || $role == 4) {
-      $myParcelData = Parcel::findParcelByUserId($userId);
+      $result = Parcel::findParcelByUserId($userId);
+      $myParcelData = $result['data'];
+      $pagination = $result['links'];
+      $perPage = $result['perPage'];
+      $currentPage = $result['currentPage'];
     }
     $page = "myparcels";
-    view("dashboard", compact('role', 'page', 'myParcelData'));
+    view("dashboard", compact('role', 'page', 'myParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 
 
@@ -236,9 +262,19 @@ class DashboardController
     }
     $userid = $_SESSION['user']['id'];
     $rider = Rider::findRiderByUserId($userid);
-    $page = 'assignedparcels';
-    $assgnedParcelData = Parcel::allAssignedParcels($rider->id);
-    view('dashboard', compact('role', 'page', 'assgnedParcelData'));
+
+    $page = "assignedparcels";
+    $result = Parcel::getParcelsByStatus(
+      ['assigned'],
+      'paid',
+      10,
+      $rider->id,
+    );
+    $assgnedParcelData  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'assgnedParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 
   function acceptedparcels()
@@ -267,5 +303,18 @@ class DashboardController
     $page = 'completedtasks';
     $completedParcelData = Rider::deliverCompetedParcels($rider->id);
     view('dashboard', compact('role', 'page', 'completedParcelData'));
+
+    $page = "assignedparcels";
+    $result = Parcel::getParcelsByStatus(
+      ['assigned'],
+      'paid',
+      10,
+      $rider->id,
+    );
+    $assgnedParcelData  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'assgnedParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 }

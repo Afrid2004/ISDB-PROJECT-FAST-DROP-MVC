@@ -1,6 +1,7 @@
 <?php
 // all header style link 
 require_once('bootstrap.php');
+require_once "helpers/pagination.php";
 require_once "helpers/avatar.php";
 //hiding header layout for register and login page
 $hideLayout = false;
