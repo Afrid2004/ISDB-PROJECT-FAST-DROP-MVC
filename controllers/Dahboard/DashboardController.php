@@ -68,8 +68,12 @@ class DashboardController
   // dynamically render all parcels page 
   function allparcels()
   {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
     $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if ($role != 1 && $role != 2) {
       redirect("");
       exit;
     }
@@ -258,13 +262,11 @@ class DashboardController
     }
     $role = $_SESSION['user']['role_id'];
     $userId = $_SESSION['user']['id'];
-    if ($role == 3 || $role == 4) {
-      $result = Parcel::findParcelByUserId($userId);
-      $myParcelData = $result['data'];
-      $pagination = $result['links'];
-      $perPage = $result['perPage'];
-      $currentPage = $result['currentPage'];
-    }
+    $result = Parcel::findParcelByUserId($userId);
+    $myParcelData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
     $page = "myparcels";
     view("dashboard", compact('role', 'page', 'myParcelData', 'pagination', 'perPage', 'currentPage'));
   }
