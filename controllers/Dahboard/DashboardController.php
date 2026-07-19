@@ -210,13 +210,11 @@ class DashboardController
     }
     $page = "allriders";
     $result = Rider::allApprovedSuspendedRiders();
-    $countResult = Rider::deliverCompetedParcels($result['data']->id);
     $allRiderData = $result['data'];
     $pagination = $result['links'];
     $perPage = $result['perPage'];
     $currentPage = $result['currentPage'];
-    $totalCompleted = $countResult['totalCompleted'];
-    view("dashboard", compact('role', 'page', 'allRiderData', 'pagination', 'perPage', 'currentPage', 'totalCompleted'));
+    view("dashboard", compact('role', 'page', 'allRiderData', 'pagination', 'perPage', 'currentPage'));
   }
 
   // approver rider 
@@ -295,6 +293,40 @@ class DashboardController
     redirect("dashboard/allriders");
   }
 
+
+  function paymenthistories()
+  {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
+    $page = 'paymenthistories';
+    $result = Payment::allPayments();
+    $allPaymentdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allPaymentdata', 'pagination', 'perPage', 'currentPage'));
+  }
+
+  function myaccount()
+  {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    $userId = $_SESSION['user']['id'];
+    $user = User::findUser($userId);
+    $page = 'myaccount';
+    view("dashboard", compact('role', 'page', 'user'));
+  }
+
   /*====================user dashboard================ */
   function myparcels()
   {
@@ -330,6 +362,19 @@ class DashboardController
       'page',
       'parcelData'
     ));
+  }
+
+  function editprofile()
+  {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    $userId = $_SESSION['user']['id'];
+    $user = User::findUser($userId);
+    $page = 'editprofile';
+    view("dashboard", compact('role', 'page', 'user'));
   }
 
 

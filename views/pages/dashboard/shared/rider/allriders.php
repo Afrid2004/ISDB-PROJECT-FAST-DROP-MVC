@@ -1,7 +1,7 @@
-<?php 
-echo "<pre>";
-print_r($allRiderData);
-echo "</pre>";
+<?php
+// echo "<pre>";
+// print_r($allRiderData);
+// echo "</pre>";
 ?>
 
 <div>
@@ -46,7 +46,6 @@ echo "</pre>";
                 <th class="px-6 py-3 text-left">Vehicle Info</th>
                 <th class="px-6 py-3 text-left">Status</th>
                 <th class="px-6 py-3 text-left">Work Status</th>
-                <th class="px-6 py-3 text-left">Completed Tasks</th>
                 <th class="px-6 py-3 text-left">Action</th>
                 <th class="px-6 py-3 text-left">Created At</th>
               </tr>
@@ -104,7 +103,7 @@ echo "</pre>";
                       <?php echo ucfirst($data->work_status) ?>
                     </span>
                   </td>
-                  
+
                   <td class="px-6 py-4">
                     <div class="flex flex-col gap-2">
                       <?php if ($data->status == 'approved'): ?>

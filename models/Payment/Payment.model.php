@@ -153,18 +153,20 @@ class Payment
   }
 
   // All Payments
-  public static function all()
+  public static function allPayments()
   {
-    global $db;
-
-    $sql = "SELECT * FROM payments ORDER BY id DESC";
-
-    $result = $db->query($sql);
-
-    return array_map(
-      fn($item) => (object)$item,
-      $result->fetch_all(MYSQLI_ASSOC)
-    );
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total FROM payments";
+    $dataSql = "SELECT * FROM payments ORDER BY id DESC";
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql,
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
   }
 
   // Delete Payment

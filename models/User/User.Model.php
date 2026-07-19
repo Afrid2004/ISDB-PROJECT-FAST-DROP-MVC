@@ -212,7 +212,7 @@ class User
   }
 
 
-   // activate user
+  // activate user
   public static function activateuser($user_id)
   {
     global $db;
@@ -256,7 +256,10 @@ class User
   public static function findUser($id)
   {
     global $db;
-    $sql = "SELECT * FROM users WHERE id=$id LIMIT 1";
+    $sql = "SELECT users.*, roles.role_name AS rolename
+        FROM users
+        JOIN roles ON users.role_id = roles.id
+        WHERE users.id = $id LIMIT 1";
     $stmt = $db->query($sql);
     if ($stmt && $stmt->num_rows > 0) {
       return $stmt->fetch_object();
