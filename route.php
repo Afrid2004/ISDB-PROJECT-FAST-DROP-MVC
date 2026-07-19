@@ -3,6 +3,7 @@
 require_once('bootstrap.php');
 require_once "helpers/pagination.php";
 require_once "helpers/avatar.php";
+require_once "helpers/logininfo.php";
 //hiding header layout for register and login page
 $hideLayout = false;
 $class = $_GET['class'] ?? "";

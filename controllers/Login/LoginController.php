@@ -61,6 +61,17 @@ class LoginController
         "email"    => $user->email,
       ];
 
+      // store last login info 
+      $ip = $_SERVER['REMOTE_ADDR'];
+      if ($ip === '::1') {
+        $ip = '127.0.0.1';
+      }
+      $userAgernt = $_SERVER['HTTP_USER_AGENT'];
+      $browser = getBrowser($userAgernt);
+      $device = getDeviceName($userAgernt);
+      $location = getLocation($ip);
+      User::updateLoginInfo($user->id, $ip, $browser, $device, $location);
+
       //if user checked in remember me box then store user token in cookie
       if ($remember) {
         // generate random token 

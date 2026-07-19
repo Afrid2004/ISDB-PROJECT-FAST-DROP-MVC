@@ -256,15 +256,35 @@ class User
   public static function findUser($id)
   {
     global $db;
-    $sql = "SELECT users.*, roles.role_name AS rolename
+    $sql = "SELECT users.*, 
+    district_name AS districtname,
+     roles.role_name AS rolename
         FROM users
         JOIN roles ON users.role_id = roles.id
+        LEFT JOIN districts ON districts.id=users.district_id
         WHERE users.id = $id LIMIT 1";
     $stmt = $db->query($sql);
     if ($stmt && $stmt->num_rows > 0) {
       return $stmt->fetch_object();
     }
     return null;
+  }
+
+  //get login info
+  public static function updateLoginInfo($id, $ip, $browser, $device, $location)
+  {
+    global $db;
+    $sql = "UPDATE users
+            SET
+                last_login = NOW(),
+                last_ip = ?,
+                last_browser = ?,
+                last_device = ?,
+                last_location=?
+            WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->bind_param("ssssi", $ip, $browser, $device, $location, $id);
+    return $stmt->execute();
   }
 
   //find user role and id

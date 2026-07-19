@@ -1,3 +1,7 @@
+<?php
+print_r($user);
+?>
+
 <div class="space-y-5">
 
   <!-- Page Title -->
@@ -18,29 +22,29 @@
       <div
         class="w-24 h-24 border border-gray-500/30 overflow-hidden flex items-center justify-center bg-black/30 shrink-0">
 
-        <img src="https://placehold.co/150x150" alt="" class="w-full h-full object-cover">
+        <?php echo avatar($user->name, $user->photo_url) ?>
 
       </div>
 
       <div class="space-y-2">
 
         <h2 class="text-2xl font-semibold text-white">
-          Md Faisal Yousuf Afrid
+          <?php echo $user->name ?>
         </h2>
 
         <p class="text-gray-400">
           <i class="fa-regular fa-envelope mr-2"></i>
-          faisal@gmail.com
+          <?php echo $user->email ?>
         </p>
 
         <p class="text-gray-400">
           <i class="fa-solid fa-shield-halved mr-2"></i>
-          Admin
+          <?php echo ucfirst(str_replace("_", " ", $user->rolename)) ?>
         </p>
 
         <p class="text-gray-400">
           <i class="fa-regular fa-calendar mr-2"></i>
-          Member Since : 15 July 2026
+          Member Since : <?php echo date("d F Y", strtotime($user->created_at)) ?>
         </p>
 
       </div>
@@ -63,7 +67,7 @@
 
         <i class="fa-solid fa-circle-check"></i>
 
-        Active
+        <?php echo ucfirst($user->status) ?>
 
       </span>
 
@@ -103,32 +107,27 @@
 
       <div>
         <p class="text-gray-400 text-sm">Full Name</p>
-        <p class="text-white mt-1">Md Faisal Yousuf Afrid</p>
-      </div>
-
-      <div>
-        <p class="text-gray-400 text-sm">Username</p>
-        <p class="text-white mt-1">afrid2004</p>
+        <p class="text-white mt-1"><?php echo $user->name ?></p>
       </div>
 
       <div>
         <p class="text-gray-400 text-sm">Email</p>
-        <p class="text-white mt-1">faisal@gmail.com</p>
+        <p class="text-white mt-1"><?php echo $user->email ?></p>
       </div>
 
       <div>
         <p class="text-gray-400 text-sm">Phone</p>
-        <p class="text-white mt-1">017xxxxxxxx</p>
+        <p class="text-white mt-1"><?php echo $user->phone ? $user->phone : "Null" ?></p>
       </div>
 
       <div>
         <p class="text-gray-400 text-sm">District</p>
-        <p class="text-white mt-1">Dhaka</p>
+        <p class="text-white mt-1"><?php echo $user->districtname ?></p>
       </div>
 
       <div>
         <p class="text-gray-400 text-sm">Address</p>
-        <p class="text-white mt-1">Mirpur, Dhaka</p>
+        <p class="text-white mt-1"><?php echo $user->address ? $user->address : "Null" ?></p>
       </div>
 
     </div>
@@ -180,7 +179,13 @@
         </p>
 
         <p class="text-white mt-1">
-          19 July 2026 08:30 PM
+          <?php
+          if (!empty($user->last_login)) {
+            echo date("d F Y", strtotime($user->last_login)) . " • " . date("h:i A", strtotime($user->last_login));
+          } else {
+            echo "First Login";
+          }
+          ?>
         </p>
 
       </div>
