@@ -317,7 +317,7 @@ class DashboardController
   function myaccount()
   {
     if (!isset($_SESSION['user'])) {
-      redirect("");
+      redirect("login");
       exit;
     }
     $role = $_SESSION['user']['role_id'];

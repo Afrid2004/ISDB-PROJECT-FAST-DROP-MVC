@@ -1,7 +1,3 @@
-<?php
-print_r($user);
-?>
-
 <div class="space-y-5">
 
   <!-- Page Title -->
@@ -162,33 +158,17 @@ print_r($user);
 
         </div>
 
-        <button class="px-4 py-2 bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30">
+        <a href="<?php echo $base_url ?>/dashboard/editprofile"
+          class="px-4 py-2 bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30">
 
           <i class="fa-solid fa-key mr-2"></i>
 
           Change Password
 
-        </button>
+        </a>
 
       </div>
 
-      <div>
-
-        <p class="text-gray-400 text-sm">
-          Last Login
-        </p>
-
-        <p class="text-white mt-1">
-          <?php
-          if (!empty($user->last_login)) {
-            echo date("d F Y", strtotime($user->last_login)) . " • " . date("h:i A", strtotime($user->last_login));
-          } else {
-            echo "First Login";
-          }
-          ?>
-        </p>
-
-      </div>
 
       <div>
 
@@ -201,6 +181,96 @@ print_r($user);
         </p>
 
       </div>
+
+      <div class="bg-black/40 border border-gray-500/30 p-5">
+        <div class="flex items-start gap-4">
+
+          <!-- Content -->
+          <div class="flex-1">
+
+            <h3 class="text-white font-medium text-lg">
+              Last Login
+            </h3>
+
+            <p class="text-gray-400 text-sm mt-1">
+              Your most recent login activity
+            </p>
+
+            <div class="mt-4 space-y-2">
+
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fa-regular fa-calendar text-blue-400 w-4"></i>
+                <span class="text-gray-400">Date :</span>
+
+                <span class="text-white">
+                  <?php
+                  if (!empty($user->last_login)) {
+                    echo date("d F Y", strtotime($user->last_login));
+                  } else {
+                    echo "First Login";
+                  }
+                  ?>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fa-regular fa-clock text-green-400 w-4"></i>
+                <span class="text-gray-400">Time :</span>
+
+                <span class="text-white">
+                  <?php
+                  if (!empty($user->last_login)) {
+                    echo date("h:i A", strtotime($user->last_login));
+                  } else {
+                    echo "--";
+                  }
+                  ?>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-globe text-cyan-400 w-4"></i>
+                <span class="text-gray-400">Location :</span>
+
+                <span class="text-white">
+                  <?php echo $user->last_location ?>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-laptop text-yellow-400 w-4"></i>
+                <span class="text-gray-400">Device :</span>
+
+                <span class="text-white">
+                  <?php echo $user->last_device ?>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fa-brands fa-chrome text-orange-400 w-4"></i>
+                <span class="text-gray-400">Browser :</span>
+
+                <span class="text-white">
+                  <?php echo $user->last_browser ?>
+                </span>
+              </div>
+
+              <div class="flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-network-wired text-purple-400 w-4"></i>
+                <span class="text-gray-400">IP Address :</span>
+
+                <span class="text-white">
+                  <?php echo $user->last_ip ?>
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
 
     </div>
 
@@ -229,13 +299,13 @@ print_r($user);
 
       </a>
 
-      <button class="px-4 py-2 bg-red-500/20 text-red-400 hover:bg-red-500/30">
+      <a href="<?php echo $base_url ?>/logout" class="px-4 py-2 bg-red-500/20 text-red-400 hover:bg-red-500/30">
 
         <i class="fa-solid fa-right-from-bracket mr-2"></i>
 
         Logout
 
-      </button>
+      </a>
 
     </div>
 
