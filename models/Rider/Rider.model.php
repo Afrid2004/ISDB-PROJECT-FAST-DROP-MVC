@@ -180,7 +180,7 @@ class Rider
       }
       // Update rider status
       $sql = "UPDATE riders 
-                SET status='suspended', work_status='unavailable' 
+                SET status='suspended', work_status='offline' 
                 WHERE id=?";
       $stmt = $db->prepare($sql);
       $stmt->bind_param("i", $id);
@@ -324,7 +324,8 @@ AND parcel_status = 'delivered'
       ),
       "links" => $pagination->links(),
       "perPage" => $pagination->getPerPage(),
-      "currentPage" => $pagination->getCurrentPage()
+      "currentPage" => $pagination->getCurrentPage(),
+      "totalCompleted" => $pagination->getTotalRows()
     ];
   }
 }

@@ -1,3 +1,9 @@
+<?php 
+echo "<pre>";
+print_r($allRiderData);
+echo "</pre>";
+?>
+
 <div>
   <div>
     <h2 class="text-white font-medium text-2xl mb-3">All Riders</h2>
@@ -40,6 +46,7 @@
                 <th class="px-6 py-3 text-left">Vehicle Info</th>
                 <th class="px-6 py-3 text-left">Status</th>
                 <th class="px-6 py-3 text-left">Work Status</th>
+                <th class="px-6 py-3 text-left">Completed Tasks</th>
                 <th class="px-6 py-3 text-left">Action</th>
                 <th class="px-6 py-3 text-left">Created At</th>
               </tr>

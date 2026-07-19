@@ -210,11 +210,13 @@ class DashboardController
     }
     $page = "allriders";
     $result = Rider::allApprovedSuspendedRiders();
+    $countResult = Rider::deliverCompetedParcels($result['data']->id);
     $allRiderData = $result['data'];
     $pagination = $result['links'];
     $perPage = $result['perPage'];
     $currentPage = $result['currentPage'];
-    view("dashboard", compact('role', 'page', 'allRiderData', 'pagination', 'perPage', 'currentPage'));
+    $totalCompleted = $countResult['totalCompleted'];
+    view("dashboard", compact('role', 'page', 'allRiderData', 'pagination', 'perPage', 'currentPage', 'totalCompleted'));
   }
 
   // approver rider 
@@ -385,6 +387,7 @@ class DashboardController
     $pagination = $result['links'];
     $perPage = $result['perPage'];
     $currentPage = $result['currentPage'];
-    view("dashboard", compact('role', 'page', 'completedParcelData', 'pagination', 'perPage', 'currentPage'));
+    $totalCompleted = $result['totalCompleted'];
+    view("dashboard", compact('role', 'page', 'completedParcelData', 'pagination', 'perPage', 'currentPage', 'totalCompleted'));
   }
 }

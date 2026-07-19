@@ -69,6 +69,11 @@ class Pagination
     return $this->currentPage;
   }
 
+  public function getTotalRows()
+  {
+    return $this->totalRows;
+  }
+
   public function links()
   {
     if ($this->totalPages <= 1) {
