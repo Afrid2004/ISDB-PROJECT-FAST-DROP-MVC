@@ -523,11 +523,13 @@ makeadminBtn.forEach((btn) => {
     if (!result.isConfirmed) return;
     try {
       let res = await fetch(`${BASE_URL}/api/user/makeadmin`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: `id=${userid}`,
+        body: JSON.stringify({
+          id: userid,
+        }),
       });
       let data = await res.json();
       if (data.success) {
@@ -570,16 +572,119 @@ removeadminBtn.forEach((btn) => {
     if (!result.isConfirmed) return;
     try {
       let res = await fetch(`${BASE_URL}/api/user/removeadmin`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
-        body: `id=${userid}`,
+        body: JSON.stringify({
+          id: userid,
+        }),
       });
       let data = await res.json();
       if (data.success) {
         await Swal.fire({
           title: "Admin removed successfully.",
+          text: `${data.message}`,
+          icon: "success",
+        });
+        location.reload();
+      } else {
+        await Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `${data.message}`,
+        });
+      }
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Request Failed",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
+  });
+});
+
+//user operation
+let blockUserBtn = document.querySelectorAll(".blockUserBtn");
+let activateUserBtn = document.querySelectorAll(".activateUserBtn");
+blockUserBtn.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    let userid = btn.dataset.userid;
+    const result = await Swal.fire({
+      title: "Block this user?",
+      text: "This user will be blocked.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00bba7",
+      cancelButtonColor: "#162636",
+      confirmButtonText: "Yes, Block User",
+    });
+
+    if (!result.isConfirmed) return;
+    try {
+      let res = await fetch(`${BASE_URL}/api/user/blockuser`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userid,
+        }),
+      });
+      let data = await res.json();
+      if (data.success) {
+        await Swal.fire({
+          title: "Admin Updated",
+          text: `${data.message}`,
+          icon: "success",
+        });
+        location.reload();
+      } else {
+        await Swal.fire({
+          icon: "error",
+          title: "Failed",
+          text: `${data.message}`,
+        });
+      }
+    } catch (error) {
+      await Swal.fire({
+        icon: "error",
+        title: "Request Failed",
+        text: "Something went wrong. Please try again later.",
+      });
+    }
+  });
+});
+
+activateUserBtn.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    let userid = btn.dataset.userid;
+    const result = await Swal.fire({
+      title: "Activate this user?",
+      text: "This user will be activated.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#00bba7",
+      cancelButtonColor: "#162636",
+      confirmButtonText: "Yes, Activate User",
+    });
+
+    if (!result.isConfirmed) return;
+    try {
+      let res = await fetch(`${BASE_URL}/api/user/activateuser`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: userid,
+        }),
+      });
+      let data = await res.json();
+      if (data.success) {
+        await Swal.fire({
+          title: "Admin Updated",
           text: `${data.message}`,
           icon: "success",
         });

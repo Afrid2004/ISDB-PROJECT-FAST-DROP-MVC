@@ -40,8 +40,8 @@
                 <th class="px-6 py-3 text-left">Vehicle Info</th>
                 <th class="px-6 py-3 text-left">Status</th>
                 <th class="px-6 py-3 text-left">Work Status</th>
-                <th class="px-6 py-3 text-left">Created At</th>
                 <th class="px-6 py-3 text-left">Action</th>
+                <th class="px-6 py-3 text-left">Created At</th>
               </tr>
             </thead>
             <tbody class="text-gray-700 text-sm">
@@ -97,9 +97,7 @@
                       <?php echo ucfirst($data->work_status) ?>
                     </span>
                   </td>
-                  <td class="px-6 py-4">
-                    <?php echo date("d F Y", strtotime($data->created_at)) ?>
-                  </td>
+                  
                   <td class="px-6 py-4">
                     <div class="flex flex-col gap-2">
                       <?php if ($data->status == 'approved'): ?>
@@ -114,6 +112,9 @@
                         </a>
                       <?php endif; ?>
                     </div>
+                  </td>
+                  <td class="px-6 py-4">
+                    <?php echo date("d F Y", strtotime($data->created_at)) ?>
                   </td>
                 </tr>
               <?php } ?>

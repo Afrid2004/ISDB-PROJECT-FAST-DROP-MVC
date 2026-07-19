@@ -171,6 +171,87 @@ class User
     }
   }
 
+  // block user
+  public static function blockuser($user_id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT * FROM users WHERE id=? AND status='active'";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $user = $stmt->get_result()->fetch_object();
+
+      if (!$user) {
+        throw new Exception("User not found");
+      }
+
+      if ($user->role_id == 1 && $user->role_id == 2) {
+        throw new Exception("Super Admin or Admin cannot be blocked.");
+      }
+
+      if ($user->id == $_SESSION['user']['id']) {
+        throw new Exception("You cannot block yourself.");
+      }
+
+      $sql = "UPDATE users SET status='blocked' WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      if ($stmt->affected_rows == 0) {
+        throw new Exception("Failed to block user!");
+      }
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
+      return false;
+    }
+  }
+
+
+   // activate user
+  public static function activateuser($user_id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT * FROM users WHERE id=? AND status='blocked'";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $user = $stmt->get_result()->fetch_object();
+
+      if (!$user) {
+        throw new Exception("User not found");
+      }
+
+      if ($user->role_id == 1 && $user->role_id == 2) {
+        throw new Exception("Super Admin or Admin cannot be activate.");
+      }
+
+      if ($user->id == $_SESSION['user']['id']) {
+        throw new Exception("You cannot activate yourself.");
+      }
+
+      $sql = "UPDATE users SET status='active' WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      if ($stmt->affected_rows == 0) {
+        throw new Exception("Failed to activate user!");
+      }
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
+      return false;
+    }
+  }
+
   // find user by id 
   public static function findUser($id)
   {

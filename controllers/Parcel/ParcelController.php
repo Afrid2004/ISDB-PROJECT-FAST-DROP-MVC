@@ -135,6 +135,14 @@ class ParcelController
       // transaction start 
       $db->begin_transaction();
       try {
+
+        // verify user active or not 
+        $user = User::findUser($sender_user_id);
+        $status = $user->status;
+        if($status == 'blocked'){
+          throw new Exception("You are blocked");
+        }
+
         $parcel_id = $parcel->create();
         if (!$parcel_id) {
           throw new Exception("Parcel creation failed!");
