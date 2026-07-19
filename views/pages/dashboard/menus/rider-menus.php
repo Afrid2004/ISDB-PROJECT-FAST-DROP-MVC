@@ -48,7 +48,7 @@
     <a class="block" href="<?php echo $base_url ?>/dashboard/completedtasks">
       <div
         class="flex items-center gap-2 text-white/70 hover:text-white px-4 py-3 hover:bg-white/20 duration-150 text-lg leading-none">
-        <i class="fa-solid fa-check"></i>
+        <i class="fa-solid fa-list-check"></i>
         Completed Tasks
       </div>
     </a>

@@ -70,7 +70,9 @@ class Parcel
     public static function generateTrackingId()
     {
         do {
-            $trackings = "FD-" . date("ymd") . rand(100000, 999999);
+            $trackings = "FD-" .
+                date("ymd") . "-" .
+                strtoupper(bin2hex(random_bytes(3)));
             $existTrackingId = self::findByTrackingID($trackings);
         } while ($existTrackingId);
 
@@ -222,6 +224,7 @@ class Parcel
         riders.rider_name AS rider_name,
         riders.rider_email AS rider_email,
         riders.rider_phone AS rider_phone,
+        riders.district_id AS district,
         riders.vehicle_type AS vehicle_type,
         sender.district_name AS sender_district_name,
         receiver.district_name AS receiver_district_name
@@ -239,45 +242,82 @@ class Parcel
         return $stmt->get_result()->fetch_object();
     }
 
-    // find parcel by user id 
     public static function findParcelByUserId($id)
     {
-        global $db;
-        $sql = "SELECT parcels.*, 
+        $pagination = new Pagination(10);
+
+        $countSql = "SELECT COUNT(*) AS total
+        FROM parcels
+        WHERE sender_user_id = ?";
+
+        $dataSql = "SELECT parcels.*,
         sender.district_name AS sender_district_name,
         receiver.district_name AS receiver_district_name
-        FROM parcels 
-        JOIN districts AS sender 
-            ON parcels.sender_district_id=sender.id
+        FROM parcels
+        JOIN districts AS sender
+            ON parcels.sender_district_id = sender.id
         JOIN districts AS receiver
-            ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.sender_user_id=? ORDER BY parcels.id DESC";
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        return array_map(fn($item) => (object)$item, $stmt->get_result()->fetch_all(MYSQLI_ASSOC));
+            ON parcels.receiver_district_id = receiver.id
+        WHERE parcels.sender_user_id = ?
+        ORDER BY parcels.id DESC";
+
+        return [
+            "data" => $pagination->paginate(
+                $countSql,
+                $dataSql,
+                "i",
+                [$id]
+            ),
+            "links" => $pagination->links(),
+            "perPage" => $pagination->getPerPage(),
+            "currentPage" => $pagination->getCurrentPage()
+        ];
     }
 
-
-    // pending parcel that payment status is paid
-    public static function allPendingParcels()
+    public static function getParcelsByStatus(array $statuses, $paymentStatus = null, $perPage = 10,  $assignedRiderId = null)
     {
-        global $db;
-        $sql = "SELECT parcels.*, 
-        sender.district_name AS sender_district_name,
-        receiver.district_name AS receiver_district_name
-        FROM parcels 
-        JOIN districts AS sender 
-            ON parcels.sender_district_id=sender.id
-        JOIN districts AS receiver
-            ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' AND (parcels.parcel_status='pending_pickup' OR parcels.parcel_status='rider_rejected') 
-        ORDER BY parcels.id DESC";
-        $stmt = $db->query($sql);
-        if ($stmt && $stmt->num_rows > 0) {
-            return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+        $pagination = new Pagination($perPage);
+        $placeholders = implode(',', array_fill(0, count($statuses), '?'));
+        $types = str_repeat("s", count($statuses));
+        $params = $statuses;
+        $where = "parcel_status IN ($placeholders)";
+        if ($paymentStatus !== null) {
+            $where .= " AND payment_status=?";
+            $types .= "s";
+            $params[] = $paymentStatus;
         }
-        return null;
+        if ($assignedRiderId !== null) {
+            $where .= " AND assigned_rider_id=?";
+            $types .= "i";
+            $params[] = $assignedRiderId;
+        }
+        $countSql = "SELECT COUNT(*) AS total
+        FROM parcels
+        WHERE $where";
+
+        $dataSql = "SELECT
+            parcels.*,
+            sender.district_name AS sender_district_name,
+            receiver.district_name AS receiver_district_name
+        FROM parcels
+        JOIN districts sender
+            ON sender.id=parcels.sender_district_id
+        JOIN districts receiver
+            ON receiver.id=parcels.receiver_district_id
+        WHERE $where
+        ORDER BY parcels.id DESC";
+
+        return [
+            "data" => $pagination->paginate(
+                $countSql,
+                $dataSql,
+                $types,
+                $params
+            ),
+            "links" => $pagination->links(),
+            "perPage" => $pagination->getPerPage(),
+            "currentPage" => $pagination->getCurrentPage()
+        ];
     }
 
     // assign parcel 
@@ -290,7 +330,7 @@ class Parcel
             $sql = "SELECT * From parcels
                 WHERE id=?
                 AND assigned_rider_id IS NULL
-                AND parcel_status='pending_pickup'";
+                AND parcel_status IN ('pending_pickup','rider_rejected')";
             $stmt = $db->prepare($sql);
             $stmt->bind_param("i", $parcelId);
             $stmt->execute();
@@ -452,31 +492,6 @@ class Parcel
         }
     }
 
-    // parcel that which have assigned rider
-    public static function allAssignedParcels($id)
-    {
-        global $db;
-        $sql = "SELECT parcels.*, 
-        sender.district_name AS sender_district_name,
-        receiver.district_name AS receiver_district_name
-        FROM parcels 
-        JOIN districts AS sender 
-            ON parcels.sender_district_id=sender.id
-        JOIN districts AS receiver
-            ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' 
-        AND parcels.parcel_status='assigned'
-        AND parcels.assigned_rider_id=?";
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
-        }
-        return [];
-    }
-
     // update parcel status
     public static function updateParcelStatus($parcel_id, $parcel_status, $rider_id)
     {
@@ -544,6 +559,7 @@ class Parcel
                 throw new Exception("Tracking insert failed!");
             }
 
+
             // rider status switch to available 
             if ($parcel_status === "delivered") {
                 $sql = "UPDATE riders
@@ -555,8 +571,45 @@ class Parcel
                 if ($stmt->affected_rows <= 0) {
                     throw new Exception("Failed to update rider status.");
                 }
-            }
 
+                //cash out 
+                $sql = "SELECT district_id FROM riders WHERE id=?";
+                $stmt = $db->prepare($sql);
+                $stmt->bind_param("i", $rider_id);
+                $stmt->execute();
+
+                $rider = $stmt->get_result()->fetch_object();
+
+                if (!$rider) {
+                    throw new Exception("Rider not found.");
+                }
+
+                $sameDistrict = ($parcel->receiver_district_id == $rider->district_id);
+
+                $riderCommission = $sameDistrict
+                    ? round($parcel->delivery_charge * 0.60, 2)
+                    : round($parcel->delivery_charge * 0.80, 2);
+
+                // Prevent duplicate cashout
+                if (Cashout::findByParcelId($parcel_id)) {
+                    throw new Exception("Cashout already created.");
+                }
+
+                $cashout = new Cashout();
+                $cashout->set(
+                    $parcel_id,
+                    $rider_id,
+                    $parcel->delivery_charge,
+                    $riderCommission,
+                    "cash",
+                    null,
+                    "pending"
+                );
+
+                if (!$cashout->create()) {
+                    throw new Exception("Failed to create cashout.");
+                }
+            }
             $db->commit();
             return true;
         } catch (Exception $e) {
@@ -568,44 +621,81 @@ class Parcel
 
 
     // parcel that are delivered
-    public static function allDeliveredParcels()
-    {
-        global $db;
-        $sql = "SELECT parcels.*, 
-        sender.district_name AS sender_district_name,
-        receiver.district_name AS receiver_district_name
-        FROM parcels 
-        JOIN districts AS sender 
-            ON parcels.sender_district_id=sender.id
-        JOIN districts AS receiver
-            ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' AND parcels.parcel_status='delivered' 
-        ORDER BY parcels.id DESC";
-        $stmt = $db->query($sql);
-        if ($stmt && $stmt->num_rows > 0) {
-            return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
-        }
-        return null;
-    }
+    // public static function allDeliveredParcels()
+    // {
+    //     global $db;
+    //     $sql = "SELECT
+    //             parcels.*,
+    //             sender.district_name AS sender_district_name,
+    //             receiver.district_name AS receiver_district_name
+    //         FROM parcels
+    //         JOIN districts AS sender
+    //             ON parcels.sender_district_id = sender.id
+    //         JOIN districts AS receiver
+    //             ON parcels.receiver_district_id = receiver.id
+    //         WHERE parcels.payment_status='paid'
+    //         AND parcels.parcel_status='delivered'
+    //         ORDER BY parcels.id DESC";
+    //     $stmt = $db->query($sql);
+    //     if ($stmt && $stmt->num_rows > 0) {
+    //         return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+    //     }
+    //     return null;
+    // }
 
-    // parcel that are delivered
-    public static function allCancelledParcels()
+    // track the parcel
+    public static function trackParcel($tracking_id)
     {
         global $db;
-        $sql = "SELECT parcels.*, 
-        sender.district_name AS sender_district_name,
-        receiver.district_name AS receiver_district_name
-        FROM parcels 
-        JOIN districts AS sender 
-            ON parcels.sender_district_id=sender.id
-        JOIN districts AS receiver
-            ON parcels.receiver_district_id=receiver.id
-        WHERE parcels.payment_status='paid' AND parcels.parcel_status='cancelled' 
-        ORDER BY parcels.id DESC";
-        $stmt = $db->query($sql);
-        if ($stmt && $stmt->num_rows > 0) {
-            return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+        $sql = "SELECT
+
+    parcels.id AS parcel_id,
+    parcels.tracking_id,
+    parcels.parcel_name,
+    parcels.parcel_type,
+    parcels.weight,
+    parcels.sender_name,
+    parcels.sender_district_id,
+    parcels.delivery_charge,
+    parcels.receiver_name,
+    parcels.receiver_district_id,
+    parcels.payment_status,
+    parcels.parcel_status,
+
+    trackings.id AS tracking_row_id,
+    trackings.tracking_status,
+    trackings.location_id,
+    trackings.details,
+    trackings.created_at AS tracking_time,
+
+    location.district_name AS current_location,
+    sender.district_name AS sender_district_name,
+    receiver.district_name AS receiver_district_name
+
+FROM parcels
+
+INNER JOIN trackings
+    ON parcels.id = trackings.parcel_id
+
+LEFT JOIN districts AS location
+    ON location.id = trackings.location_id
+
+LEFT JOIN districts AS sender
+    ON sender.id = parcels.sender_district_id
+
+LEFT JOIN districts AS receiver
+    ON receiver.id = parcels.receiver_district_id
+
+WHERE parcels.tracking_id = ?
+
+ORDER BY trackings.created_at ASC";
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param("s", $tracking_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result && $result->num_rows > 0) {
+            return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
         }
-        return null;
+        return [];
     }
 }

@@ -50,20 +50,6 @@ class Rider
     return $db->insert_id;
   }
 
-  //show all riders
-  public static function allRiders()
-  {
-    global $db;
-    $sql = "SELECT riders.*, districts.district_name 
-    FROM riders JOIN districts
-    ON riders.district_id=districts.id";
-    $stmt = $db->query($sql);
-    if ($stmt && $stmt->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
-    }
-    return null;
-  }
-
   // find rider by id 
   public static function findRiderByUserId($id)
   {
@@ -82,19 +68,25 @@ class Rider
   //show all approved riders
   public static function allApprovedSuspendedRiders()
   {
-    global $db;
-    $sql = "SELECT riders.*,
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total
+          FROM riders WHERE status IN ('approved','suspended')";
+    $dataSql = "SELECT riders.*,
     districts.district_name
     FROM riders
     JOIN districts
     ON riders.district_id=districts.id
-    WHERE (riders.status='approved' OR riders.status='suspended')
+    WHERE riders.status IN ('approved','suspended')
     ORDER BY riders.created_at DESC";
-    $stmt = $db->query($sql);
-    if ($stmt && $stmt->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
-    }
-    return null;
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
   }
 
   //show all pending riders
@@ -279,6 +271,7 @@ class Rider
         JOIN districts AS receiver
             ON parcels.receiver_district_id=receiver.id
         WHERE parcels.payment_status='paid' 
+        AND parcels.parcel_status IN ('rider_accepted','picked_up','in_transit')
         AND parcels.assigned_rider_id=? ORDER BY parcels.id DESC";
     $stmt = $db->prepare($sql);
     $stmt->bind_param("i", $id);
@@ -293,8 +286,22 @@ class Rider
   //pracel that have been delivered successfully 
   public static function deliverCompetedParcels($id)
   {
-    global $db;
-    $sql = "SELECT parcels.*,
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total
+FROM parcels
+WHERE assigned_rider_id = ?
+AND parcel_status = 'delivered'
+";
+    $dataSql = "SELECT parcels.*,
+    cashouts.id AS cashout_id,
+                cashouts.original_delivery_charge,
+                cashouts.rider_commission,
+                cashouts.payment_method,
+                cashouts.transaction_id,
+                cashouts.cashout_status,
+                cashouts.created_at AS cashout_created_at,
+                cashouts.updated_at AS cashout_updated_at,
+                cashouts.paid_at,
             sender.district_name AS sender_district_name,
             receiver.district_name AS receiver_district_name
             FROM parcels
@@ -302,18 +309,22 @@ class Rider
                 ON parcels.sender_district_id = sender.id
             JOIN districts AS receiver
                 ON parcels.receiver_district_id = receiver.id
+            LEFT JOIN cashouts
+                ON cashouts.parcel_id = parcels.id
             WHERE parcels.assigned_rider_id = ?
             AND parcels.parcel_status = 'delivered'
             ORDER BY parcels.id DESC";
 
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    if ($result->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $result->fetch_all(MYSQLI_ASSOC));
-    }
-    return [];
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql,
+        "i",
+        [$id]
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
   }
 }

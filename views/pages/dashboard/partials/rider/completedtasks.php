@@ -63,14 +63,6 @@
           </th>
 
           <th class="px-6 py-3 text-left">
-            From
-          </th>
-
-          <th class="px-6 py-3 text-left">
-            To
-          </th>
-
-          <th class="px-6 py-3 text-left">
             Delivery Charge
           </th>
 
@@ -80,10 +72,6 @@
 
           <th class="px-6 py-3 text-left">
             Payment Status
-          </th>
-
-          <th class="px-6 py-3 text-left">
-            Parcel Status
           </th>
 
           <th class="px-6 py-3 text-left">
@@ -103,10 +91,9 @@
       </thead>
 
       <tbody class="text-gray-700 text-sm">
-        <?php foreach ($completedParcelData as $key => $data):
-
-            $key++;
-
+        <?php
+          $start = ($currentPage - 1) * $perPage;
+          foreach ($completedParcelData as $key => $data):
             $paymentClass = match ($data->payment_status) {
               "pending"  => "bg-yellow-500/20 text-yellow-400",
               "paid"     => "bg-teal-500/20 text-teal-400",
@@ -115,25 +102,7 @@
               default    => "bg-gray-500/20 text-gray-300",
             };
 
-            $parcelClass = match ($data->parcel_status) {
-              "delivered" => "bg-green-500/20 text-green-400",
-              default     => "bg-gray-500/20 text-gray-300",
-            };
-
-            /*
-    Rider Earnings
-    পরে চাইলে commission system বসাবে।
-    এখন full delivery charge দেখাচ্ছে।
-*/
-            $riderEarn = $data->delivery_charge;
-
-            /*
-    Future Cashout Status
-    DB field হলে replace করবে।
-*/
-            $cashoutStatus = "pending";
-
-            $cashoutClass = match ($cashoutStatus) {
+            $cashoutClass = match ($data->cashout_status) {
               "paid" => "bg-green-500/20 text-green-400",
               "processing" => "bg-blue-500/20 text-blue-400",
               default => "bg-yellow-500/20 text-yellow-400"
@@ -142,9 +111,7 @@
           ?>
 
         <tr class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
-
-          <td class="px-6 py-4">
-            <?= $key ?>
+          <td class="px-6 py-4"><?= $start + $key + 1 ?></td>
           </td>
 
           <td class="px-6 py-4">
@@ -155,22 +122,13 @@
               </small>
             </div>
           </td>
-
-          <td class="px-6 py-4">
-            <?= $data->sender_district_name ?>
-          </td>
-
-          <td class="px-6 py-4">
-            <?= $data->receiver_district_name ?>
-          </td>
-
           <td class="px-6 py-4">
             <?= number_format($data->delivery_charge, 2) ?> TK
           </td>
 
           <td class="px-6 py-4">
             <span class="text-lime-400 font-medium">
-              <?= number_format($riderEarn, 2) ?> TK
+              <?= number_format($data->rider_commission, 2) ?> TK
             </span>
           </td>
 
@@ -181,14 +139,8 @@
           </td>
 
           <td class="px-6 py-4">
-            <span class="px-3 py-2 rounded <?= $parcelClass ?>">
-              Delivered
-            </span>
-          </td>
-
-          <td class="px-6 py-4">
             <span class="px-3 py-2 rounded <?= $cashoutClass ?>">
-              <?= ucfirst($cashoutStatus) ?>
+              <?= ucfirst($data->cashout_status) ?>
             </span>
           </td>
 
@@ -205,9 +157,9 @@
 
               </a>
 
-              <?php if ($cashoutStatus == "pending"): ?>
+              <?php if ($data->cashout_status == "pending"): ?>
 
-              <button data-id="<?= $data->id ?>"
+              <button data-parcelid="<?= $data->id ?>"
                 class="cashoutBtn px-3 flex items-center gap-1 py-2 rounded bg-green-500/20 text-green-400 hover:bg-green-500/30 active:bg-green-500/20 cursor-pointer justify-center">
 
                 <i class="fa-solid fa-wallet text-sm"></i>
@@ -236,7 +188,7 @@
     </table>
 
   </div>
-
+  <?= $pagination ?>
   <?php } else { ?>
 
   <div class="bg-black/40 border border-gray-500/30 text-white px-4 py-3">

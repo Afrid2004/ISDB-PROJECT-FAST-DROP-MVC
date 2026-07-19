@@ -30,16 +30,145 @@ class User
   //read user
   public static function showUser()
   {
-    global $db;
-    // $sql = "SELECT * FROM users";
-    $sql = "SELECT users.*, roles.role_name AS rolename
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total FROM users";
+    $dataSql = "SELECT users.*, roles.role_name AS rolename
         FROM users
         JOIN roles ON users.role_id = roles.id";
-    $stmt = $db->query($sql);
-    if ($stmt && $stmt->num_rows > 0) {
-      return array_map(fn($item) => (object)$item, $stmt->fetch_all(MYSQLI_ASSOC));
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql,
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
+  }
+
+  public static function pendingAdmin()
+  {
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total FROM users WHERE role_id=?";
+    $dataSql = "SELECT users.*, roles.role_name AS rolename
+        FROM users
+        JOIN roles ON users.role_id = roles.id
+        WHERE role_id=?";
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql,
+        "i",
+        [3]
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
+  }
+
+  // make admin 
+  public static function makeAdmin($user_id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT * FROM users WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $user = $stmt->get_result()->fetch_object();
+
+      if (!$user) {
+        throw new Exception("User not found");
+      }
+
+      if ($user->role_id == 2) {
+        throw new Exception("User is already an admin.");
+      }
+
+      if ($user->id == $_SESSION['user']['id']) {
+        throw new Exception("You are already logged in as admin.");
+      }
+
+      $sql = "UPDATE users SET role_id=2 WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      if ($stmt->affected_rows < 0) {
+        throw new Exception("Failed to make admin!");
+      }
+
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
+      return false;
     }
-    return null;
+  }
+
+  //all admin
+  public static function allAdmin()
+  {
+    $pagination = new Pagination(10);
+    $countSql = "SELECT COUNT(*) AS total FROM users WHERE role_id=?";
+    $dataSql = "SELECT users.*, roles.role_name AS rolename
+        FROM users
+        JOIN roles ON users.role_id = roles.id
+        WHERE role_id=?";
+    return [
+      "data" => $pagination->paginate(
+        $countSql,
+        $dataSql,
+        "i",
+        [2]
+      ),
+      "links" => $pagination->links(),
+      "perPage" => $pagination->getPerPage(),
+      "currentPage" => $pagination->getCurrentPage()
+    ];
+  }
+
+  // make admin 
+  public static function removeAdmin($user_id)
+  {
+    global $db;
+    $db->begin_transaction();
+    try {
+      $sql = "SELECT * FROM users WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      $user = $stmt->get_result()->fetch_object();
+
+      if (!$user) {
+        throw new Exception("User not found");
+      }
+
+      if ($user->role_id == 1) {
+        throw new Exception("Super Admin cannot be removed.");
+      }
+
+      if ($user->id == $_SESSION['user']['id']) {
+        throw new Exception("You cannot remove yourself.");
+      }
+
+      $sql = "UPDATE users SET role_id=3 WHERE id=?";
+      $stmt = $db->prepare($sql);
+      $stmt->bind_param("i", $user_id);
+      $stmt->execute();
+      if ($stmt->affected_rows == 0) {
+        throw new Exception("Failed to remove admin!");
+      }
+
+      $db->commit();
+      return true;
+    } catch (Exception $e) {
+      $db->rollback();
+      $_SESSION['errors'][] = $e->getMessage();
+      return false;
+    }
   }
 
   // find user by id 

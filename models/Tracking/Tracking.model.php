@@ -63,4 +63,36 @@ class Tracking
       'rider_rejected'  => 'Rider Rejected',
     ][$status] ?? ucfirst(str_replace("_", " ", $status));
   }
+
+  public static function statusIcon($status)
+  {
+    return match ($status) {
+      'pending'         => 'fa-clock',
+      'payment_paid'    => 'fa-money-bill-wave',
+      'assigned'        => 'fa-user-check',
+      'rider_accepted'  => 'fa-handshake',
+      'picked_up'       => 'fa-box',
+      'in_transit'      => 'fa-truck-fast',
+      'delivered'       => 'fa-circle-check',
+      'rider_rejected'  => 'fa-circle-xmark',
+      default           => 'fa-box-open'
+    };
+  }
+
+  public static function statusClass($status)
+  {
+    return match ($status) {
+
+      'pending'         => 'bg-yellow-100 text-yellow-700',
+      'payment_paid'    => 'bg-emerald-100 text-emerald-700',
+      'assigned'        => 'bg-blue-100 text-blue-700',
+      'rider_accepted'  => 'bg-indigo-100 text-indigo-700',
+      'picked_up'       => 'bg-cyan-100 text-cyan-700',
+      'in_transit'      => 'bg-purple-100 text-purple-700',
+      'delivered'       => 'bg-green-100 text-green-700',
+      'rider_rejected'  => 'bg-red-100 text-red-700',
+      'cancelled'       => 'bg-red-100 text-red-700',
+      default           => 'bg-gray-100 text-gray-700',
+    };
+  }
 }

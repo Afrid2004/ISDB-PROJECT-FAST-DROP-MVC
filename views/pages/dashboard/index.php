@@ -11,9 +11,9 @@ function renderDashboard($role, $page = "index", $data = [])
       include_once("partials/super-admin/$page.php");
       break;
     // //admin dashboard
-    // case 2:
-    //   include_once('partials/$page.php');
-    //   break;
+    case 2:
+      include_once("partials/admin/$page.php");
+      break;
     //user dashboard
     case 3:
       include_once("partials/user/$page.php");

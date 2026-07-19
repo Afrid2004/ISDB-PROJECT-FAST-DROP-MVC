@@ -1,8 +1,3 @@
-<?php
-print_r($cancelledParcelsData);
-?>
-
-
 <div>
     <div>
         <h2 class="text-white font-medium text-2xl mb-3">All Cancelled Parcels</h2>
@@ -24,8 +19,9 @@ print_r($cancelledParcelsData);
                             </tr>
                         </thead>
                         <tbody class="text-gray-700 text-sm">
-                            <?php foreach ($cancelledParcelsData as $key => $data) {
-                                $key++;
+                            <?php
+                            $start = ($currentPage - 1) * $perPage;
+                            foreach ($cancelledParcelsData as $key => $data) {
                                 $paymentClass = match ($data->payment_status) {
                                     "pending"             => "bg-yellow-500/20 text-yellow-400",
                                     "paid"                => "bg-teal-500/20 text-teal-400",
@@ -48,7 +44,11 @@ print_r($cancelledParcelsData);
 
                                 <tr
                                     class="border-b border-gray-500/30 last:border-b-0 bg-black/40 hover:bg-black/50 duration-150 text-white">
-                                    <td class="px-6 py-4"><?php echo $key ?></td>
+                                    <td class="px-6 py-4">
+
+                                        <?= $start + $key + 1 ?>
+
+                                    </td>
                                     <td class="px-6 py-4">
                                         <div>
                                             <p><?php echo $data->parcel_name; ?> [<?php echo $data->weight; ?> KG]</p>
@@ -99,6 +99,7 @@ print_r($cancelledParcelsData);
                         </tbody>
                     </table>
                 </div>
+                <?= $pagination ?>
             <?php } else { ?>
 
                 <div class="bg-black/40 border border-gray-500/30 text-white px-4 py-3">

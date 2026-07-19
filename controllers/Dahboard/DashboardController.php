@@ -18,21 +18,66 @@ class DashboardController
   // dynamicly render role based pages
   function allusers()
   {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
+    $page = 'allusers';
+    $result = User::showUser();
+    $allUserdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allUserdata', 'pagination', 'perPage', 'currentPage'));
+  }
+
+  // add admin
+  function addadmin()
+  {
     $role = $_SESSION['user']['role_id'];
     if (!isset($_SESSION['user']) || $role != 1) {
       redirect("");
       exit;
     }
-    $allUserdata = User::showUser();
-    $page = 'allusers';
-    view("dashboard", compact('role', 'page', 'allUserdata'));
+    $page = 'addadmin';
+    $result = User::pendingAdmin();
+    $allUserdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allUserdata', 'pagination', 'perPage', 'currentPage'));
+  }
+
+  function alladmin()
+  {
+    $role = $_SESSION['user']['role_id'];
+    if (!isset($_SESSION['user']) || $role != 1) {
+      redirect("");
+      exit;
+    }
+    $page = 'alladmin';
+    $result = User::allAdmin();
+    $allUserdata  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allUserdata', 'pagination', 'perPage', 'currentPage'));
   }
 
   // dynamically render all parcels page 
   function allparcels()
   {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
     $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if ($role != 1 && $role != 2) {
       redirect("");
       exit;
     }
@@ -45,12 +90,12 @@ class DashboardController
   // parceldetails page 
   function parceldetails()
   {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || ($role != 1 && $role != 3 && $role != 4)) {
+    if (!isset($_SESSION['user'])) {
       redirect("");
       exit;
     }
-    $id = intval($_GET['id']);
+    $role = $_SESSION['user']['role_id'];
+    $id = intval($_GET['id'] ?? 0);
     $parcelData = Parcel::findParcelById($id);
     $page = "parceldetails";
     view("dashboard", compact(
@@ -65,54 +110,87 @@ class DashboardController
   //pending parcels page 
   function pendingparcels()
   {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if (!isset($_SESSION['user'])) {
       redirect("");
       exit;
     }
-
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
     $page = "pendingparcels";
-    $pendingParcelsData = Parcel::allPendingParcels();
-    view("dashboard", compact('role', 'page', 'pendingParcelsData'));
+    $result = Parcel::getParcelsByStatus(
+      ['pending_pickup', 'rider_rejected'],
+      'paid'
+    );
+    $pendingParcelsData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'pendingParcelsData', 'pagination', 'perPage', 'currentPage'));
   }
 
   //delivered parcels page 
   function deliveredparcels()
   {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if (!isset($_SESSION['user'])) {
       redirect("");
       exit;
     }
-
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
     $page = "deliveredparcels";
-    $deliveredParcelsData = Parcel::allDeliveredParcels();
-    view("dashboard", compact('role', 'page', 'deliveredParcelsData'));
+    $result = Parcel::getParcelsByStatus(
+      ['delivered'],
+      'paid'
+    );
+    $deliveredParcelsData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'deliveredParcelsData', 'pagination', 'perPage', 'currentPage'));
   }
 
   //cancelled parcels page 
   function cancelledparcels()
   {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if (!isset($_SESSION['user'])) {
       redirect("");
       exit;
     }
-
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
     $page = "cancelledparcels";
-    $cancelledParcelsData = Parcel::allCancelledParcels();
-    view("dashboard", compact('role', 'page', 'cancelledParcelsData'));
+    $result = Parcel::getParcelsByStatus(
+      ['cancelled'],
+      'paid'
+    );
+    $cancelledParcelsData  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'cancelledParcelsData', 'pagination', 'perPage', 'currentPage'));
   }
 
   // addrider page 
   function addrider()
   {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if (!isset($_SESSION['user'])) {
       redirect("");
       exit;
     }
-
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
     $page = "addrider";
     $addRiderData = Rider::allPendingDeclineRiders();
     view("dashboard", compact('role', 'page', 'addRiderData'));
@@ -121,22 +199,33 @@ class DashboardController
   // allrider page 
   function allriders()
   {
-    $role = $_SESSION['user']['role_id'];
-    if (!isset($_SESSION['user']) || $role != 1) {
+    if (!isset($_SESSION['user'])) {
       redirect("");
       exit;
     }
-
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
+      redirect("");
+      exit;
+    }
     $page = "allriders";
-    $allRiderData = Rider::allApprovedSuspendedRiders();
-    view("dashboard", compact('role', 'page', 'allRiderData'));
+    $result = Rider::allApprovedSuspendedRiders();
+    $allRiderData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'allRiderData', 'pagination', 'perPage', 'currentPage'));
   }
 
   // approver rider 
   function approverider()
   {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
     $role = $_SESSION['user']['role_id'];
-    if ($role != 1) {
+    if ($role != 1 && $role != 2) {
       redirect("");
       exit;
     }
@@ -150,8 +239,12 @@ class DashboardController
   // decline rider
   function declinerider()
   {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
     $role = $_SESSION['user']['role_id'];
-    if ($role != 1) {
+    if ($role != 1 && $role != 2) {
       redirect("");
       exit;
     }
@@ -165,7 +258,12 @@ class DashboardController
   // suspend rider 
   function suspendrider()
   {
-    if ($_SESSION['user']['role_id'] != 1) {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
       redirect("");
       exit;
     }
@@ -179,7 +277,12 @@ class DashboardController
   //unsuspend rider 
   function unsuspendrider()
   {
-    if ($_SESSION['user']['role_id'] != 1) {
+    if (!isset($_SESSION['user'])) {
+      redirect("");
+      exit;
+    }
+    $role = $_SESSION['user']['role_id'];
+    if ($role != 1 && $role != 2) {
       redirect("");
       exit;
     }
@@ -199,11 +302,13 @@ class DashboardController
     }
     $role = $_SESSION['user']['role_id'];
     $userId = $_SESSION['user']['id'];
-    if ($role == 3 || $role == 4) {
-      $myParcelData = Parcel::findParcelByUserId($userId);
-    }
+    $result = Parcel::findParcelByUserId($userId);
+    $myParcelData = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
     $page = "myparcels";
-    view("dashboard", compact('role', 'page', 'myParcelData'));
+    view("dashboard", compact('role', 'page', 'myParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 
 
@@ -236,9 +341,19 @@ class DashboardController
     }
     $userid = $_SESSION['user']['id'];
     $rider = Rider::findRiderByUserId($userid);
-    $page = 'assignedparcels';
-    $assgnedParcelData = Parcel::allAssignedParcels($rider->id);
-    view('dashboard', compact('role', 'page', 'assgnedParcelData'));
+
+    $page = "assignedparcels";
+    $result = Parcel::getParcelsByStatus(
+      ['assigned'],
+      'paid',
+      10,
+      $rider->id,
+    );
+    $assgnedParcelData  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'assgnedParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 
   function acceptedparcels()
@@ -264,8 +379,12 @@ class DashboardController
     }
     $userid = $_SESSION['user']['id'];
     $rider = Rider::findRiderByUserId($userid);
-    $page = 'completedtasks';
-    $completedParcelData = Rider::deliverCompetedParcels($rider->id);
-    view('dashboard', compact('role', 'page', 'completedParcelData'));
+    $page = "completedtasks";
+    $result = Rider::deliverCompetedParcels($rider->id);
+    $completedParcelData  = $result['data'];
+    $pagination = $result['links'];
+    $perPage = $result['perPage'];
+    $currentPage = $result['currentPage'];
+    view("dashboard", compact('role', 'page', 'completedParcelData', 'pagination', 'perPage', 'currentPage'));
   }
 }
