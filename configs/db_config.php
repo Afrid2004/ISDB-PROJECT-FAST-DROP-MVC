@@ -1,20 +1,18 @@
-<?php   
-   //Remote
-   
-     define("SERVER","localhost");
-     define("USER","root");
-     define("DATABASE","fast_drop_2026");
-     define("PASSWORD","");
+<?php
 
-   //Local
-   
-    //define("SERVER","localhost");
-    //define("USER","root");//rajib
-    //define("DATABASE","hosting");
-    //define("PASSWORD","");
+//Remote
+define("SERVER","localhost");
+define("USER","faisalfr_fast_drop_2026");
+define("DATABASE","faisalfr_fast_drop_2026");
+define("PASSWORD","faisalfr_fast_drop_2026");
 
-    $db=new mysqli(SERVER,USER,PASSWORD,DATABASE);
-    $tx="";
-  
 
-?>
+//Local
+// define("SERVER", "localhost");
+// define("USER", "root");
+// define("DATABASE", "fast_drop_2026");
+// define("PASSWORD", "");
+
+
+$db = new mysqli(SERVER, USER, PASSWORD, DATABASE);
+$tx = "";

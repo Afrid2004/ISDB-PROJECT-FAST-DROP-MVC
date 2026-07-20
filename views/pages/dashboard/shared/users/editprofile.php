@@ -1,3 +1,7 @@
+<?php
+$alldistricts = Districts::allDistricts();
+?>
+
 <div class="space-y-6">
 
   <!-- Page Header -->
@@ -70,18 +74,7 @@
             Full Name
           </label>
 
-          <input type="text"
-            class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
-
-        </div>
-
-        <div>
-
-          <label class="block text-gray-300 mb-2">
-            Username
-          </label>
-
-          <input type="text"
+          <input type="text" value="<?php echo $user->name ?? "" ?>"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -92,8 +85,8 @@
             Email
           </label>
 
-          <input type="email" readonly
-            class="w-full bg-black/20 border border-gray-500/30 px-4 py-3 text-gray-400 cursor-not-allowed">
+          <input type="email" value="<?php echo $user->email ?? "" ?>" readonly
+            class="w-full bg-black/20 outline-none border border-gray-500/30 px-4 py-3 text-gray-400 cursor-not-allowed">
 
         </div>
 
@@ -103,7 +96,7 @@
             Phone
           </label>
 
-          <input type="text"
+          <input type="text" value="<?php echo $user->phone ?? "" ?>"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -117,7 +110,10 @@
           <select
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
-            <option>Select District</option>
+            <option selected disabled>Select District</option>
+            <?php foreach ($alldistricts as $district) { ?>
+              <option <?php echo ($district->id==$user->district_id) ? 'selected' : '' ?> value="<?php echo $district->id ?>"><?php echo $district->district_name; ?></option>
+            <?php } ?>
 
           </select>
 
@@ -129,7 +125,7 @@
             Address
           </label>
 
-          <textarea rows="3"
+          <textarea value="<?php echo $user->address ?? "" ?>" rows="3"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500"></textarea>
 
         </div>
