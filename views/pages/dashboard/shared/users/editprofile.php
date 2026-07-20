@@ -14,7 +14,8 @@ $alldistricts = Districts::allDistricts();
     </p>
   </div>
 
-  <form action="" method="POST" enctype="multipart/form-data" class="space-y-6">
+  <form action="<?php echo $base_url ?>/dashboard/updateprofile" method="POST" enctype="multipart/form-data"
+    class="space-y-6">
 
     <!-- Profile Photo -->
     <div class="bg-black/40 border border-gray-500/30">
@@ -29,7 +30,7 @@ $alldistricts = Districts::allDistricts();
 
         <div class="w-36 h-36 border border-gray-500/30 overflow-hidden flex items-center justify-center bg-black/20">
 
-          <img src="https://placehold.co/150x150" class="w-full h-full object-cover">
+          <?php echo avatar($user->name, $user->photo_url) ?>
 
         </div>
 
@@ -42,7 +43,7 @@ $alldistricts = Districts::allDistricts();
 
             Upload New Photo
 
-            <input type="file" name="photo" class="hidden">
+            <input type="file" name="file" class="hidden">
 
           </label>
 
@@ -74,7 +75,7 @@ $alldistricts = Districts::allDistricts();
             Full Name
           </label>
 
-          <input type="text" value="<?php echo $user->name ?? "" ?>"
+          <input type="text" name="name" value="<?php echo $user->name ?? "" ?>"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -85,7 +86,7 @@ $alldistricts = Districts::allDistricts();
             Email
           </label>
 
-          <input type="email" value="<?php echo $user->email ?? "" ?>" readonly
+          <input type="email" name="email" value="<?php echo $user->email ?? "" ?>" readonly
             class="w-full bg-black/20 outline-none border border-gray-500/30 px-4 py-3 text-gray-400 cursor-not-allowed">
 
         </div>
@@ -96,7 +97,7 @@ $alldistricts = Districts::allDistricts();
             Phone
           </label>
 
-          <input type="text" value="<?php echo $user->phone ?? "" ?>"
+          <input type="text" name="phone" value="<?php echo $user->phone ?? "" ?>"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -107,12 +108,13 @@ $alldistricts = Districts::allDistricts();
             District
           </label>
 
-          <select
+          <select name="district"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
             <option selected disabled>Select District</option>
             <?php foreach ($alldistricts as $district) { ?>
-              <option <?php echo ($district->id==$user->district_id) ? 'selected' : '' ?> value="<?php echo $district->id ?>"><?php echo $district->district_name; ?></option>
+            <option <?php echo ($district->id == $user->district_id) ? 'selected' : '' ?>
+              value="<?php echo $district->id ?>"><?php echo $district->district_name; ?></option>
             <?php } ?>
 
           </select>
@@ -125,7 +127,7 @@ $alldistricts = Districts::allDistricts();
             Address
           </label>
 
-          <textarea value="<?php echo $user->address ?? "" ?>" rows="3"
+          <textarea name="address" value="<?php echo $user->address ?? "" ?>" rows="3"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500"></textarea>
 
         </div>
@@ -152,7 +154,7 @@ $alldistricts = Districts::allDistricts();
             Current Password
           </label>
 
-          <input type="password"
+          <input name="currentpassword" type="password"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -163,7 +165,7 @@ $alldistricts = Districts::allDistricts();
             New Password
           </label>
 
-          <input type="password"
+          <input name="newpassword" type="password"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -174,7 +176,7 @@ $alldistricts = Districts::allDistricts();
             Confirm Password
           </label>
 
-          <input type="password"
+          <input name="confirmpassword" type="password"
             class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
 
         </div>
@@ -187,7 +189,8 @@ $alldistricts = Districts::allDistricts();
 
     <div class="flex flex-wrap gap-3">
 
-      <button type="submit" class="px-6 py-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition">
+      <button type="submit" name="btn_submit"
+        class="px-6 py-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition cursor-pointer">
 
         <i class="fa-solid fa-floppy-disk mr-2"></i>
 
@@ -196,7 +199,7 @@ $alldistricts = Districts::allDistricts();
       </button>
 
       <a href="<?php echo $base_url ?>/dashboard/myaccount"
-        class="px-6 py-3 bg-gray-500/20 text-gray-300 hover:bg-gray-500/30 transition">
+        class="px-6 py-3 bg-gray-500/20 text-gray-300 hover:bg-gray-500/30 transition cursor-pointer">
 
         <i class="fa-solid fa-arrow-left mr-2"></i>
 

@@ -377,6 +377,13 @@ class DashboardController
     view("dashboard", compact('role', 'page', 'user'));
   }
 
+  function updateprofile()
+  {
+    if (isset($_POST['btn_submit'])) {
+      print_r($_POST);
+    }
+  }
+
 
   /*====================rider dashboard================ */
   function assignedparcels()
