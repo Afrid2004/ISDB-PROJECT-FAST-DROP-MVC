@@ -1,5 +1,6 @@
 <?php
 $alldistricts = Districts::allDistricts();
+print_r($user);
 ?>
 
 <div class="space-y-6">
@@ -127,9 +128,8 @@ $alldistricts = Districts::allDistricts();
             Address
           </label>
 
-          <textarea name="address" value="<?php echo $user->address ?? "" ?>" rows="3"
-            class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500"></textarea>
-
+          <textarea name="address" rows="3"
+            class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500"><?php echo $user->address ?? "" ?></textarea>
         </div>
 
       </div>

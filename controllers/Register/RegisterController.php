@@ -69,7 +69,7 @@ class RegisterController
 
       //if all ok then save user data and redirect to login page
       $user = new User();
-      $user->set($role_id, $name, $email, $password);
+      $user->set(null, $role_id, $name, $email, password_hash($password, PASSWORD_DEFAULT));
       $data = $user->save();
       if ($data) {
         unset($_SESSION['old']);

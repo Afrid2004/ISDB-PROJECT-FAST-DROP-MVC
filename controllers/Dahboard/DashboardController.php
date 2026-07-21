@@ -380,7 +380,97 @@ class DashboardController
   function updateprofile()
   {
     if (isset($_POST['btn_submit'])) {
-      print_r($_POST);
+      $photo = $_FILES['file'];
+      $image_type = $photo['type'];
+      $image_size = $photo['size'];
+      $temp_name = $photo['tmp_name'];
+      $user = User::findUser($_SESSION['user']['id']);
+      $allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/webp"];
+      $image_url = $user->photo_url;
+      if (!empty($_FILES['file']['name'])) {
+        if (!in_array($image_type, $allowedTypes)) {
+          $_SESSION['errors'][] = "Invalid image type.";
+        }
+        if ($image_size > 2 * 1024 * 1024) {
+          $_SESSION['errors'][] = "Maximum size 2MB.";
+        }
+        if (!$photo['error']) {
+          $image_url = uploadToImageBB($temp_name);
+        }
+        if (!$image_url) {
+          $_SESSION['errors'][] = "Failed to upload image.";
+        }
+      }
+      $name = trim($_POST['name']);
+      $email = trim($_POST['email']);
+      $phone = trim($_POST['phone']);
+      $district = intval($_POST['district']);
+      $address = trim($_POST['address']);
+      $newpassword = trim($_POST['newpassword']);
+      if (empty($name)) {
+        $_SESSION['errors'][] = "Name is required.";
+      }
+
+      if (!empty($phone) && !preg_match('/^01[3-9][0-9]{8}$/', $phone)) {
+        $_SESSION['errors'][] = "Invalid phone number.";
+      }
+
+      if ($district <= 0) {
+        $_SESSION['errors'][] = "Please select a district.";
+      }
+
+      $password = $user->password;
+      if (!empty($newpassword)) {
+
+        $currentpassword = $_POST['currentpassword'];
+        $confirmpassword = $_POST['confirmpassword'];
+
+        if (!password_verify($currentpassword, $user->password)) {
+          $_SESSION['errors'][] = "Current password is incorrect.";
+        }
+
+        if (strlen($newpassword) < 8) {
+          $_SESSION['errors'][] = "Password must be at least 8 characters.";
+        }
+
+        if ($newpassword !== $confirmpassword) {
+          $_SESSION['errors'][] = "Passwords do not match.";
+        }
+        if (!empty($newpassword)) {
+          $password = password_hash($newpassword, PASSWORD_DEFAULT);
+        }
+      }
+
+      if (!empty($_SESSION['errors'])) {
+        redirect("dashboard/editprofile");
+        exit;
+      }
+
+
+      $userClass = new User();
+      $userClass->set(
+        $user->id,
+        $user->role_id,
+        $name,
+        $email,
+        $password,
+        $image_url ?? null,
+        $phone,
+        $district,
+        $address
+      );
+      $success = $userClass->updateprofile();
+
+      if ($success) {
+        $_SESSION['user']['name'] = $name;
+        if ($image_url) {
+          $_SESSION['user']['photo_url'] = $image_url;
+        }
+        $_SESSION['user']['phone'] = $phone;
+        $_SESSION['success'] = "Profile updated successfully.";
+      }
+
+      redirect("dashboard/myaccount");
     }
   }
 

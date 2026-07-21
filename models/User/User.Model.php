@@ -7,16 +7,33 @@ class User
   public $name;
   public $email;
   public $password;
+  public $photoUrl;
+  public $phone;
+  public $district;
+  public $address;
 
   public function __construct() {}
 
-  public function set($role_id, $name, $email, $password)
-  {
+  public function set(
+    $id,
+    $role_id,
+    $name,
+    $email,
+    $password = null,
+    $photoUrl = null,
+    $phone = null,
+    $district = null,
+    $address = null
+  ) {
+    $this->id = $id;
     $this->role_id = $role_id;
     $this->name = $name;
     $this->email = $email;
-    // hashing password giben by the user 
-    $this->password = password_hash($password, PASSWORD_DEFAULT);
+    $this->password =  $password;
+    $this->photoUrl = $photoUrl;
+    $this->phone = $phone;
+    $this->district = $district;
+    $this->address = $address;
   }
 
   //create user
@@ -25,6 +42,39 @@ class User
     global $db;
     $sql = "INSERT INTO users (role_id, name, email, password) VALUES ('$this->role_id', '$this->name', '$this->email', '$this->password')";
     return $db->query($sql);
+  }
+
+  //update profile
+  public function updateprofile()
+  {
+    global $db;
+
+    $sql = "UPDATE users
+            SET
+            name=?,
+            email=?,
+            phone=?,
+            district_id=?,
+            address=?,
+            password=?,
+            photo_url=?
+            WHERE id=?";
+
+    $stmt = $db->prepare($sql);
+
+    $stmt->bind_param(
+      "sssisssi",
+      $this->name,
+      $this->email,
+      $this->phone,
+      $this->district,
+      $this->address,
+      $this->password,
+      $this->photoUrl,
+      $this->id
+    );
+
+    return $stmt->execute();
   }
 
   //read user
