@@ -14,5 +14,5 @@ define("PASSWORD", "faisalfr_fast_drop_2026");
 // define("PASSWORD", "");
 
 
-$db = new mysqli(, USER, PASSWORD, DATABASE);
+$db = new mysqli(SERVER, USER, PASSWORD, DATABASE);
 $tx = "";
