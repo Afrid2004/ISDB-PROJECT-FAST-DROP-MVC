@@ -32,7 +32,7 @@
              <div
                class="p-3 rounded-2xl bg-white border border-gray-200 blogElements opacity-0 translate-y-10 [&.scroll-blog]:opacity-100 [&.scroll-blog]:translate-y-0 duration-400 delay-150">
                <div class="w-full h-60 overflow-hidden rounded-xl mb-3">
-                 <img src="<?php echo $base_url ?>/assets/images/blog-1.webp"
+                 <img loading="lazy" src="<?php echo $base_url ?>/assets/images/blog-1.webp"
                    class="w-full h-full object-cover hover:scale-[1.1] duration-300" alt="blog" />
                </div>
                <div>
@@ -60,7 +60,7 @@
              <div
                class="p-3 rounded-2xl bg-white border border-gray-200 blogElements opacity-0 translate-y-10 [&.scroll-blog]:opacity-100 [&.scroll-blog]:translate-y-0 duration-400 delay-300">
                <div class="w-full h-60 overflow-hidden rounded-xl mb-3">
-                 <img src="<?php echo $base_url ?>/assets/images/blog-2.webp"
+                 <img loading="lazy" src="<?php echo $base_url ?>/assets/images/blog-2.webp"
                    class="w-full h-full object-cover hover:scale-[1.1] duration-300" alt="blog" />
                </div>
                <div>
@@ -88,7 +88,7 @@
              <div
                class="p-3 rounded-2xl bg-white border border-gray-200 blogElements opacity-0 translate-y-10 [&.scroll-blog]:opacity-100 [&.scroll-blog]:translate-y-0 duration-400 delay-400">
                <div class="w-full h-60 overflow-hidden rounded-xl mb-3">
-                 <img src="<?php echo $base_url ?>/assets/images/blog-3.webp"
+                 <img loading="lazy" src="<?php echo $base_url ?>/assets/images/blog-3.webp"
                    class="w-full h-full object-cover hover:scale-[1.1] duration-300" alt="blog" />
                </div>
                <div>

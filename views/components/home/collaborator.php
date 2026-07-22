@@ -22,74 +22,74 @@
                 <div class="flex items-center">
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/pathao.webp" class="w-full" alt="pathao" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/pathao.webp" class="w-full" alt="pathao" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/steadfast.webp" class="w-full" alt="steadfast" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/steadfast.webp" class="w-full" alt="steadfast" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/dhl.webp" class="w-full" alt="dhl" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/dhl.webp" class="w-full" alt="dhl" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/paperfly.webp" class="w-full" alt="paperfly" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/paperfly.webp" class="w-full" alt="paperfly" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/fedex.webp" class="w-full" alt="fedex" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/fedex.webp" class="w-full" alt="fedex" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/aramex.webp" class="w-full" alt="aramex" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/aramex.webp" class="w-full" alt="aramex" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/redx.webp" class="w-full" alt="redx" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/redx.webp" class="w-full" alt="redx" />
                     </div>
                   </div>
                 </div>
                 <div class="flex items-center">
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/pathao.webp" class="w-full" alt="pathao" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/pathao.webp" class="w-full" alt="pathao" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/steadfast.webp" class="w-full" alt="steadfast" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/steadfast.webp" class="w-full" alt="steadfast" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/dhl.webp" class="w-full" alt="dhl" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/dhl.webp" class="w-full" alt="dhl" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/paperfly.webp" class="w-full" alt="paperfly" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/paperfly.webp" class="w-full" alt="paperfly" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/fedex.webp" class="w-full" alt="fedex" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/fedex.webp" class="w-full" alt="fedex" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/aramex.webp" class="w-full" alt="aramex" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/aramex.webp" class="w-full" alt="aramex" />
                     </div>
                   </div>
                   <div class="w-80 h-30 border border-gray-300/70 flex items-center justify-center mr-8">
                     <div class="w-50">
-                      <img src="<?php echo $base_url ?>/assets/images/redx.webp" class="w-full" alt="redx" />
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/redx.webp" class="w-full" alt="redx" />
                     </div>
                   </div>
                 </div>

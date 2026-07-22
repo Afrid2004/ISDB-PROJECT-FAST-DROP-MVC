@@ -3,7 +3,7 @@
 function avatar($name, $photo = null)
 {
   if (!empty($photo)) {
-    return "<img src='$photo' class='w-full h-full object-cover'>";
+    return "<img  loading='lazy' src='$photo' class='w-full h-full object-cover'>";
   }
 
   $nameArray = explode(" ", trim($name));

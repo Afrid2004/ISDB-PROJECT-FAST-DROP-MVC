@@ -7,7 +7,7 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="w-full h-full relative flex items-center justify-center">
-                <img src="<?php echo $base_url ?>/assets/images/hero-2-bg.webp" class="w-full h-full object-cover"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-2-bg.webp" class="w-full h-full object-cover"
                   alt="hero-bg" />
                 <div
                   class="absolute top-0 left-0 h-full bg-linear-to-r from-black/60 to-transparent flex items-center w-full pt-10">
@@ -39,21 +39,21 @@
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
@@ -74,7 +74,7 @@
             </div>
             <div class="swiper-slide">
               <div class="w-full h-full relative flex items-center justify-center">
-                <img src="<?php echo $base_url ?>/assets/images/hero-1-bg.webp" class="w-full h-full object-cover"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-1-bg.webp" class="w-full h-full object-cover"
                   alt="hero-bg" />
                 <div
                   class="absolute top-0 left-0 h-full bg-linear-to-r from-black/60 to-transparent flex items-center w-full pt-10">
@@ -106,21 +106,21 @@
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
@@ -141,7 +141,7 @@
             </div>
             <div class="swiper-slide">
               <div class="w-full h-full relative flex items-center justify-center">
-                <img src="<?php echo $base_url ?>/assets/images/hero-3-bg.webp" class="w-full h-full object-cover"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-3-bg.webp" class="w-full h-full object-cover"
                   alt="hero-bg" />
                 <div
                   class="absolute top-0 left-0 h-full bg-linear-to-r from-black/60 to-transparent flex items-center w-full pt-10">
@@ -173,21 +173,21 @@
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>
                               <li>
                                 <div
                                   class="w-10 h-10 border-2 border-white flex items-center justify-center rounded-full overflow-hidden">
-                                  <img src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author-1"
+                                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author-1"
                                     class="w-full h-full object-cover" />
                                 </div>
                               </li>

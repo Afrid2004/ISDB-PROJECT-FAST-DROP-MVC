@@ -25,7 +25,7 @@
 
               <div>
                 <div class="w-full h-80 overflow-hidden relative rounded-4xl">
-                  <img src="<?php echo $base_url ?>/assets/images/vid3.webp" alt="video"
+                  <img loading="lazy" src="<?php echo $base_url ?>/assets/images/vid3.webp" alt="video"
                     class="w-full h-full object-cover hover:scale-[1.1]" />
                   <div class="absolute left-0 top-0 bg-black/20 w-full h-full flex items-center justify-center">
                     <div class="w-15 h-15 flex items-center justify-center rounded-full relative">
@@ -48,7 +48,7 @@
                   <div class="flex items-center gap-5 flex-wrap lg:flex-nowrap">
                     <div
                       class="w-full lg:w-50 h-50 lg:h-35 flex items-center justify-center rounded-2xl overflow-hidden shrink-0">
-                      <img src="<?php echo $base_url ?>/assets/images/about-1.webp" alt="truck"
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/about-1.webp" alt="truck"
                         class="w-full h-full object-cover hover:scale-[1.1] duration-150" />
                     </div>
                     <div>
@@ -79,7 +79,7 @@
                   <div class="flex items-center gap-5 flex-wrap lg:flex-nowrap">
                     <div
                       class="w-full lg:w-50 h-50 lg:h-35 flex items-center justify-center rounded-2xl overflow-hidden shrink-0">
-                      <img src="<?php echo $base_url ?>/assets/images/about-2.webp" alt="truck"
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/about-2.webp" alt="truck"
                         class="w-full h-full object-cover hover:scale-[1.1] duration-150" />
                     </div>
                     <div>
@@ -110,7 +110,7 @@
                   <div class="flex items-center gap-5 flex-wrap lg:flex-nowrap">
                     <div
                       class="w-full lg:w-50 h-50 lg:h-35 flex items-center justify-center rounded-2xl overflow-hidden shrink-0">
-                      <img src="<?php echo $base_url ?>/assets/images/about-4.webp" alt="truck"
+                      <img loading="lazy" src="<?php echo $base_url ?>/assets/images/about-4.webp" alt="truck"
                         class="w-full h-full object-cover hover:scale-[1.1] duration-150" />
                     </div>
                     <div>

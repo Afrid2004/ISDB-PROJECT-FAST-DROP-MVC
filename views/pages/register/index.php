@@ -100,7 +100,7 @@ if (isset($_SESSION['user']['email'])) {
           </div>
         </div>
         <div class="col-span-12 sm:col-span-6 w-full h-full overflow-hidden rounded-xl hidden sm:flex">
-          <img src="<?php echo $base_url ?>/assets/images/auth-bg.jpg" alt="ship"
+          <img loading="lazy" src="<?php echo $base_url ?>/assets/images/auth-bg.jpg" alt="ship"
             class="w-full h-full object-cover hover:scale-[1.1] duration-300">
         </div>
       </div>

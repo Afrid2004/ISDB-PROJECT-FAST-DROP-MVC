@@ -19,7 +19,7 @@
             <div
               class="faqElements -translate-x-10 opacity-0 [&.scroll-faq]:translate-x-0 [&.scroll-faq]:opacity-100 duration-300 delay-150">
               <div class="aspect-3/2 overflow-hidden rounded-xl">
-                <img src="<?php echo $base_url ?>/assets/images/faq.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/faq.webp"
                   class="w-full h-full object-cover hover:scale-[1.2] duration-400" alt="faq" />
               </div>
             </div>

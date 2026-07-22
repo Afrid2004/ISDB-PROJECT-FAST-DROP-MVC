@@ -79,7 +79,7 @@ $photo = $_SESSION['user']['photo_url'];
               <div class="w-fit">
                 <a class="block" href="<?php echo $base_url ?>">
                   <div class="w-40">
-                    <img src="<?php echo $base_url ?>/assets/images/logo_white.png" alt="fast-drop" class="w-full">
+                    <img loading="lazy" src="<?php echo $base_url ?>/assets/images/logo_white.png" alt="fast-drop" class="w-full">
                   </div>
                 </a>
               </div>

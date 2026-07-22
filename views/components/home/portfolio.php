@@ -34,7 +34,7 @@
             <div
               class="col-span-12 md:col-span-7 lg:col-span-5 bg-amber-500 portfolioElement opacity-0 scale-[.9] [.scroll-portfolio]:opacity-100 [.scroll-portfolio]:scale-[1] duration-300">
               <div class="w-full h-full bg-white relative overflow-hidden group/card">
-                <img src="<?php echo $base_url ?>/assets/images/portfolio-4.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/portfolio-4.webp"
                   class="w-full h-full object-cover group-hover/card:scale-[1.2] duration-400" alt="portfolio" />
                 <div
                   class="absolute opacity-0 pointer-events-none duration-150 group-hover/card:opacity-100 group-hover/card:pointer-events-auto w-full h-full bottom-0 left-0 bg-black/30 flex items-end justify-center p-5">
@@ -64,7 +64,7 @@
             <div
               class="col-span-12 md:col-span-5 lg:col-span-4 bg-cyan-500 portfolioElement opacity-0 scale-[.9] [.scroll-portfolio]:opacity-100 [.scroll-portfolio]:scale-[1] duration-300 delay-150">
               <div class="w-full h-full bg-white relative overflow-hidden group/card">
-                <img src="<?php echo $base_url ?>/assets/images/portfolio-1.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/portfolio-1.webp"
                   class="w-full h-full object-cover group-hover/card:scale-[1.2] duration-400" alt="portfolio" />
                 <div
                   class="absolute opacity-0 pointer-events-none duration-150 group-hover/card:opacity-100 group-hover/card:pointer-events-auto w-full h-full bottom-0 left-0 bg-black/30 flex items-end justify-center p-5">
@@ -94,7 +94,7 @@
             <div
               class="col-span-12 md:col-span-6 lg:col-span-3 bg-teal-500 portfolioElement opacity-0 scale-[.9] [.scroll-portfolio]:opacity-100 [.scroll-portfolio]:scale-[1] duration-300 delay-300">
               <div class="w-full h-full bg-white relative overflow-hidden group/card">
-                <img src="<?php echo $base_url ?>/assets/images/portfolio-2.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/portfolio-2.webp"
                   class="w-full h-full object-cover group-hover/card:scale-[1.2] duration-400" alt="portfolio" />
                 <div
                   class="absolute opacity-0 pointer-events-none duration-150 group-hover/card:opacity-100 group-hover/card:pointer-events-auto w-full h-full bottom-0 left-0 bg-black/30 flex items-end justify-center p-5">
@@ -124,7 +124,7 @@
             <div
               class="col-span-12 md:col-span-6 lg:col-span-3 bg-amber-500 portfolioElement opacity-0 scale-[.9] [.scroll-portfolio]:opacity-100 [.scroll-portfolio]:scale-[1] duration-300">
               <div class="w-full h-full bg-white relative overflow-hidden group/card">
-                <img src="<?php echo $base_url ?>/assets/images/portfolio-6.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/portfolio-6.webp"
                   class="w-full h-full object-cover group-hover/card:scale-[1.2] duration-400" alt="portfolio" />
                 <div
                   class="absolute opacity-0 pointer-events-none duration-150 group-hover/card:opacity-100 group-hover/card:pointer-events-auto w-full h-full bottom-0 left-0 bg-black/30 flex items-end justify-center p-5">
@@ -154,7 +154,7 @@
             <div
               class="col-span-12 md:col-span-5 lg:col-span-4 bg-cyan-500 portfolioElement opacity-0 scale-[.9] [.scroll-portfolio]:opacity-100 [.scroll-portfolio]:scale-[1] duration-300 delay-150">
               <div class="w-full h-full bg-white relative overflow-hidden group/card">
-                <img src="<?php echo $base_url ?>/assets/images/portfolio-5.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/portfolio-5.webp"
                   class="w-full h-full object-cover group-hover/card:scale-[1.2] duration-400" alt="portfolio" />
                 <div
                   class="absolute opacity-0 pointer-events-none duration-150 group-hover/card:opacity-100 group-hover/card:pointer-events-auto w-full h-full bottom-0 left-0 bg-black/30 flex items-end justify-center p-5">
@@ -184,7 +184,7 @@
             <div
               class="col-span-12 md:col-span-7 lg:col-span-5 bg-teal-500 portfolioElement opacity-0 scale-[.9] [.scroll-portfolio]:opacity-100 [.scroll-portfolio]:scale-[1] duration-300 delay-300">
               <div class="w-full h-full bg-white relative overflow-hidden group/card">
-                <img src="<?php echo $base_url ?>/assets/images/portfolio-3.webp"
+                <img loading="lazy" src="<?php echo $base_url ?>/assets/images/portfolio-3.webp"
                   class="w-full h-full object-cover group-hover/card:scale-[1.2] duration-400" alt="portfolio" />
                 <div
                   class="absolute opacity-0 pointer-events-none duration-150 group-hover/card:opacity-100 group-hover/card:pointer-events-auto w-full h-full bottom-0 left-0 bg-black/30 flex items-end justify-center p-5">

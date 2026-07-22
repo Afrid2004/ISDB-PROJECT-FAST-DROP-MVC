@@ -36,7 +36,7 @@
                       <div class="flex gap-3 items-center">
                         <div
                           class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 overflow-hidden">
-                          <img src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author"
+                          <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author"
                             class="w-full object-cover h-full" />
                         </div>
                         <div>
@@ -67,7 +67,7 @@
                       <div class="flex gap-3 items-center">
                         <div
                           class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 overflow-hidden">
-                          <img src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author"
+                          <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-2.webp" alt="author"
                             class="w-full object-cover h-full" />
                         </div>
                         <div>
@@ -99,7 +99,7 @@
                       <div class="flex gap-3 items-center">
                         <div
                           class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 overflow-hidden">
-                          <img src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author"
+                          <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-3.webp" alt="author"
                             class="w-full object-cover h-full" />
                         </div>
                         <div>
@@ -130,7 +130,7 @@
                       <div class="flex gap-3 items-center">
                         <div
                           class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-200 overflow-hidden">
-                          <img src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author"
+                          <img loading="lazy" src="<?php echo $base_url ?>/assets/images/hero-author-1.webp" alt="author"
                             class="w-full object-cover h-full" />
                         </div>
                         <div>

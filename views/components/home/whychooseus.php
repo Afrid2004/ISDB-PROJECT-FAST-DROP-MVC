@@ -58,12 +58,12 @@
               <div class="flex items-center">
                 <div
                   class="w-full h-80 sm:h-100 md:h-110 overflow-hidden opacity-0 [.scroll-why-choose_&]:opacity-100 duration-700 delay-150">
-                  <img src="<?php echo $base_url; ?>/assets/images/port.webp"
+                  <img loading="lazy" src="<?php echo $base_url; ?>/assets/images/port.webp"
                     class="w-full h-full object-cover hover:scale-[1.1] duration-150" alt="port" />
                 </div>
                 <div
                   class="w-full h-80 sm:h-100 md:h-110 opacity-0 -ml-30 scale-[.8] [.scroll-why-choose_&]:scale-[.85] [.scroll-why-choose_&]:opacity-100 duration-700 delay-150 border-5 border-white overflow-hidden">
-                  <img src="<?php echo $base_url; ?>/assets/images/port-2.webp"
+                  <img loading="lazy" src="<?php echo $base_url; ?>/assets/images/port-2.webp"
                     class="w-full h-full object-cover hover:scale-[1.1] duration-150" alt="port" />
                 </div>
               </div>
