@@ -19,7 +19,7 @@ class User
     $role_id,
     $name,
     $email,
-    $password = null,
+    $password,
     $photoUrl = null,
     $phone = null,
     $district = null,

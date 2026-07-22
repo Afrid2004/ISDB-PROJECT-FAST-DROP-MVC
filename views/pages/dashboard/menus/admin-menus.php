@@ -9,6 +9,18 @@
       </div>
     </a>
   </div>
+
+  <!-- my account tab -->
+  <div>
+    <a class="block" href="<?php echo $base_url ?>/dashboard/myaccount">
+      <div
+        class="flex items-center gap-2 text-white/70 hover:text-white p-3 hover:bg-white/20 active:bg-white/20 duration-150 text-lg leading-none">
+        <i class="fa-regular fa-circle-user shrink-0"></i>
+        My Account
+      </div>
+    </a>
+  </div>
+
   <!-- my parcels link  -->
   <div>
     <a class="block" href="<?php echo $base_url ?>/dashboard/myparcels">

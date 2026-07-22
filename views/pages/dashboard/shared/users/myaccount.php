@@ -291,7 +291,7 @@
     <div class="p-6 flex flex-wrap gap-3">
 
       <a href="<?php echo $base_url ?>/dashboard/editprofile"
-        class="px-4 py-2 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">
+        class="px-4 py-2 bg-lime-500/20 text-lime-400 hover:bg-lime-500/30">
 
         <i class="fa-regular fa-pen-to-square mr-2"></i>
 

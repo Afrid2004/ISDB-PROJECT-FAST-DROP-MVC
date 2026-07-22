@@ -1,6 +1,5 @@
 <?php
 $alldistricts = Districts::allDistricts();
-print_r($user);
 ?>
 
 <div class="space-y-6">
@@ -14,6 +13,24 @@ print_r($user);
       Update your personal information and account settings.
     </p>
   </div>
+
+  <?php if (!empty($_SESSION['errors'])): ?>
+    <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 mb-5">
+      <ul class="list-disc ml-5 space-y-1">
+        <?php foreach ($_SESSION['errors'] as $error): ?>
+          <li><?= htmlspecialchars($error) ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
+    <?php unset($_SESSION['errors']); ?>
+  <?php endif; ?>
+
+  <?php if (!empty($_SESSION['success'])): ?>
+    <div class="bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 mb-5">
+      <?= htmlspecialchars($_SESSION['success']) ?>
+    </div>
+    <?php unset($_SESSION['success']); ?>
+  <?php endif; ?>
 
   <form action="<?php echo $base_url ?>/dashboard/updateprofile" method="POST" enctype="multipart/form-data"
     class="space-y-6">
@@ -38,7 +55,7 @@ print_r($user);
         <div class="flex-1">
 
           <label
-            class="inline-flex items-center gap-2 px-5 py-3 bg-blue-500/20 text-blue-400 cursor-pointer hover:bg-blue-500/30">
+            class="inline-flex items-center gap-2 px-5 py-3 bg-teal-500/20 text-teal-400 cursor-pointer hover:bg-teal-500/30">
 
             <i class="fa-solid fa-camera"></i>
 
@@ -114,8 +131,8 @@ print_r($user);
 
             <option selected disabled>Select District</option>
             <?php foreach ($alldistricts as $district) { ?>
-            <option <?php echo ($district->id == $user->district_id) ? 'selected' : '' ?>
-              value="<?php echo $district->id ?>"><?php echo $district->district_name; ?></option>
+              <option <?php echo ($district->id == $user->district_id) ? 'selected' : '' ?>
+                value="<?php echo $district->id ?>"><?php echo $district->district_name; ?></option>
             <?php } ?>
 
           </select>
@@ -149,40 +166,47 @@ print_r($user);
       <div class="p-6 grid md:grid-cols-3 gap-6">
 
         <div>
-
           <label class="block text-gray-300 mb-2">
             Current Password
           </label>
 
-          <input name="currentpassword" type="password"
-            class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
-
+          <div class="flex items-center gap-1 w-full bg-black/30 border border-gray-500/30 h-10">
+            <input name="currentpassword" type="password"
+              class="text-white px-4  h-full w-full outline-none border-none " placeholder="••••••••">
+            <div class="shrink-0 pe-4">
+              <i class="fa-regular fa-eye text-gray cursor-pointer showpassIcon"></i>
+            </div>
+          </div>
         </div>
 
         <div>
-
           <label class="block text-gray-300 mb-2">
             New Password
           </label>
 
-          <input name="newpassword" type="password"
-            class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
-
+          <div class="flex items-center gap-1 w-full bg-black/30 border border-gray-500/30 h-10">
+            <input name="newpassword" type="password" class="text-white px-4  h-full w-full outline-none border-none "
+              placeholder="••••••••">
+            <div class="shrink-0 pe-4">
+              <i class="fa-regular fa-eye text-gray cursor-pointer showpassIcon"></i>
+            </div>
+          </div>
         </div>
 
         <div>
-
           <label class="block text-gray-300 mb-2">
             Confirm Password
           </label>
 
-          <input name="confirmpassword" type="password"
-            class="w-full bg-black/30 border border-gray-500/30 px-4 py-3 text-white focus:outline-none focus:border-blue-500">
-
+          <div class="flex items-center gap-1 w-full bg-black/30 border border-gray-500/30 h-10">
+            <input name="confirmpassword" type="password"
+              class="text-white px-4  h-full w-full outline-none border-none " placeholder="••••••••">
+            <div class="shrink-0 pe-4">
+              <i class="fa-regular fa-eye text-gray cursor-pointer showpassIcon"></i>
+            </div>
+          </div>
         </div>
-
       </div>
-
     </div>
 
     <!-- Buttons -->
@@ -190,7 +214,7 @@ print_r($user);
     <div class="flex flex-wrap gap-3">
 
       <button type="submit" name="btn_submit"
-        class="px-6 py-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition cursor-pointer">
+        class="px-6 py-3 bg-lime-500/20 text-lime-400 hover:bg-lime-500/30 transition cursor-pointer">
 
         <i class="fa-solid fa-floppy-disk mr-2"></i>
 

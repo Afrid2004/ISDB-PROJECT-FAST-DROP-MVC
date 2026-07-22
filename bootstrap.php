@@ -17,7 +17,10 @@ if (!isset($_SESSION['user']) && isset($_COOKIE['remember_token'])) {
       "photo_url" => $user->photo_url,
       "role_id" => $user->role_id,
       "name"    => $user->name,
-      "email"   => $user->email
+      "email"   => $user->email,
+      "district"   => $user->district_id,
+      "phone"   => $user->phone,
+      "address"   => $user->address,
     ];
   }
 }

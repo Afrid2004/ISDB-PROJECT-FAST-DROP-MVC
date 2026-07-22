@@ -1,7 +1,7 @@
 <?php
 if (isset($_SESSION['user']['email'])) {
-    redirect();
-    exit;
+  redirect();
+  exit;
 }
 ?>
 <div>
@@ -19,12 +19,12 @@ if (isset($_SESSION['user']['email'])) {
             <div>
               <form method="post" action="<?php echo $base_url ?>/register/create">
                 <?php if (isset($_SESSION['error'])): ?>
-                <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-2">
-                  <?php
-                                        echo $_SESSION["error"];
-                                        unset($_SESSION["error"]);
-                                        ?>
-                </div>
+                  <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-2">
+                    <?php
+                    echo $_SESSION["error"];
+                    unset($_SESSION["error"]);
+                    ?>
+                  </div>
                 <?php endif ?>
                 <div class="mb-2">
                   <label for="name">

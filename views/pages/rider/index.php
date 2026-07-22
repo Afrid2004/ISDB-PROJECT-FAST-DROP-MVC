@@ -1,6 +1,7 @@
 <?php
 $alldistricts = Districts::allDistricts();
 $old = $_SESSION['old'] ?? [];
+$user = User::findUser($_SESSION['user']['id']);
 ?>
 
 <div>
@@ -21,22 +22,22 @@ $old = $_SESSION['old'] ?? [];
           <form method="post" action="<?php echo $base_url ?>/rider/submit">
             <!-- error message show  -->
             <?php if (!empty($_SESSION['errors'])): ?>
-              <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-3">
-                <ul class="list-disc pl-5">
-                  <?php foreach ($_SESSION['errors'] as $error): ?>
-                    <li><?php echo $error ?></li>
-                  <?php endforeach; ?>
-                </ul>
-              </div>
+            <div class="mb-4 rounded bg-red-100 border border-red-300 text-red-700 px-4 py-3">
+              <ul class="list-disc pl-5">
+                <?php foreach ($_SESSION['errors'] as $error): ?>
+                <li><?php echo $error ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
             <?php
               unset($_SESSION['errors']);
             endif;
             ?>
             <!-- success message show  -->
             <?php if (isset($_SESSION['success'])): ?>
-              <div class="mb-4 rounded bg-green-100 border border-green-300 text-green-700 px-4 py-3">
-                <?php echo $_SESSION['success'] ?>
-              </div>
+            <div class="mb-4 rounded bg-green-100 border border-green-300 text-green-700 px-4 py-3">
+              <?php echo $_SESSION['success'] ?>
+            </div>
             <?php
               unset($_SESSION['success']);
             endif; ?>
@@ -62,7 +63,7 @@ $old = $_SESSION['old'] ?? [];
                     <label for="ridername" class="block mb-2 text-gray">
                       Rider Name
                     </label>
-                    <input value="<?php echo $old['ridername'] ?? '' ?>" type="text"
+                    <input value="<?php echo $old['ridername'] ?? $user->name ?? '' ?>" type="text"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="ridername" name="ridername" placeholder="Enter rider name" required>
                   </div>
@@ -70,7 +71,7 @@ $old = $_SESSION['old'] ?? [];
                     <label for="rideremail" class="block mb-2 text-gray">
                       Rider Email
                     </label>
-                    <input value="<?php echo $old['rideremail'] ?? '' ?>" type="email"
+                    <input value="<?php echo $old['rideremail'] ?? $user->email ?? '' ?>" type="email"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="rideremail" name="rideremail" placeholder="Enter rider email" required>
                   </div>
@@ -78,7 +79,7 @@ $old = $_SESSION['old'] ?? [];
                     <label for="riderphone" class="block mb-2 text-gray">
                       Rider Phone
                     </label>
-                    <input value="<?php echo $old['riderphone'] ?? '' ?>" type="tel"
+                    <input value="<?php echo $old['riderphone'] ?? $user->phone ?? '' ?>" type="tel"
                       class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                       id="riderphone" name="riderphone" placeholder="Enter rider phone" required>
                   </div>
@@ -172,8 +173,8 @@ $old = $_SESSION['old'] ?? [];
                     <?php if ($alldistricts) {
                       foreach ($alldistricts as $district) {
                     ?>
-                        <option <?php echo (($old['riderdistrict'] ?? '') == $district->id) ? 'selected' : '' ?>
-                          value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
+                    <option <?php echo (($old['riderdistrict'] ?? '') == $district->id) ? 'selected' : '' ?>
+                      value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
                     <?php }
                     } ?>
                   </select>

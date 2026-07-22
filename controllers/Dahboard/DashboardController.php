@@ -395,10 +395,12 @@ class DashboardController
           $_SESSION['errors'][] = "Maximum size 2MB.";
         }
         if (!$photo['error']) {
-          $image_url = uploadToImageBB($temp_name);
-        }
-        if (!$image_url) {
-          $_SESSION['errors'][] = "Failed to upload image.";
+          $upload = uploadToImageBB($temp_name);
+          if ($upload['success']) {
+            $image_url = $upload['url'];
+          } else {
+            $_SESSION['errors'][] = $upload['message'];
+          }
         }
       }
       $name = trim($_POST['name']);
@@ -407,6 +409,7 @@ class DashboardController
       $district = intval($_POST['district']);
       $address = trim($_POST['address']);
       $newpassword = trim($_POST['newpassword']);
+      $passwordPattern = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_\-+=])[A-Za-z\d@$!%*?&^#()_\-+=]{6,}$/";
       if (empty($name)) {
         $_SESSION['errors'][] = "Name is required.";
       }
@@ -428,9 +431,8 @@ class DashboardController
         if (!password_verify($currentpassword, $user->password)) {
           $_SESSION['errors'][] = "Current password is incorrect.";
         }
-
-        if (strlen($newpassword) < 8) {
-          $_SESSION['errors'][] = "Password must be at least 8 characters.";
+        if (!preg_match($passwordPattern, $newpassword)) {
+          $_SESSION["errors"][] = "Password must be at least 6 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
         }
 
         if ($newpassword !== $confirmpassword) {
@@ -454,7 +456,7 @@ class DashboardController
         $name,
         $email,
         $password,
-        $image_url ?? null,
+        $image_url,
         $phone,
         $district,
         $address
@@ -470,7 +472,7 @@ class DashboardController
         $_SESSION['success'] = "Profile updated successfully.";
       }
 
-      redirect("dashboard/myaccount");
+      redirect("dashboard/editprofile");
     }
   }
 

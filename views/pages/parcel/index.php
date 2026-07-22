@@ -1,6 +1,8 @@
 <?php
 $alldistricts = Districts::allDistricts();
 $old = $_SESSION['old'] ?? [];
+$user = User::findUser($_SESSION['user']['id']);
+$selectedDistrict = $old['senderdistrict'] ?? $user->district_id ?? '';
 ?>
 
 <div>
@@ -138,7 +140,7 @@ $old = $_SESSION['old'] ?? [];
                       <label for="sendername" class="block mb-2 text-gray">
                         Sender Name
                       </label>
-                      <input value="<?php echo  $old['sendername'] ?? '' ?>" type="text"
+                      <input value="<?php echo  $old['sendername'] ?? $user->name ?? '' ?>" type="text"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="sendername" name="sendername" placeholder="Enter sender name" required>
                     </div>
@@ -146,7 +148,7 @@ $old = $_SESSION['old'] ?? [];
                       <label for="senderphone" class="block mb-2 text-gray">
                         Sender Phone
                       </label>
-                      <input value="<?php echo $old['senderphone'] ?? '' ?>" type="tel"
+                      <input value="<?php echo $old['senderphone'] ?? $user->phone ?? '' ?>" type="tel"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="senderphone" name="senderphone" placeholder="Enter sender phone" required>
                     </div>
@@ -154,7 +156,7 @@ $old = $_SESSION['old'] ?? [];
                       <label for="senderemail" class="block mb-2 text-gray">
                         Sender Email
                       </label>
-                      <input value="<?php echo $old['senderemail'] ?? '' ?>" type="email"
+                      <input value="<?php echo $old['senderemail'] ?? $user->email ?? '' ?>" type="email"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="senderemail" name="senderemail" placeholder="Enter sender email" required>
                     </div>
@@ -162,7 +164,7 @@ $old = $_SESSION['old'] ?? [];
                       <label for="senderaddress" class="block mb-2 text-gray">
                         Sender Address
                       </label>
-                      <input value="<?php echo $old['senderaddress'] ?? '' ?>" type="text"
+                      <input value="<?php echo $old['senderaddress'] ?? $user->address ?? '' ?>" type="text"
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 outline-none text-secondary focus:border-teal-500"
                         id="senderaddress" name="senderaddress" placeholder="Enter sender address" required>
                     </div>
@@ -170,16 +172,17 @@ $old = $_SESSION['old'] ?? [];
                       <label for="senderdistrict" class="block mb-2 text-gray">
                         Sender District
                       </label>
+
                       <select
                         class="w-full border bg-white border-gray/30 rounded-sm px-4 py-3 text-secondary focus:border-teal-500 outline-none"
                         name="senderdistrict" id="senderdistrict" required>
-                        <option value="" <?php echo empty($old['senderdistrict']) ? 'selected' : '' ?> disabled>Select
+                        <option value="" <?php echo empty($selectedDistrict) ? 'selected' : ''; ?> disabled>Select
                           District
                         </option>
                         <?php if ($alldistricts) {
                           foreach ($alldistricts as $district) {
                         ?>
-                            <option <?php echo (($old['senderdistrict'] ?? '') == $district->id) ? 'selected' : '' ?>
+                            <option <?php echo $selectedDistrict == $district->id ? 'selected' : ''; ?>
                               value="<?php echo $district->id ?>"><?php echo $district->district_name ?></option>
                         <?php }
                         } ?>
